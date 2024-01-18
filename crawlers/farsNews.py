@@ -1,5 +1,6 @@
 import feedparser
 import sqlite3
+import time
 
 def crawler():
     feed = feedparser.parse("https://www.farsnews.ir/rss")
@@ -13,6 +14,8 @@ def crawler():
         theNews['id'] = theNews['id'][-14:]
         theNews['title'] = entry.title
         theNews['link'] = entry.link
+        pub = entry.published_parsed
+        theNews['published'] = time.mktime(pub)
         news.append(theNews)
 
     return news
@@ -24,7 +27,7 @@ def insert():
         
 
     cursor = list(conn.execute("SELECT id from FarsNews"))
-    ids = list(map(lambda x: str(x[0]), cursor))
+    ids = list(map(lambda x: x[0], cursor))
 
     cursor = conn.cursor() 
 
@@ -32,7 +35,7 @@ def insert():
         if (theNews["id"] in ids):
             print("Exist")
         else:
-            cursor.execute(f"INSERT INTO FarsNews VALUES ({theNews['id']}, '{theNews['title']}', '{theNews['link']}')")
+            cursor.execute(f"INSERT INTO FarsNews VALUES ('{theNews['id']}', '{theNews['title']}', '{theNews['link']}', '{theNews['published']}')")
             print("Added")
 
     print("commited")
@@ -44,7 +47,9 @@ def insert():
 
 insert()
 
+
 """CREATE TABLE FarsNews
-(id INT PRIMARY KEY NOT NULL,
+(id TEXT PRIMARY KEY NOT NULL,
 title TEXT NOT NULL,
-link TEXT NOT NULL);"""
+link TEXT NOT NULL,
+published TEXT NOT NULL);"""

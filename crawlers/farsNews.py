@@ -6,36 +6,24 @@ def crawler():
     feed = feedparser.parse("https://www.farsnews.ir/rss")
     # feed = feedparser.parse("./rss")
     
-    news = []
 
-    for entry in feed.entries:
-        theNews = {}
-        theNews['id'] = entry.id
-        theNews['id'] = theNews['id'][-14:]
-        theNews['title'] = entry.title
-        theNews['link'] = entry.link
-        pub = entry.published_parsed
-        theNews['published'] = time.mktime(pub)
-        news.append(theNews)
-
-    return news
-
-
-def insert():
-    news = crawler()
     conn = sqlite3.connect('./../news.db')
-        
 
     cursor = list(conn.execute("SELECT id from FarsNews"))
     ids = list(map(lambda x: x[0], cursor))
 
     cursor = conn.cursor() 
 
-    for theNews in news:
-        if (theNews["id"] in ids):
+    for entry in feed.entries:
+        id = entry.id
+        id = id[-14:]
+        pub = entry.published_parsed
+        pub = time.mktime(pub)
+
+        if (id in ids):
             print("Exist")
         else:
-            cursor.execute(f"INSERT INTO FarsNews VALUES ('{theNews['id']}', '{theNews['title']}', '{theNews['link']}', '{theNews['published']}')")
+            cursor.execute(f"INSERT INTO FarsNews VALUES ('{id}', '{entry.title}', '{entry.link}', '{pub}')")
             print("Added")
 
     print("commited")
@@ -45,7 +33,7 @@ def insert():
     conn.close()
 
 
-insert()
+crawler()
 
 
 """CREATE TABLE FarsNews

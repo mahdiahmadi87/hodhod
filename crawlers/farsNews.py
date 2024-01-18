@@ -2,8 +2,8 @@ import feedparser
 import sqlite3
 
 def crawler():
-    # feed = feedparser.parse("https://www.farsnews.ir/rss")
-    feed = feedparser.parse("./rss")
+    feed = feedparser.parse("https://www.farsnews.ir/rss")
+    # feed = feedparser.parse("./rss")
     
     news = []
 
@@ -20,13 +20,20 @@ def crawler():
 
 def insert():
     news = crawler()
+    conn = sqlite3.connect('./../news.db')
+        
+
+    cursor = list(conn.execute("SELECT id from FarsNews"))
+    ids = list(map(lambda x: str(x[0]), cursor))
+
+    cursor = conn.cursor() 
 
     for theNews in news:
-        conn = sqlite3.connect('./../news.db')
-        
-        cursor = conn.cursor() 
-
-        cursor.execute(f"INSERT INTO FarsNews VALUES ({theNews['id']}, '{theNews['title']}', '{theNews['link']}')")
+        if (theNews["id"] in ids):
+            print("Exist")
+        else:
+            cursor.execute(f"INSERT INTO FarsNews VALUES ({theNews['id']}, '{theNews['title']}', '{theNews['link']}')")
+            print("Added")
 
     print("commited")
 

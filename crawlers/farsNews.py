@@ -28,10 +28,15 @@ def crawler():
         pub = time.mktime(pub)
 
         soup = BeautifulSoup(requests.get(entry.link).content, "html.parser")
+
         p = soup.find("p", class_="lead p-2 text-justify radius").text
         abstract = p.strip()
 
-        cursor.execute(f"INSERT INTO FarsNews VALUES ('{id}', '{entry.title}', '{abstract}', '{entry.link}', '{pub}')")
+        tags = soup.findAll("a", class_="ml-2 mb-2 radius")
+        tags = list(map(lambda x: x.text.strip(), tags))
+        tags = "|".join(tags)
+
+        cursor.execute(f"INSERT INTO FarsNews VALUES ('{id}', '{entry.title}', '{abstract}', '{tags}', '{entry.link}', '{pub}')")
         print("Added")
         
 
@@ -49,5 +54,6 @@ crawler()
 (id TEXT PRIMARY KEY NOT NULL,
 title TEXT NOT NULL,
 abstract TEXT NOT NULL,
+tags TEXT NOT NULL,
 link TEXT NOT NULL,
 published TEXT NOT NULL);"""

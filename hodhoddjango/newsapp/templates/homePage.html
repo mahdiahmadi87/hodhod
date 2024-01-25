@@ -4,7 +4,13 @@
 <link rel="stylesheet" href="{% static 'homePage.css' %}">
 <body>
 
-    <h1>salaaam</h1>
-
+    <h1>News</h1>
+  
+    <ul>
+      {% for theNews in news %}
+        <li>{{ theNews.title }}</li>
+        <p>{{ theNews.detail }}</p>
+      {% endfor %}
+    </ul>
 </body>
 </html>

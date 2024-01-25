@@ -1,7 +1,9 @@
-from django.shortcuts import render
 from django.http import HttpResponse
+from django.shortcuts import render
+from .models import News
 
 # Create your views here.
 
 def homePage(request):
-    return render(request, "homePage.html")
+    news = News.objects.all().values()
+    return render(request, "homePage.html", context={"news": news})

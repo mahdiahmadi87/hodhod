@@ -29,20 +29,24 @@ def crawler():
 
         soup = BeautifulSoup(requests.get(entry.link).content, "html.parser")
 
-        p = soup.find("p", class_="lead p-2 text-justify radius").text
-        abstract = p.strip()
+        try:
+            p = soup.find("p", class_="lead p-2 text-justify radius").text
+            abstract = p.strip()
 
-        tags = soup.findAll("a", class_="ml-2 mb-2 radius")
-        tags = list(map(lambda x: x.text.strip(), tags))
-        tags = "|".join(tags)
+            tags = soup.findAll("a", class_="ml-2 mb-2 radius")
+            tags = list(map(lambda x: x.text.strip(), tags))
+            tags = "|".join(tags)
+        except:
+            print("Err")
+            continue
 
-        cursor.execute(f"INSERT INTO FarsNews VALUES ('{id}', '{entry.title}', '{abstract}', '{tags}', '{entry.link}', '{pub}')")
+        cursor.execute(f"INSERT INTO FarsNews VALUES ('{id}', '{entry.title}', '{abstract}', '{tags}', '',  '{entry.link}', '{pub}')")
+        conn.commit() 
         print("Added")
         
 
     print("commited")
 
-    conn.commit() 
   
     conn.close()
 
@@ -55,5 +59,6 @@ crawler()
 title TEXT NOT NULL,
 abstract TEXT NOT NULL,
 tags TEXT NOT NULL,
+topics TEXT NOT NULL,
 link TEXT NOT NULL,
 published TEXT NOT NULL);"""

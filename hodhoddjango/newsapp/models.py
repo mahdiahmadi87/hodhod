@@ -15,8 +15,14 @@ class Topic(models.Model):
     def __str__(self):
         return self.title
 
+class NewsAgency(models.Model):
+    title = models.CharField(max_length=300)
+
+    def __str__(self):
+        return self.title
 
 class News(models.Model):
+    newsAgency = models.OneToOneField(NewsAgency, on_delete=models.CASCADE)
     id = models.CharField(max_length=15, primary_key=True)
     title = models.CharField(max_length=500)
     abstract = models.TextField(null=True)

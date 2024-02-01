@@ -22,7 +22,7 @@ class NewsAgency(models.Model):
         return self.title
 
 class News(models.Model):
-    newsAgency = models.OneToOneField(NewsAgency, on_delete=models.CASCADE)
+    newsAgency = models.ForeignKey(NewsAgency, on_delete=models.CASCADE)
     id = models.CharField(max_length=15, primary_key=True)
     title = models.CharField(max_length=500)
     abstract = models.TextField(null=True)

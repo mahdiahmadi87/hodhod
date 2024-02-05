@@ -6,6 +6,9 @@
       <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
       <link rel="stylesheet" href="{% static 'css/owl.theme.default.css' %}">
       <link rel="stylesheet" href="{% static 'base.css' %}">
+      <title>{% block title %}{% endblock %}</title>
+      {% block header %}
+      {% endblock %}
    </head>
    <body>
       <div class="top-bar">
@@ -61,22 +64,16 @@
             </div>
          </div>
       </div>
-      <div class="single_post">
-         <div class="container-fluid">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
-               <div class="post_content text-center">
-                  <span>برگه خالی</span>
-               </div>
-            </div>
-         </div>
-      </div>
+
+         {% block content %}
+         {% endblock %}
+
       <div class="clear-fix"></div>
       <div class="footer">
          <div class="container-fluid">
             <div class="col-md-5">
                <div class="footer-box">
-                  <span class="title">مجله seo90</span>
+                  <span class="title">مجله هد هد</span>
                   <p>متن ساختگی با تولید سادگی نامفهوم تولید سادگی از صنعت متن ساختگی با تولید سادگی نامفهوم تولید
                      سادگی از صنعت متن ساختگی با تولید سادگی نامفهوم تولید سادگی از صنعت متن ساختگی با تولید سادگی از
                      صنعت متن ساختگی با تولید سادگی نامفهوم تولید سادگی از صنعت متن ساختگی با تولید سادگی نامفهوم
@@ -115,7 +112,7 @@
                   <span class="title">تماس با ما</span>
                   <p><i class="fa fa-phone"></i> 09394183046</p>
                   <p><i class="fa fa-envelope-o"></i> mahdi.ahmadi.1387@gmail.com</p>
-                  <p><i class="fa fa-map-marker"></i> تبریز </p>
+                  <p><i class="fa fa-map-marker"></i> تهران،‌ ‍اتوبان شهید همّت، بلوار سردار جنگل، خیابان شهید مخبری، انتهای خیابان شهید افخمی، خیابان فرزانه، علامه حلی ۵ </p>
                </div>
             </div>
             <div class="clear-fix"></div>

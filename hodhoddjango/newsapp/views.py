@@ -8,7 +8,8 @@ import sqlite3
 def homePage(request):
     fromDbToDjango("FarsNews")
     news = News.objects.all().values()
-    return render(request, "homePage.html", context={"news": news})
+    # return render(request, "homePage.html", context={"news": news})
+    return render(request, "base.html", context={"news": news})
 
 
 def fromDbToDjango(newsAgency):

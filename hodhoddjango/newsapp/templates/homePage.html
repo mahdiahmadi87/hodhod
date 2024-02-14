@@ -12,24 +12,24 @@
      {% for thenews in news %}
       <div class="col-md-3">
           <div class="post-box">
-            <a href="#">
+            <a href="{{thenews.id}}">
                 <figure>
                   <img src="img/290667058azer news.jpg" alt="">
                   <figcaption class="meta-fig">
-                      <span><i class="fa fa-clock-o"></i> 99/3/20</span>&nbsp;
+                      <span><i class="fa fa-clock-o"></i> {{thenews.published}}</span>&nbsp;
                       <span><i class="fa fa-comment-o"></i> 12</span>
                   </figcaption>
                   <figcaption class="view">
-                      <span>بخش ویژه</span>
-                      <span>انجمن</span>
-                      <span>اتاق خبر</span>
+                     {% for tag in thenews.tags %}
+                      <span>{{tag}}</span>
+                     {% endfor %}
                   </figcaption>
                 </figure>
                 <div class="text-p">
                   <h5>{{thenews.title}}</h5>
                   <p>{{thenews.abstract}}</p>
                   <div class="text-rigt">
-            <a href="#">ادامه ...</a></div>
+            </div>
             </div>
             </a>
           </div>

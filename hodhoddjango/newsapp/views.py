@@ -1,13 +1,34 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from .models import News, Tag, Topic, NewsAgency
+import jdatetime
 import sqlite3
+import time
 
 # Create your views here.
-
-def homePage(request):
+"""{'newsAgency_id': 1, 
+'id': '14021111000264', 
+'title': 'تولید الکترودهای یکبار مصرف برای دستگاه مانیتور قلب توسط محققان دانش\u200cبنیان', 
+'abstract': 'متخصصان یک شرکت دانش\u200cبنیان با تولید الکترود یکبار مصرف ویژه دستگاه\u200cهای الکتروکاردیوگرافی و تجاری\u200cسازی آن، گام مهمی در تامین نیاز حوزه سلامت و تسهیل فرآیند درمان بیماران قلبی برداشتند.', 
+'link': 'https://farsnews.ir/news/14021111000264/%D8%AA%D9%88%D9%84%DB%8C%D8%AF-%D8%A7%D9%84%DA%A9%D8%AA%D8%B1%D9%88%D8%AF%D9%87%D8%A7%DB%8C-%DB%8C%DA%A9%D8%A8%D8%A7%D8%B1-%D9%85%D8%B5%D8%B1%D9%81-%D8%A8%D8%B1%D8%A7%DB%8C-%D8%AF%D8%B3%D8%AA%DA%AF%D8%A7%D9%87-%D9%85%D8%A7%D9%86%DB%8C%D8%AA%D9%88%D8%B1-%D9%82%D9%84%D8%A8-%D8%AA%D9%88%D8%B3%D8%B7-%D9%85%D8%AD%D9%82%D9%82%D8%A7%D9%86', 
+'published': '1706701356.0'}
+"""
+def news(request):
     fromDbToDjango("FarsNews")
-    news = News.objects.all().values()
+    oldnews = News.objects.all()
+    news = []
+    for thenews in oldnews:
+        n = {}
+        n["id"] = thenews.id
+        n["title"] = thenews.title
+        n["abstract"] = thenews.abstract[:150] + "..."
+        date = time.localtime(int(thenews.published[:-2]))
+        date = jdatetime.date.fromgregorian(year=date.tm_year,month=date.tm_mon,day=date.tm_mday)
+        n["published"] = f"{date.year}/{date.month}/{date.day}"
+        news.append(n)
+        tags = thenews.tags.all().values()
+        tags = list(map(lambda x: x['title'], tags))
+        n["tags"] = tags
     return render(request, "homePage.html", context={"news": news})
 
 
@@ -20,6 +41,9 @@ def fromDbToDjango(newsAgency):
 
     for row in cursor:
         news = News(id=row[0], title=row[1], abstract=row[2], link=row[5], published=row[6], newsAgency=newsAgency)
+        old = News.objects.all()
+        if news in old:
+            continue
         news.save()
         tags = row[3].split("|")
         oldtags = Tag.objects.all()

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}news{% endblock %}
+{% block title %}اخبار{% endblock %}
 
 {% block content %}
 <div class="latest-posts">
@@ -12,7 +12,7 @@
      {% for thenews in news %}
       <div class="col-md-3">
           <div class="post-box">
-            <a href="{{thenews.id}}">
+            <a href="/news/{{thenews.id}}">
                 <figure>
                   <img src="img/290667058azer news.jpg" alt="">
                   <figcaption class="meta-fig">

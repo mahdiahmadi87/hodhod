@@ -20,5 +20,6 @@ from . import views
 
 urlpatterns = [
     path("news/", views.news, name="news"),
-    path("", views.index, name="index")
+    path("", views.index, name="index"),
+    path("news/<slug>", views.thenews,  name="thenews")
 ]

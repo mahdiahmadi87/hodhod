@@ -23,6 +23,11 @@ def index(request):
         news.append(n)
     return render(request, "index.html", context={"news": news})
 
+def select(request):
+    topics = Tag.objects.all().values()
+    return render(request, "select.html", context={"topics": topics})
+
+
 def thenews(request, slug):
     thenews = News.objects.get(id=slug)
     n = {}

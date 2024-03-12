@@ -13,17 +13,16 @@
         <div class="blog-title-span">
             <span class="title">اخبار و مقالات</span>
         </div>
-        <form action="/action_page.php" id="checkboxs">
+        <form action="" id="checkboxs" method="get">
             <div class="row">
-
-            <div id="checkboxes">
-                {% for topic in topics %}
-                    <div class="col-md-2 text-center">
-                            <input type="checkbox" name="topic" value="{{topic.id}}" id="{{topic.id}}"/>
-                            <label class="whatever" for="{{topic.id}}">{{topic.title}}</label>
-                    </div>
-                {% endfor %}
-            </div>
+                <div id="checkboxes">
+                    {% for topic in topics %}
+                        <div class="col-md-2 text-center">
+                                <input type="checkbox" name="topic" value="{{topic.id}}" id="{{topic.id}}"/>
+                                <label class="whatever" for="{{topic.id}}">{{topic.title}}</label>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
             <div class="row text-center">
                 <input type="submit" value="ثبت" style="padding: 10px; border-radius: 100%; width: 100px;">

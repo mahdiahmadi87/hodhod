@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from .models import News, Tag, Topic, NewsAgency
 import jdatetime
@@ -24,7 +24,17 @@ def index(request):
     return render(request, "index.html", context={"news": news})
 
 def select(request):
-    topics = Tag.objects.all().values()
+    topics = Tag.objects.all()
+    if request.GET:
+        data = dict(request.GET)["topic"]
+        l = []
+        for d in data:
+            d = int(d)
+            topics = list(topics)
+            d = list(filter(lambda x: x.id == d, topics))
+            l.append(d)
+        print(l)
+        # return HttpResponseRedirect("/")
     return render(request, "select.html", context={"topics": topics})
 
 

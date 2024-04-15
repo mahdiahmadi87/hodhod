@@ -11,6 +11,7 @@
                 <p>آیا مطمئن هستید که میخواهید خارج شوید؟   </p>
                 {% url 'account_logout' as action_url %}
                 {% element form method="post" action=action_url no_visible_fields=True %}
+                {% csrf_token %}
                     {% slot body %}
                         {% csrf_token %}
                         {% if redirect_field_value %}

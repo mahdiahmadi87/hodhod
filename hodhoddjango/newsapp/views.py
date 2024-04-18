@@ -53,7 +53,8 @@ def thenews(request, slug):
     return render(request, "thenews.html", context={"news": n})
 
 def news(request):
-    fromDbToDjango("FarsNews")
+    # fromDbToDjango("FarsNews")
+    fromDbToDjango("TasnimNews")
     oldnews = News.objects.all()
     news = []
     for thenews in oldnews:
@@ -65,21 +66,21 @@ def news(request):
         date = jdatetime.date.fromgregorian(year=date.tm_year,month=date.tm_mon,day=date.tm_mday)
         n["published"] = f"{date.year}/{date.month}/{date.day}"
         news.append(n)
-        tags = thenews.tags.all().values()
-        tags = list(map(lambda x: x['title'], tags))
-        n["tags"] = tags
+        # tags = thenews.tags.all().values()
+        # tags = list(map(lambda x: x['title'], tags))
+        # n["tags"] = tags
     return render(request, "news.html", context={"news": news})
 
 
 def fromDbToDjango(newsAgency):
-    newsAgency = NewsAgency.objects.filter(title="FarsNews")[0]
+    newsAgency = NewsAgency.objects.filter(title=newsAgency)[0]
 
     conn = sqlite3.connect('./../news.db')
 
-    cursor = list(conn.execute(f"SELECT id, title, abstract, tags, topics, link, published from {newsAgency.title}"))
+    cursor = list(conn.execute(f"SELECT id, title, abstract, topics, link, published from {newsAgency.title}"))
 
     for row in cursor:
-        news = News(id=row[0], title=row[1], abstract=row[2], link=row[5], published=row[6], newsAgency=newsAgency)
+        news = News(id=row[0], title=row[1], abstract=row[2], link=row[4], published=row[5], newsAgency=newsAgency)
         old = News.objects.all()
         if news in old:
             continue

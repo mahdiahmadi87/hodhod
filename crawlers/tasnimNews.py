@@ -47,11 +47,11 @@ def crawler():
         pub = time.mktime(pub)
 
         abstract = entry.summary
-            # continue
         
         cursor.execute(f"INSERT INTO TasnimNews VALUES ('{id}', '{entry.title}', '{abstract}', '',  '{entry.summary_detail.base}', '{pub}')")
         conn.commit() 
         print("Added")
+        break
         
 
     print("commited")

@@ -73,6 +73,19 @@ def news(request):
     fromDbToDjango("TasnimNews")
     oldnews = News.objects.all()
     news = []
+    suggested = []
+
+    if request.user.is_authenticated:
+        username = request.user.username
+    else:
+        return redirect("/accounts/google/login/")
+
+    conn = sqlite3.connect('./../userNews.db')
+    interests = list(conn.execute(f"SELECT interest from Interests where username = '{username}'"))
+    interests = list(map(lambda x: x[0], interests))
+    interests = list(set(interests))
+    conn.close()
+    
     for thenews in oldnews:
         n = {}
         n["id"] = thenews.id
@@ -85,8 +98,17 @@ def news(request):
         topics = thenews.tags.all().values()
         topics = list(map(lambda x: x['title'], topics))
         n["topics"] = topics
-        news.append(n)
-    return render(request, "news.html", context={"news": news})
+        flag = False
+        for topic in topics:
+            if topic in interests:
+                flag = True
+                break
+        if flag == True:
+            suggested.append(n)
+        else:
+            news.append(n)
+
+    return render(request, "news.html", context={"news": news, "suggested": suggested})
 
 
 def fromDbToDjango(newsAgency):

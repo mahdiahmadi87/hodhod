@@ -6,6 +6,7 @@ def record(username, news_id):
     cursor.execute(f"INSERT INTO Viewed VALUES ('{username}', '{news_id}')")
     conn.commit()   
     conn.close()
+    selection(username)
 
 def selection(username):
     conn = sqlite3.connect('./../userNews.db')

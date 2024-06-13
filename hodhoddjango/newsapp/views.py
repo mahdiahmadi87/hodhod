@@ -1,9 +1,11 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import News, Tag, Topic, NewsAgency
 import jdatetime
 import sqlite3
 import time
+import os
+import sys
 
 # Create your views here.
 def index(request):
@@ -40,6 +42,20 @@ def select(request):
 
 def thenews(request, slug):
     thenews = News.objects.get(id=slug)
+
+    if request.user.is_authenticated:
+        username = request.user.username
+    else:
+        return redirect("/accounts/google/login/")
+
+
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))[:-8] + "newsSelection"
+    sys.path.append(os.path.dirname(SCRIPT_DIR))
+
+    from newsSelection.main import record
+
+    record(username, thenews.id)
+
     n = {}
     n["id"] = thenews.id
     n["title"] = thenews.title
@@ -70,7 +86,6 @@ def news(request):
         topics = list(map(lambda x: x['title'], topics))
         n["topics"] = topics
         news.append(n)
-        print(news)
     return render(request, "news.html", context={"news": news})
 
 

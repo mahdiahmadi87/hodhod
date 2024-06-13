@@ -38,7 +38,7 @@ def tokenize(text):
     ]
 
 
-def posTagger(text, pos_model_path="pos_tagger.model", posTaggerModel=None):
+def posTagger(text, pos_model_path="../hazmKeyword/pos_tagger.model", posTaggerModel=None):
     tokens = tokenize(text)
     tagger = POSTagger(pos_model_path) if posTaggerModel is None else posTaggerModel
     return tagger.tag_sents(tokens)
@@ -65,7 +65,7 @@ def extractCandidates(tagged_text, grammers=grammers):
     return np.array(list(all_candidates))
 
 
-def text2vec(candidates, sent2vec_model_path="sent2vec-naab.model", sent2vecModel=None):
+def text2vec(candidates, sent2vec_model_path="../hazmKeyword/sent2vec-naab.model", sent2vecModel=None):
     sent2vec_model = (
         SentEmbedding(sent2vec_model_path) if sent2vecModel is None else sent2vecModel
     )
@@ -162,18 +162,14 @@ def embedRank(text, keyword_num, sent2vecModel=None, posTaggerModel=None):
     return extractKeyword(candidates, keyword_num, sent2vecModel=sent2vecModel)
 
 
-if __name__ == "__main__":
-    persikaReader = PersicaReader("persica.csv")
-    text = next(persikaReader.texts())
-    keyword_num = 10
-    keywords = embedRank(text, keyword_num)
+# if __name__ == "__main__":
+#     persikaReader = PersicaReader("persica.csv")
+#     text = next(persikaReader.texts())
+#     keyword_num = 10
+#     keywords = embedRank(text, keyword_num)
 
 # keyword_num = 3
 # keywords = embedRank("اخراج کارمندان معترض به همکاری با رژیم صهیونیستی توسط گوگلگوگل اعلام کرد: ۲۸ کارمندش را پس از شرکت در اعتراضات علیه قرارداد ابر رایانشی شرکت با رژیم صهیونیستی اخراج کرد.به گزارش خبرگزاری تسنیم، به نقل از رویترز، گوگل در بیانیه‌ای اعلام کرد تعدادی از کارمندان معترض وارد برخی دفاتر این شرکت شدند و کار را مختل کردند. در متن بیانیه آمده است: این افراد به طور فیزیکی فعالیت کارمندان دیگر را مختل کردند و اجازه ندادند آنها به واحدهای ما دسترسی یابند. این امر نقض واضح سیاست‌های ما و رفتاری کاملاً غیرقابل قبول است.این شرکت آمریکایی در آخر اشاره کرده بود تحقیقات جداگانه به اخراج 28 کارمند منجر شد. گوگل اعلام کرد همچنان به تحقیق ادامه می‌دهد و اقدامات مورد نیاز را انجام خواهد داد.کارمندان گوگل که عضو کمپین «نه به فناوری برای آپارتاید» هستند، در بیانیه‌ای که در پلتفرم مدیوم منتشر شده، اعلام کردند چنین اقدامی انتقام جویانه است و برخی کارمندان که به طور مستقیم در اعتراضات روز سه شنبه در دفاتر گوگل شرکت نکرده بودند، جزو کارمندان اخراجی هستند. در بخشی از بیانیه آنها آمده است: کارمندان گوگل حق اعتراض مسالمت آمیز درباره شرایط و وضعیت کار را دارند.معترضان اعلام کرده‌اند پروژه Nimbus از توسعه ابزارهای نظامی توسط رژیم صهیونیستی پشتیبانی می‌کند.طبق این قرارداد 1.2 میلیارد دلاری که در 2021 میلادی بسته شده، گوگل و آمازون سرویس‌های ابر رایانشی را برای رژیم صهیونیستی فراهم می‌کنند.اعتراضات کارمندان گوگل پدیده‌ای جدید نیست. در سال 2018 میلادی کارمندان این شرکت موفق شدند گوگل را وادار کنند قراردادی با ارتش آمریکا به نام پروژه میون لغو کند.", keyword_num)
 
-print(keywords)
+# print(keywords)
 
-# hazm:
-['گوگل', 'همکاری', 'اخراج'] # with title
-["رژیم", "قرارداد ابر", "گوگل"] # with abstract
-['فعالیت کارمندان', 'اعتراضات کارمندان', 'سرویس‌های ابر'] # with text

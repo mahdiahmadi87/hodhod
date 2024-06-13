@@ -1,33 +1,19 @@
-from bs4 import BeautifulSoup
 import feedparser
-import requests
 import sqlite3
 import time
 
+import sys
+import os
 
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))[:-8] + "hazmKeyword"
+sys.path.append(os.path.dirname(SCRIPT_DIR))
 
-# def crawler():
-#     feed = feedparser.parse("https://www.tasnimnews.com/fa/rss/feed/0/8/0/%D8%A2%D8%AE%D8%B1%DB%8C%D9%86-%D8%AE%D8%A8%D8%B1%D9%87%D8%A7%DB%8C-%D8%B1%D9%88%D8%B2")
-#     # feed = feedparser.parse("./rss")
-
-#     news = []
-
-#     for entry in feed.entries:
-#         theNews = {}
-#         theNews['id'] = entry.id
-#         theNews['id'] = theNews['id'][-7:]
-#         theNews['title'] = entry.title
-#         theNews['link'] = entry.link
-#         news.append(theNews)
-
-#     return news
-
-
+from hazmKeyword.main import embedRank
 
 def crawler():
     feed = feedparser.parse("https://www.tasnimnews.com/fa/rss/feed/0/8/0/%D8%A2%D8%AE%D8%B1%DB%8C%D9%86-%D8%AE%D8%A8%D8%B1%D9%87%D8%A7%DB%8C-%D8%B1%D9%88%D8%B2")
     # feed = feedparser.parse("./rss")
-    
+    print(feed)
 
     conn = sqlite3.connect('./../news.db')
 
@@ -36,7 +22,7 @@ def crawler():
 
     cursor = conn.cursor() 
 
-    for entry in feed.entries:       
+    for entry in feed.entries:  
         id = entry.id
         id = id[-7:]
         if (id in ids):
@@ -47,18 +33,21 @@ def crawler():
         pub = time.mktime(pub)
 
         abstract = entry.summary
-        
-        cursor.execute(f"INSERT INTO TasnimNews VALUES ('{id}', '{entry.title}', '{abstract}', '',  '{entry.summary_detail.base}', '{pub}')")
+        print("\n" + abstract, ":")
+        topics = embedRank(abstract, 3)
+        topics = "|".join(topics)
+        print(topics)
+
+        cursor.execute(f"INSERT INTO TasnimNews VALUES ('{id}', '{entry.title}', '{abstract}', '{topics}',  '{entry.summary_detail.base}', '{pub}')")
         conn.commit() 
         print("Added")
-        break
+        
         
 
     print("commited")
 
   
     conn.close()
-
 
 crawler()
 

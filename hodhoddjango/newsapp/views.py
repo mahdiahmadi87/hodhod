@@ -61,14 +61,16 @@ def news(request):
         n = {}
         n["id"] = thenews.id
         n["title"] = thenews.title
-        n["abstract"] = thenews.abstract[:150] + "..."
+        # n["abstract"] = thenews.abstract[:150] + "..."
+        n["abstract"] = thenews.abstract
         date = time.localtime(int(thenews.published[:-2]))
         date = jdatetime.date.fromgregorian(year=date.tm_year,month=date.tm_mon,day=date.tm_mday)
         n["published"] = f"{date.year}/{date.month}/{date.day}"
+        topics = thenews.tags.all().values()
+        topics = list(map(lambda x: x['title'], topics))
+        n["topics"] = topics
         news.append(n)
-        # tags = thenews.tags.all().values()
-        # tags = list(map(lambda x: x['title'], tags))
-        # n["tags"] = tags
+        print(news)
     return render(request, "news.html", context={"news": news})
 
 

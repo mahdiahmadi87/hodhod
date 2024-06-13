@@ -1,5 +1,5 @@
-hazm/persica.csv
-hazm/pos_tagger.model
-hazm/sent2vec-naab.model
-hazm/sent2vec-naab.model.syn1neg.npy
-hazm/sent2vec-naab.model.wv.vectors.npy
+hazmKeyword/persica.csv
+hazmKeyword/pos_tagger.model
+hazmKeyword/sent2vec-naab.model
+hazmKeyword/sent2vec-naab.model.syn1neg.npy
+hazmKeyword/sent2vec-naab.model.wv.vectors.npy

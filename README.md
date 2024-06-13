@@ -10,7 +10,7 @@ downloan from github
 git clone https://github.com/mahdiahmadi87/hodhod.git
 ```
 
-Download these two and extract them in hazm/
+Download these two and extract them in hazmKeyword/
 
 [sent2vec model](https://mega.nz/file/WzR0QChY#J1nG-HGq0UJP69VMY8I1YGl_MfEAFCo5iizpjofA4OY)
 

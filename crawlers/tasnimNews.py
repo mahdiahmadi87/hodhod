@@ -5,10 +5,11 @@ import time
 import sys
 import os
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))[:-8] + "hazmKeyword"
-sys.path.append(os.path.dirname(SCRIPT_DIR))
 
-from hazmKeyword.main import embedRank
+module_path = os.path.abspath("../classification/")
+sys.path.append(module_path)
+
+from main import q
 
 def crawler():
     feed = feedparser.parse("https://www.tasnimnews.com/fa/rss/feed/0/8/0/%D8%A2%D8%AE%D8%B1%DB%8C%D9%86-%D8%AE%D8%A8%D8%B1%D9%87%D8%A7%DB%8C-%D8%B1%D9%88%D8%B2")
@@ -34,11 +35,10 @@ def crawler():
 
         abstract = entry.summary
         print("\n" + abstract, ":")
-        topics = embedRank(abstract, 3)
-        topics = "|".join(topics)
-        print(topics)
+        topic = classifier(abstract)
+        print(topic)
 
-        cursor.execute(f"INSERT INTO TasnimNews VALUES ('{id}', '{entry.title}', '{abstract}', '{topics}',  '{entry.summary_detail.base}', '{pub}')")
+        cursor.execute(f"INSERT INTO TasnimNews VALUES ('{id}', '{entry.title}', '{abstract}', '{topic}',  '{entry.summary_detail.base}', '{pub}')")
         conn.commit() 
         print("Added")
         

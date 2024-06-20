@@ -26,16 +26,29 @@ def index(request):
 
 def select(request):
     topics = Topic.objects.all()
+    if request.user.is_authenticated:
+        username = request.user.username
+    else:
+        return redirect("/accounts/google/login/")
     if request.GET:
         data = dict(request.GET)["topic"]
         l = []
         for d in data:
             d = int(d)
             topics = list(topics)
-            d = list(filter(lambda x: x.id == d, topics))
+            d = list(filter(lambda x: x.id == d, topics))[0]
             l.append(d)
+        l = list(map(lambda x: x.title, l))
         print(l)
-        # return HttpResponseRedirect("/")
+
+        module_path = os.path.abspath("../newsSelection/")
+        sys.path.append(module_path)
+
+        from main import selection
+
+        selection(username, l)
+        return redirect("/")
+
     return render(request, "select.html", context={"topics": topics})
 
 
@@ -46,14 +59,6 @@ def thenews(request, slug):
         username = request.user.username
     else:
         return redirect("/accounts/google/login/")
-
-
-    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))[:-8] + "newsSelection"
-    sys.path.append(os.path.dirname(SCRIPT_DIR))
-
-    from newsSelection.main import record
-
-    record(username, thenews.id)
 
     n = {}
     n["id"] = thenews.id

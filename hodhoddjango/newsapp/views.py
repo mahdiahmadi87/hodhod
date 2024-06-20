@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
-from .models import News, Tag, Topic, NewsAgency
+from .models import News, Topic, NewsAgency
 import jdatetime
 import sqlite3
 import time
@@ -19,14 +19,13 @@ def index(request):
         date = time.localtime(int(thenews.published[:-2]))
         date = jdatetime.date.fromgregorian(year=date.tm_year,month=date.tm_mon,day=date.tm_mday)
         n["published"] = f"{date.year}/{date.month}/{date.day}"
-        tags = thenews.tags.all().values()
-        tags = list(map(lambda x: x['title'], tags))
-        n["tags"] = tags
+        topic = thenews.topic
+        n["topic"] = topic
         news.append(n)
     return render(request, "index.html", context={"news": news})
 
 def select(request):
-    topics = Tag.objects.all()
+    topics = Topic.objects.all()
     if request.GET:
         data = dict(request.GET)["topic"]
         l = []
@@ -59,13 +58,12 @@ def thenews(request, slug):
     n = {}
     n["id"] = thenews.id
     n["title"] = thenews.title
-    n["abstract"] = thenews.abstract[:150] + "..."
+    n["abstract"] = thenews.abstract
     date = time.localtime(int(thenews.published[:-2]))
     date = jdatetime.date.fromgregorian(year=date.tm_year,month=date.tm_mon,day=date.tm_mday)
     n["published"] = f"{date.year}/{date.month}/{date.day}"
-    tags = thenews.tags.all().values()
-    tags = list(map(lambda x: x['title'], tags))
-    n["tags"] = tags 
+    topic = thenews.topic.title
+    n["topic"] = topic 
     return render(request, "thenews.html", context={"news": n})
 
 def news(request):
@@ -95,15 +93,9 @@ def news(request):
         date = time.localtime(int(thenews.published[:-2]))
         date = jdatetime.date.fromgregorian(year=date.tm_year,month=date.tm_mon,day=date.tm_mday)
         n["published"] = f"{date.year}/{date.month}/{date.day}"
-        topics = thenews.tags.all().values()
-        topics = list(map(lambda x: x['title'], topics))
-        n["topics"] = topics
-        flag = False
-        for topic in topics:
-            if topic in interests:
-                flag = True
-                break
-        if flag == True:
+        topic = thenews.topic.title
+        n["topic"] = topic
+        if topic in interests:
             suggested.append(n)
         else:
             news.append(n)
@@ -116,7 +108,7 @@ def fromDbToDjango(newsAgency):
 
     conn = sqlite3.connect('./../news.db')
 
-    cursor = list(conn.execute(f"SELECT id, title, abstract, topics, link, published from {newsAgency.title}"))
+    cursor = list(conn.execute(f"SELECT id, title, abstract, topic, link, published from {newsAgency.title}"))
 
     for row in cursor:
         news = News(id=row[0], title=row[1], abstract=row[2], link=row[4], published=row[5], newsAgency=newsAgency)
@@ -124,34 +116,19 @@ def fromDbToDjango(newsAgency):
         if news in old:
             continue
         news.save()
-        tags = row[3].split("|")
-        oldtags = Tag.objects.all()
-        newtags = []
-        for tag in tags:
-            exist = list(filter(lambda x: x.title == tag, oldtags))
-            if (len(exist) > 0):
-                exist = exist[0]
-                newtags.append(exist)
-            else:
-                tag = Tag(title=tag)
-                tag.save()
-                newtags.append(tag)
-        news.tags.set(newtags)
 
-        topics = row[4].split("|")
+        topic = row[3]
         oldtopics = Topic.objects.all()
         newtopics = []
-        if (topics == ['']):
-            topics = []
-        for topic in topics:
-            exist = list(filter(lambda x: x.title == topic, oldtopics))
-            if (len(exist) > 0):
-                exist = exist[0]
-                newtopics.append(exist)
-            else:
-                topic = Topic(title=topic)
-                topic.save()
-                newtopics.append(topic)
-        news.topics.set(newtopics)
+        exist = list(filter(lambda x: x.title == topic, oldtopics))
+        if (len(exist) > 0):
+            exist = exist[0]
+            newtopics = exist
+        else:
+            topic = Topic(title=topic)
+            topic.save()
+            newtopics = topic
+        print("**********", dir(news.topic))
+        news.topic = newtopics
 
         news.save()

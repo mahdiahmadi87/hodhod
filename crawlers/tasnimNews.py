@@ -56,6 +56,6 @@ crawler()
 (id TEXT PRIMARY KEY NOT NULL,
 title TEXT NOT NULL,
 abstract TEXT NOT NULL,
-topics TEXT NOT NULL,
+topic TEXT NOT NULL,
 link TEXT NOT NULL,
 published TEXT NOT NULL);"""

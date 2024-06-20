@@ -17,9 +17,9 @@ def selection(username):
     conn = sqlite3.connect('./../news.db')
     topics = []
     for newsId in viewed:
-        newsTopics = list(conn.execute(f"SELECT topics from TasnimNews where id = {newsId}"))[0][0]
-        newsTopics = newsTopics.split("|")
-        topics = topics + newsTopics
+        newsTopic = list(conn.execute(f"SELECT topic from TasnimNews where id = {newsId}"))[0][0]
+        newsTopic = newsTopic.split("|")
+        topics = topics + newsTopic
     conn.close()
 
     conn = sqlite3.connect('./../userNews.db')

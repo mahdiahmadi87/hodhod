@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from .models import News, Topic, NewsAgency
 import jdatetime
@@ -6,6 +6,11 @@ import sqlite3
 import time
 import os
 import sys
+
+module_path = os.path.abspath("../newsSelection/")
+sys.path.append(module_path)
+
+from main import selection, record
 
 # Create your views here.
 def index(request):
@@ -40,11 +45,6 @@ def select(request):
             l.append(d)
         l = list(map(lambda x: x.title, l))
         print(l)
-
-        module_path = os.path.abspath("../newsSelection/")
-        sys.path.append(module_path)
-
-        from main import selection
 
         selection(username, l)
         return redirect("/")
@@ -107,6 +107,14 @@ def news(request):
 
     return render(request, "news.html", context={"news": news, "suggested": suggested})
 
+
+def newsRating(request):
+    result = dict(request.GET)
+    n = int(result["result[n]"][0])
+    id = result["result[id]"][0]
+    username = request.user.username
+    record(username, id, n)
+    return JsonResponse({})
 
 def fromDbToDjango(newsAgency):
     newsAgency = NewsAgency.objects.filter(title=newsAgency)[0]

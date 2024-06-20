@@ -1,12 +1,11 @@
 import sqlite3
 
-def record(username, news_id):
+def record(username, news_id, n):
     conn = sqlite3.connect('./../userNews.db')
     cursor = conn.cursor() 
-    cursor.execute(f"INSERT INTO Viewed VALUES ('{username}', '{news_id}')")
+    cursor.execute(f"INSERT INTO Viewed VALUES ('{username}', '{news_id}', {n})")
     conn.commit()   
     conn.close()
-    selection(username)
 
 def selection(username, topics):
     conn = sqlite3.connect('./../userNews.db')
@@ -20,8 +19,8 @@ def selection(username, topics):
 
 """CREATE TABLE Viewed
 (username TEXT NOT NULL,
-newsId TEXT NOT NULL);"""
-
+newsId TEXT NOT NULL,
+star INTEGER NOT NULL);"""
 
 """CREATE TABLE Interests
 (username TEXT NOT NULL,

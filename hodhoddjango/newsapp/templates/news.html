@@ -17,31 +17,35 @@
      {% for thenews in suggested %}
       <div class="col-md-3">
           <div class="post-box">
-            <!-- <a href="/news/{{thenews.id}}"> -->
-                <figure>
-                  <img src="{% static 'img/DSCF4805.JPG' %}" alt="">
-                  <figcaption class="meta-fig">
-                      <span><i class="fa fa-clock-o"></i> {{thenews.published}}</span>&nbsp;
-                      <span><i class="fa fa-comment-o"></i> 12</span>
-                  </figcaption>
-                  <figcaption class="view">
-                      <span>{{thenews.topic}}</span>
-                  </figcaption>
-                </figure>
-                <div class="text-p">
-                  <h5>{{thenews.title}}</h5>
-                  <p>{{thenews.abstract}}</p>
-                  <div class="text-rigt">
-                    <div class="card">
-                      <span onclick="gfg(1, {{thenews.id}})" class="star{{thenews.id}}" style="font-size: 3vh;">★</span>
-                      <span onclick="gfg(2, {{thenews.id}})" class="star{{thenews.id}}" style="font-size: 3vh;">★</span>
-                      <span onclick="gfg(3, {{thenews.id}})" class="star{{thenews.id}}" style="font-size: 3vh;">★</span>
-                      <span onclick="gfg(4, {{thenews.id}})" class="star{{thenews.id}}" style="font-size: 3vh;">★</span>
-                      <span onclick="gfg(5, {{thenews.id}})" class="star{{thenews.id}}" style="font-size: 3vh;">★</span>
-                  </div>
-            </div>
-            </div>
-            <!-- </a> -->
+            <a href="/news/{{thenews.id}}">
+              <figure>
+                <img src="{% static 'img/DSCF4805.JPG' %}" alt="">
+                <figcaption class="meta-fig">
+                    <span><i class="fa fa-clock-o"></i> {{thenews.published}}</span>&nbsp;
+                    <span><i class="fa fa-comment-o"></i> 12</span>
+                </figcaption>
+                <figcaption class="view">
+                    <span>{{thenews.topic}}</span>
+                </figcaption>
+              </figure>
+            </a>
+            <a href="/news/{{thenews.id}}">
+              <div class="text-p">
+                <h5>{{thenews.title}}</h5>
+                <p>{{thenews.abstract}}</p>
+              <div class="text-rigt">
+                <div class="card">
+                  </a>
+                  <span onclick="gfg(1, {{thenews.id}})" class="star{{thenews.id}}" style="font-size: 3vh;">➊</span>
+                  <span onclick="gfg(2, {{thenews.id}})" class="star{{thenews.id}}" style="font-size: 3vh;">➋</span>
+                  <span onclick="gfg(3, {{thenews.id}})" class="star{{thenews.id}}" style="font-size: 3vh;">➌</span>
+                  <span onclick="gfg(4, {{thenews.id}})" class="star{{thenews.id}}" style="font-size: 3vh;">➍</span>
+                  <span onclick="gfg(5, {{thenews.id}})" class="star{{thenews.id}}" style="font-size: 3vh;">➎</span>
+                  <a href="/news/{{thenews.id}}">
+                </div>
+              </div>
+              </div>
+            </a>
           </div>
       </div>
       {% endfor %}

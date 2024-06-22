@@ -44,7 +44,6 @@ def select(request):
             d = list(filter(lambda x: x.id == d, topics))[0]
             l.append(d)
         l = list(map(lambda x: x.title, l))
-        print(l)
 
         selection(username, l)
         return redirect("/")
@@ -141,7 +140,6 @@ def fromDbToDjango(newsAgency):
             topic = Topic(title=topic)
             topic.save()
             newtopics = topic
-        print("**********", dir(news.topic))
         news.topic = newtopics
 
         news.save()

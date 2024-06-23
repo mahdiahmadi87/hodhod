@@ -72,7 +72,7 @@ def regression():
         with open(filename, 'wb') as f:
             pickle.dump(model, f)
 
-        filename = f"pickles/{username}_vectorizer.pkl"
+        filename = f"../pickles/{username}_vectorizer.pkl"
 
         with open(filename, 'wb') as f:
             pickle.dump(vectorizer, f)

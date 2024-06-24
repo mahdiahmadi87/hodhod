@@ -44,7 +44,7 @@ def regression():
             abstract = list(conn.execute(f"SELECT abstract from TasnimNews where id = '{id}'"))
             abstract = abstract[0][0]
             title = title[0][0]
-            text = title + ": " + abstract
+            text = abstract
             texts.append(text)
 
         # نرمالایز کردن متن‌ها با استفاده از hazm
@@ -67,7 +67,7 @@ def regression():
         mse = mean_squared_error(y_test, y_pred)
         print(f"{username} Mean Squared Error: {mse}")
 
-        filename = f"pickles/{username}_regressor.pkl"
+        filename = f"../pickles/{username}_regressor.pkl"
 
         with open(filename, 'wb') as f:
             pickle.dump(model, f)
@@ -76,7 +76,6 @@ def regression():
 
         with open(filename, 'wb') as f:
             pickle.dump(vectorizer, f)
-
 
 
         # with open(filename, 'rb') as f:

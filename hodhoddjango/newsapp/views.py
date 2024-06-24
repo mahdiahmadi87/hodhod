@@ -1,8 +1,12 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from .models import News, Topic, NewsAgency
+from hazm import Normalizer 
+import numpy as np
+import pandas as pd
 import jdatetime
 import sqlite3
+import pickle
 import time
 import os
 import sys
@@ -74,7 +78,6 @@ def news(request):
     # fromDbToDjango("FarsNews")
     fromDbToDjango("TasnimNews")
     oldnews = News.objects.all()
-    news = []
     suggested = []
 
     if request.user.is_authenticated:
@@ -101,10 +104,10 @@ def news(request):
         n["topic"] = topic
         if topic in interests:
             suggested.append(n)
-        else:
-            news.append(n)
+    
+    sorted_news = regressor(suggested, username)
 
-    return render(request, "news.html", context={"news": news, "suggested": suggested})
+    return render(request, "news.html", context={"suggested": sorted_news})
 
 
 def newsRating(request):
@@ -143,3 +146,34 @@ def fromDbToDjango(newsAgency):
         news.topic = newtopics
 
         news.save()
+
+def predict_star(text, model, vectorizer, normalizer):
+    text = str(text)
+    text_normalized = normalizer.normalize(text)
+    text_vectorized = vectorizer.transform([text_normalized])
+    predicted_star = model.predict(text_vectorized)
+    return predicted_star[0]
+
+def regressor(news, username):
+    filename = f"../pickles/{username}_regressor.pkl"
+    with open(filename, 'rb') as f:
+        model = pickle.load(f)
+    
+    filename = f"../pickles/{username}_vectorizer.pkl"
+    with open(filename, 'rb') as f:
+        vectorizer = pickle.load(f)
+
+    normalizer = Normalizer()
+
+
+    # پیش‌بینی خروجی برای هر دیکشنری و ذخیره آنها در یک DataFrame
+    results = pd.DataFrame(news)
+    results['stars'] = results['abstract'].apply(lambda x: predict_star(x, model, vectorizer, normalizer))
+
+
+    # مرتب‌سازی DataFrame بر اساس ستون score
+    sorted_results = results.sort_values(by='stars', ascending=False)
+
+    sorted_news = sorted_results.to_dict(orient='records')
+    return sorted_news
+

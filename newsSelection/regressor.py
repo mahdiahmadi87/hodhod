@@ -1,6 +1,5 @@
-import numpy as np
-from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor
 from sklearn.metrics import mean_squared_error
 from hazm import Normalizer
@@ -86,7 +85,6 @@ def regression():
         # new_text_vectorized = vectorizer.transform([new_text_normalized])
         # predicted_score = model.predict(new_text_vectorized)
         # print(f"Predicted Score: {predicted_score[0]}")
-
 
 if __name__ == "__main__":
     regression()

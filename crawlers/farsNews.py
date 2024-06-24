@@ -9,7 +9,6 @@ def crawler():
     feed = feedparser.parse("https://www.farsnews.ir/rss")
     # feed = feedparser.parse("./rss")
     
-
     conn = sqlite3.connect('./../news.db')
 
     cursor = list(conn.execute("SELECT id from FarsNews"))

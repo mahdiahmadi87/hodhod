@@ -1,10 +1,8 @@
 import feedparser
 import sqlite3
 import time
-
 import sys
 import os
-
 
 module_path = os.path.abspath("../classification/")
 sys.path.append(module_path)

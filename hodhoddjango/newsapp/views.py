@@ -2,21 +2,19 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from .models import News, Topic, NewsAgency
 from hazm import Normalizer 
-import numpy as np
 import pandas as pd
 import jdatetime
 import sqlite3
 import pickle
 import time
-import os
 import sys
+import os
 
 module_path = os.path.abspath("../newsSelection/")
 sys.path.append(module_path)
 
 from main import selection, record
 
-# Create your views here.
 def index(request):
     news = []
     oldnews = News.objects.all()[:8]
@@ -53,7 +51,6 @@ def select(request):
         return redirect("/")
 
     return render(request, "select.html", context={"topics": topics})
-
 
 def thenews(request, slug):
     thenews = News.objects.get(id=slug)
@@ -108,7 +105,6 @@ def news(request):
     sorted_news = regressor(suggested, username)
 
     return render(request, "news.html", context={"suggested": sorted_news})
-
 
 def newsRating(request):
     result = dict(request.GET)

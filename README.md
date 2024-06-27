@@ -1,4 +1,4 @@
-# HodHod، Solomon's news
+# HodKhan، Khabar Khan Solomon(Solomon's Newsreader)
 
 HodHod is a website for displaying news according to people's interests
 

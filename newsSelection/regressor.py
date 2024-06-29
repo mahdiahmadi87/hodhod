@@ -38,13 +38,20 @@ def regression():
                 scores.append(stars[i])
         texts = []
         conn = sqlite3.connect('./../news.db')
+        i = 0
         for id in textIds:
+            i += 1
             title = list(conn.execute(f"SELECT title from TasnimNews where id = '{id}'"))
             abstract = list(conn.execute(f"SELECT abstract from TasnimNews where id = '{id}'"))
-            abstract = abstract[0][0]
+            try:
+                abstract = abstract[0][0]
+            except:
+                scores.pop(i)
+                continue
             title = title[0][0]
             text = abstract
             texts.append(text)
+        
 
         # نرمالایز کردن متن‌ها با استفاده از hazm
         normalized_texts = [normalizer.normalize(text) for text in texts]

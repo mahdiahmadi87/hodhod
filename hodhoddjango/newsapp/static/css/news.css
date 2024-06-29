@@ -1,23 +1,5 @@
-.star {
-  font-size: 3vh;
-  cursor: pointer;}
- 
-.one {
-  color: rgb(255, 0, 0);
-}
- 
-.two {
-  color: rgb(255, 128, 0);
-}
- 
-.three {
-  color: rgb(255, 255, 0);
-}
- 
-.four {
-  color: rgb(128, 255, 0);
-}
- 
-.five {
-  color: rgb(0, 255, 0);
+input[type="range"] {
+  display: block;
+  width: 100%;
+  accent-color: red;
 }

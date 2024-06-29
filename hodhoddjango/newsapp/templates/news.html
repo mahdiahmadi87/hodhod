@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="{% static 'css/news.css' %}">
 {% endblock %}
  
+{% block bodyAt %} onpageshow="loadRange()"{% endblock %}
+
 {% block content %}
 <div class="latest-posts">
   <div class="container-fluid">
@@ -35,13 +37,8 @@
                 <p>{{thenews.abstract}}</p>
               <div class="text-rigt">
                 <div class="card">
-                  <p>star: {{thenews.stars}}</p>
                   </a>
-                  <span onclick="gfg(1, {{thenews.id}})" class="star{{thenews.id}}" style="font-size: 3vh;">➊</span>
-                  <span onclick="gfg(2, {{thenews.id}})" class="star{{thenews.id}}" style="font-size: 3vh;">➋</span>
-                  <span onclick="gfg(3, {{thenews.id}})" class="star{{thenews.id}}" style="font-size: 3vh;">➌</span>
-                  <span onclick="gfg(4, {{thenews.id}})" class="star{{thenews.id}}" style="font-size: 3vh;">➍</span>
-                  <span onclick="gfg(5, {{thenews.id}})" class="star{{thenews.id}}" style="font-size: 3vh;">➎</span>
+                  <input class="star" id="star{{thenews.id}}" type="range" min="0" max="5" value="{{thenews.stars}}" step="0.1" class="slider" oninput="changeColor(value, {{thenews.id}})" onchange="changeRange(value ,{{thenews.id}})" style="accent-color: red;">
                   <a href="/news/{{thenews.id}}">
                 </div>
               </div>
@@ -95,6 +92,17 @@
         </nav>
      </div> -->
     <script src="{% static 'js/news.js' %}"></script>
+    <script type="text/javascript">
+      function loadRange() {
+        let ids = "{% for thenews in suggested %}{{thenews.id}},{% endfor %}"
+        let stars = "{% for thenews in suggested %}{{thenews.stars}},{% endfor %}"
+        ids = ids.split(",")
+        stars = stars.split(",")
+        for(let i = 0; i < ids.length-1; i++)
+          changeColor(stars[i], ids[i])
+      }
+    </script>
+
   </div>
 </div>
 {% endblock %}

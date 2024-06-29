@@ -7,6 +7,7 @@ import jdatetime
 import sqlite3
 import pickle
 import time
+import json
 import sys
 import os
 
@@ -103,12 +104,12 @@ def news(request):
             suggested.append(n)
     
     sorted_news = regressor(suggested, username)
-
-    return render(request, "news.html", context={"suggested": sorted_news})
+    jsonNews = json.dumps(suggested)
+    return render(request, "news.html", context={"suggested": sorted_news, "jsoned": jsonNews})
 
 def newsRating(request):
     result = dict(request.GET)
-    n = int(result["result[n]"][0])
+    n = float(result["result[n]"][0])
     id = result["result[id]"][0]
     username = request.user.username
     record(username, id, n)

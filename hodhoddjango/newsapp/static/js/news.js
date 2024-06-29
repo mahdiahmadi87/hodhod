@@ -1,25 +1,7 @@
 // script.js
 
 
-// Funtion to update rating
-function gfg(n, id) {
-    let stars = document.getElementsByClassName(`star${id}`);
-	remove(id);
-	for (let i = 0; i < n; i++) {
-        switch (n) {
-            case 1:
-                cls = "one"; break;
-            case 2:
-                cls = "two"; break;
-            case 3:
-                cls = "three"; break;
-            case 4:
-                cls = "four"; break;
-            case 5:
-                cls = "five"; break;                         
-            }
-		stars[i].className = `star${id} ` + cls;
-	}
+function changeRange(n, id) {
     $.ajax({
         type: "GET",
         url: '/newsRating',
@@ -30,11 +12,17 @@ function gfg(n, id) {
     });
 }
 
-function remove(id) {
-	let i = 0;
-    let stars = document.getElementsByClassName(`star${id}`);
-	while (i < 5) {
-        stars[i].className = `star${id}`;
-		i++;
-	}
+function changeColor(n, id) {
+    let star = document.getElementById(`star${id}`);
+    let r ,g
+    if (n <= 2.5){
+        r = 255
+        g = n * 102
+    }
+    else {
+        g = 255
+        r = 5 - n 
+        r = r * 102
+    }
+    star.style.accentColor = `rgb(${r}, ${g}, 0)`
 }

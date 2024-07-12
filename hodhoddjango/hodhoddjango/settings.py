@@ -181,3 +181,5 @@ ACCOUNT_SIGNUP_FORM_CLASS = 'account.forms.SignupForm'
 ACCOUNT_USERNAME_MIN_LENGTH = 5
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_EMAIL_REQUIRED = False
+
+CSRF_TRUSTED_ORIGINS = ['https://hodkhan.ir', 'https://www.hodkhan.ir']

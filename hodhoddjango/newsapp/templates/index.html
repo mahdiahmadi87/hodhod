@@ -1,498 +1,151 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+{% load static %}
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>HodKhan</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Free HTML5 Template by FREEHTML5.CO" />
+	<meta name="keywords" content="free html5, free template, free bootstrap, html5, css3, mobile first, responsive" />
+	<meta name="author" content="FREEHTML5.CO" />
 
-{% block title %}هد هد{% endblock %}
 
-{% block content %}
-<div class="clear-fix"></div>
-<div class="container-fluid">
-   <div class="row">
-      <div class="col-md-3">
-         <div class="top-sidebar-r">
-            <span class="title">عکس</span>
-            <a href="#">
-               <div class="bx">
-                  <div class="col-md-6">
-                     <div class="img-box">
-                        <figure>
-                           <img src="img/696112501123546.jpg" alt="">
-                           <figcaption><span>1</span></figcaption>
-                        </figure>
-                     </div>
-                  </div>
-                  <div class="col-md-6">
-                     <div class="meta">
-                        <h5>
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-                        گرافیک است. چاپگرها و...</h6>
-                        <span><i class="fa fa-clock-o"></i> 99/3/20</span>
-                        <div class="text-left">
-                           <sub><i class="fa fa-comment"></i> 26</sub>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </a>
-            <a href="#">
-               <div class="bx">
-                  <div class="col-md-6">
-                     <div class="img-box">
-                        <figure>
-                           <img src="img/1733753707Capture.png" alt="">
-                           <figcaption><span>2</span></figcaption>
-                        </figure>
-                     </div>
-                  </div>
-                  <div class="col-md-6 ">
-                     <div class="meta">
-                        <h5>
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-                        گرافیک است. چاپگرها و... متن ارسال شده</h6>
-                        <span><i class="fa fa-clock-o"></i> 99/3/20</span>
-                        <div class="text-left">
-                           <sub><i class="fa fa-comment"></i> 26</sub>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </a>
-            <a href="#">
-               <div class="bx">
-                  <div class="col-md-6">
-                     <div class="img-box">
-                        <figure>
-                           <img src="img/290667058azer news.jpg" alt="">
-                           <figcaption><span>3</span></figcaption>
-                        </figure>
-                     </div>
-                  </div>
-                  <div class="col-md-6 ">
-                     <div class="meta">
-                        <h5>
-                        عنوان برایلورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده
-                        از طراحان گرافیک است. چاپگرها و... شده</h6>
-                        <span><i class="fa fa-clock-o"></i> 99/3/20</span>
-                        <div class="text-left">
-                           <sub><i class="fa fa-comment"></i> 26</sub>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </a>
-            <a href="#">
-               <div class="bx">
-                  <div class="col-md-6">
-                     <div class="img-box">
-                        <figure>
-                           <img src="img/parsitarh-1038x515.png" alt="">
-                           <figcaption><span>4</span></figcaption>
-                        </figure>
-                     </div>
-                  </div>
-                  <div class="col-md-6 ">
-                     <div class="meta">
-                        <h5>
-                        عنوان برای متن ارسال شده</h6>
-                        <span><i class="fa fa-clock-o"></i> 99/3/20</span>
-                        <div class="text-left">
-                           <sub><i class="fa fa-comment"></i> 246</sub>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </a>
-         </div>
-      </div>
-      <div class="col-md-6">
-         <div class="main-slider-box">
-            <div class="owl-carousel owl-theme main-slider">
-               <div class="item">
-                  <figure>
-                     <img src="img/unnamed.jpg" alt="">
-                     <figcaption class="gradient-fig"></figcaption>
-                     <figcaption class="desc-fig">
-                        <span><i class="fa fa-heart"></i> 56</span>
-                        <h3>عنوان خبری در اسلایدر</h3>
-                        <span><i class="fa fa-clock-o"></i> 10 ماه پیش</span>
-                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-                           گرافیک است. چاپگرها و...
-                        </p>
-                     </figcaption>
-                  </figure>
-               </div>
-               <div class="item">
-                  <figure>
-                     <img src="img/290667058azer news.jpg" alt="">
-                     <figcaption class="gradient-fig"></figcaption>
-                     <figcaption class="desc-fig">
-                        <span><i class="fa fa-heart"></i> 56</span>
-                        <h3>عنوان خبری در اسلایدر</h3>
-                        <span><i class="fa fa-clock-o"></i> 10 ماه پیش</span>
-                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-                           گرافیک است. چاپگرها و...
-                        </p>
-                     </figcaption>
-                  </figure>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="col-md-3">
-         <div class="top-sidebar-l">
-            <span class="title">یادداشت</span>
-            <a href="#">
-               <div class="bx">
-                  <div class="col-md-3 nopadding">
-                     <span><i class="fa fa-heart"></i> 56</span>
-                  </div>
-                  <div class="col-md-8 nopadding">
-                     <h3>رم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-                        گرافیک
-                        است. چاپگرها و متو
-                     </h3>
-                  </div>
-               </div>
-            </a>
-            <a href="#">
-               <div class="bx">
-                  <div class="col-md-3 nopadding">
-                     <span><i class="fa fa-heart"></i> 78</span>
-                  </div>
-                  <div class="col-md-8 nopadding">
-                     <h3>رم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-                        گرافیک
-                        است. چاپگرها و متو
-                     </h3>
-                  </div>
-               </div>
-            </a>
-            <a href="#">
-               <div class="bx">
-                  <div class="col-md-3 nopadding">
-                     <span><i class="fa fa-heart"></i> 321</span>
-                  </div>
-                  <div class="col-md-8 nopadding">
-                     <h3>رم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-                        گرافیک
-                        است. چاپگرها و متو
-                     </h3>
-                  </div>
-               </div>
-            </a>
-            <a href="#">
-               <div class="bx">
-                  <div class="col-md-3 nopadding">
-                     <span><i class="fa fa-heart"></i> 56</span>
-                  </div>
-                  <div class="col-md-8 nopadding">
-                     <h3>رم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-                        گرافیک
-                        است. چاپگرها و متو
-                     </h3>
-                  </div>
-               </div>
-            </a>
-            <a href="#">
-               <div class="bx">
-                  <div class="col-md-3 nopadding">
-                     <span><i class="fa fa-heart"></i> 56</span>
-                  </div>
-                  <div class="col-md-8 nopadding">
-                     <h3>رم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-                        گرافیک
-                        است. چاپگرها و متو
-                     </h3>
-                  </div>
-               </div>
-            </a>
-         </div>
-      </div>
-   </div>
-</div>
-<div class="clear-fix"></div>
-<div class="main-content">
-   <div class="container-fluid">
-      <div class="row">
-         <div class="col-md-3">
-            <div class="r-sidebar">
-               <div class="special-posts">
-                  <span class="title">گفتگو</span><br>
-                  <div class="special-box">
-                     <a href="#">
-                        <figure>
-                           <img src="img/1397022612335447514155694.jpg" alt="">
-                           <figcaption class="txt">
-                              <h4>عنوان مطلب ارسالی</h4>
-                              <span><i class="fa fa-calendar-o"></i> 99/3/20</span>
-                              <span><i class="fa fa-comment-o"></i> 98</span>
-                           </figcaption>
-                           <figcaption class="link"><i class="fa fa-external-link"></i></figcaption>
-                        </figure>
-                     </a>
-                  </div>
-                  <div class="special-box">
-                     <a href="#">
-                        <figure>
-                           <img src="img/unnamed.jpg" alt="">
-                           <figcaption class="txt">
-                              <h4>که لازم است و برای شرایط فعلی تکنولوژی مور</h4>
-                              <span><i class="fa fa-calendar-o"></i> 99/3/20</span>
-                              <span><i class="fa fa-comment-o"></i> 98</span>
-                           </figcaption>
-                           <figcaption class="link"><i class="fa fa-external-link"></i></figcaption>
-                        </figure>
-                     </a>
-                  </div>
-                  <div class="special-box">
-                     <a href="#">
-                        <figure>
-                           <img src="img/696112501123546.jpg" alt="">
-                           <figcaption class="txt">
-                              <h4>لازمه توجه به نشریات در اینترنت</h4>
-                              <span><i class="fa fa-calendar-o"></i> 99/3/20</span>
-                              <span><i class="fa fa-comment-o"></i> 98</span>
-                           </figcaption>
-                           <figcaption class="link"><i class="fa fa-external-link"></i></figcaption>
-                        </figure>
-                     </a>
-                  </div>
-                  <div class="special-box">
-                     <a href="#">
-                        <figure>
-                           <img src="img/parsitarh-1038x515.png" alt="">
-                           <figcaption class="txt">
-                              <h4>یک عنوان برای این بخش نظر بگیرید ، این عنوا اگر بسیار بلند هم باشد توسط
-                                 خود قالب بهینه خواهد شد
-                              </h4>
-                              <span><i class="fa fa-calendar-o"></i> 99/3/20</span>
-                              <span><i class="fa fa-comment-o"></i> 98</span>
-                           </figcaption>
-                           <figcaption class="link"><i class="fa fa-external-link"></i></figcaption>
-                        </figure>
-                     </a>
-                  </div>
-               </div>
-               <div class="ads-box">
-                  <span class="title">تبلیغات</span><br>
-                  <figure>
-                     <img src="img/unnamed.jpg" alt="">
-                  </figure>
-                  <figure>
-                     <img src="img/696112501123546.jpg" alt="">
-                  </figure>
-               </div>
-            </div>
-         </div>
-         <div class="col-md-6">
-            <div class="content-wrapper">
-               <div class="most-views">
-                  <span class="title">مطالب پربازدید</span>
-                  <div class="col-md-8">
-                     <div class="main-post">
-                        <a href="#">
-                           <figure>
-                              <img src="img/290667058azer news.jpg" alt="">
-                              <figcaption>
-                                 <span><i class="fa fa-folder-o"></i> خبر روز</span>
-                                 <h3>ایپسوم متن ساختگی با تولید سادگی نامفهوم تولید سادگی از صنعت</h3>
-                                 <span><i class="fa fa-comments-o"></i> 65</span>
-                              </figcaption>
-                           </figure>
-                           <div class="p-div">
-                              <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-                                 طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و
-                                 سطرآنچنان که
-                                 لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و...
-                              </p>
-                           </div>
-                     </div>
-                     </a>
-                  </div>
-                  <div class="col-md-4">
-                     <div class="oth-posts">
-                        <div class="r-box">
-                           <span class="cat-span">آموزشی</span>
-                           <span class="cat-span">#خبر</span>
-                           <a href="#">
-                              <h5>که لازم است و برای شرایط فعلی تکنولوژی مور</h5>
-                           </a>
-                           <span><i class="fa fa-clock-o"></i> 3 دی 98</span>
-                        </div>
-                        <div class="r-box">
-                           <span class="cat-span">آموزشی</span>
-                           <span class="cat-span">#خبر</span>
-                           <a href="#">
-                              <h5>که لازم است و برای شرایط فعلی تکنولوژی مور</h5>
-                           </a>
-                           <span><i class="fa fa-clock-o"></i> 3 دی 98</span>
-                        </div>
-                        <div class="r-box">
-                           <span class="cat-span">آموزشی</span>
-                           <span class="cat-span">#خبر</span>
-                           <a href="#">
-                              <h5>که لازم است و برای شرایط فعلی تکنولوژی مور</h5>
-                           </a>
-                           <span><i class="fa fa-clock-o"></i> 3 دی 98</span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="special-cat-box">
-                  <span class="title">فیلم و ویدئو</span>
-                  <div class="col-md-6">
-                     <div class="main-post">
-                        <a href="#">
-                           <figure>
-                              <img src="img/290667058azer news.jpg" alt="">
-                              <figcaption>
-                                 <span><i class="fa fa-folder-o"></i> خبر روز</span>
-                                 <h3>ایپسوم متن ساختگی با تولید سادگی نامفهوم تولید سادگی از صنعت</h3>
-                                 <span><i class="fa fa-comments-o"></i> 65</span>
-                              </figcaption>
-                           </figure>
-                        </a>
-                     </div>
-                     <div class="main-post">
-                        <a href="#">
-                           <figure>
-                              <img src="img/696112501123546.jpg" alt="">
-                              <figcaption>
-                                 <span><i class="fa fa-folder-o"></i> خبر روز</span>
-                                 <h3>ایپسوم متن ساختگی با تولید سادگی نامفهوم تولید سادگی از صنعت</h3>
-                                 <span><i class="fa fa-comments-o"></i> 65</span>
-                              </figcaption>
-                           </figure>
-                        </a>
-                     </div>
-                  </div>
-                  <div class="col-md-6">
-                     <div class="left-content">
-                        <div class="col-md-6">
-                           <a href="#">
-                              <div class="content">
-                                 <figure>
-                                    <img src="img/696112501123546.jpg" alt="">
-                                    <figcaption><i class="fa fa-external-link"></i></figcaption>
-                                 </figure>
-                                 <span>آموزشی</span>
-                                 <span>انجمن</span>
-                                 <h5> متن ساختگی با تولید سادگی نامفهوم تولید سادگی از صنعت</h5>
-                              </div>
-                           </a>
-                        </div>
-                        <div class="col-md-6">
-                           <a href="#">
-                              <div class="content">
-                                 <figure>
-                                    <img src="img/parsitarh-1038x515.png" alt="">
-                                    <figcaption><i class="fa fa-external-link"></i></figcaption>
-                                 </figure>
-                                 <span>آموزشی</span>
-                                 <h5> متن ساختگی با تولید سادگی نامفهوم تولید سادگی از صنعت</h5>
-                              </div>
-                           </a>
-                        </div>
-                        <div class="col-md-6">
-                           <a href="#">
-                              <div class="content">
-                                 <figure>
-                                    <img src="img/karkhaneh_iran_3.jpg" alt="">
-                                    <figcaption><i class="fa fa-external-link"></i></figcaption>
-                                 </figure>
-                                 <span>آموزشی</span>
-                                 <h5> متن ساختگی با تولید سادگی نامفهوم تولید سادگی از صنعت</h5>
-                              </div>
-                           </a>
-                        </div>
-                        <div class="col-md-6">
-                           <a href="#">
-                              <div class="content">
-                                 <figure>
-                                    <img src="img/1397022612335447514155694.jpg" alt="">
-                                    <figcaption><i class="fa fa-external-link"></i></figcaption>
-                                 </figure>
-                                 <span>آموزشی</span>
-                                 <h5> متن ساختگی با تولید سادگی نامفهوم تولید سادگی از صنعت</h5>
-                              </div>
-                           </a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="col-md-3">
-            <div class="l-sidebar">
-               <div class="cat-sidebar report">
-                  <span class="title">گزارش</span>
-                  <div class="text-left"><i class="fa fa-arrows-alt"></i></div>
-                  <ul>
-                     <li><a href="#">لورم ایپسو استفاده از طراحان</a></li>
-                     <li><a href="#">و سه درصد می طلبد تا با نرم افزارها ش</a></li>
-                     <li><a href="#"> فارسی ایجاد کرد. در ارائه راهکارها</a></li>
-                     <li><a href="#"> اصلی و جوابگوی مورد استفاده قرار گیرد.</a></li>
-                     <li><a href="#">متن ساختگی با تولید سادگی نامفهوم متن ساختگی با تولید سادگی نامفهوم
-                        استفاده استفاده</a>
-                     </li>
-                     <li><a href="#"> و سه درصد گذشته با نرم افزارها </a></li>
-                     <li><a href="#">لورم ایپسو استفاده از طراحان</a></li>
-                     <li><a href="#">و سه درصد می طلبد تا با نرم افزارها ش</a></li>
-                     <li><a href="#"> فارسی ایجاد کرد. در ارائه راهکارها</a></li>
-                  </ul>
-               </div>
-            </div>
-            <div class="l-sidebar">
-               <div class="cat-sidebar">
-                  <span class="title">دسته بندی مطالب</span>
-                  <div class="text-left"><i class="fa fa-folder-o"></i></div>
-                  <ul>
-                     <li><a href="#">موضوعی</a><span>32</span></li>
-                     <li><a href="#">اخبار</a><span>322</span></li>
-                     <li><a href="#">انجمن</a><span>2</span></li>
-                     <li><a href="#">اتاق خبر</a><span>32</span></li>
-                     <li><a href="#">دسته بندی نشده</a><span>52</span></li>
-                     <li><a href="#">تستی</a><span>89</span></li>
-                     <li><a href="#">خبر روز</a><span>30</span></li>
-                     <li><a href="#">انجمن</a><span>74</span></li>
-                     <li><a href="#">اتاق خبر</a><span>65</span></li>
-                     <li><a href="#">دسته بندی نشده</a><span>81</span></li>
-                     <li><a href="#">تستی</a><span>72</span></li>
-                  </ul>
-               </div>
-            </div>
-         </div>
-      </div>
-   </div>
-   <div class="clear-fix"></div>
-   <div class="latest-posts">
-      <div class="container-fluid">
-         <div class="blog-title-span">
-            <span class="title">آخرین مطالب</span>
-         </div>
-         {% for thenews in news %}
-            <div class="col-md-3">
-               <div class="post-box">
-                  <a href="/news/{{thenews.id}}">
-                     <figure>
-                        <img src="img/290667058azer news.jpg" alt="">
-                        <figcaption class="meta-fig">
-                           <span><i class="fa fa-clock-o"></i> {{thenews.published}}</span>&nbsp;
-                           <span><i class="fa fa-comment-o"></i> 12</span>
-                        </figcaption>
-                        <figcaption class="view">
-                           <span>{{thenews.topic}}</span>
-                        </figcaption>
-                     </figure>
-                     <div class="text-p">
-                        <h5>{{thenews.title}}</h5>
-                        <p>{{thenews.abstract}}</p>
-                        <div class="text-rigt">
-                  </div>
-                  </div>
-                  </a>
-               </div>
-            </div>
-         {% endfor %}
-      </div>
-   </div>
-</div>
-{% endblock %}
+  	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<link rel="shortcut icon" href="favicon.ico">
+	<!-- Google Fonts -->
+	<link href='http://fonts.googleapis.com/css?family=Playfair+Display:400,700,400italic|Roboto:400,300,700' rel='stylesheet' type='text/css'>
+	<!-- Animate -->
+	<link rel="stylesheet" href="{% static 'css/animate.css' %}">
+	<!-- Icomoon -->
+	<link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+	<!-- Modernizr JS -->
+	<script src="{% static 'js/modernizr-2.6.2.min.js' %}"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+
+	</head>
+	<body>
+	<div id="fh5co-offcanvas">
+		<a href="#" class="fh5co-close-offcanvas js-fh5co-close-offcanvas"><span><i class="icon-cross3"></i> <span>Close</span></span></a>
+		<div class="fh5co-bio">
+			<figure>
+				<img src="{% static 'images/person1.jpg' %}" alt="Free HTML5 Bootstrap Template" class="img-responsive">
+			</figure>
+			<h3 class="heading">درباره ما</h3>
+			<h2>تیم هدخوان</h2>
+			<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. </p>
+			<ul class="fh5co-social">
+				<li><a href="#"><i class="icon-twitter"></i></a></li>
+				<li><a href="#"><i class="icon-facebook"></i></a></li>
+				<li><a href="#"><i class="icon-instagram"></i></a></li>
+			</ul>
+		</div>
+
+		<div class="fh5co-menu">
+			<div class="fh5co-box">
+				<h3 class="heading">Categories</h3>
+				<ul>
+					<li><a href="#">اقتصادی</a></li>
+					<li><a href="#">سیاسی</a></li>
+					<li><a href="#">ورزشی</a></li>
+					<li><a href="#">اجتماعی</a></li>
+					<li><a href="#">بین الملل</a></li>
+					<li><a href="#">فرهنگی هنری</a></li>
+					<li><a href="#">رسانه ها</a></li>
+					<li><a href="#">استان ها</a></li>
+				</ul>
+			</div>
+			<div class="fh5co-box">
+				<h3 class="heading">Search</h3>
+				<form action="#">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Type a keyword">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- END #fh5co-offcanvas -->
+	<header id="fh5co-header">
+		
+		<div class="container-fluid">
+
+			<div class="row">
+				<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+				<ul class="fh5co-social">
+					<li><a href="#"><i class="icon-twitter"></i></a></li>
+					<li><a href="#"><i class="icon-facebook"></i></a></li>
+					<li><a href="#"><i class="icon-instagram"></i></a></li>
+				</ul>
+				<div class="col-lg-12 col-md-12 text-center">
+					<h1 id="fh5co-logo"><a href="index.html">HodKhan</a></h1>
+				</div>
+
+			</div>
+		
+		</div>
+
+	</header>
+	<!-- END #fh5co-header -->
+	<div class="container-fluid">
+		<div class="row fh5co-post-entry">
+			{% for thenews in suggested %}
+				<article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
+					<figure>
+						<a href="{{thenews.id}}"><img src="{% static 'images/DSCF4805.JPG' %}" alt="Image" class="img-responsive"></a>
+					</figure>
+					<span class="fh5co-meta"><a href="{{thenews.id}}">{{thenews.topic}}</a></span>
+					<h2 class="fh5co-article-title"><a href="{{thenews.id}}">{{thenews.title}}</a></h2>
+					<span class="fh5co-meta fh5co-date"> {{thenews.published}}</span>
+				</article>
+			{% endfor %}
+
+			{% comment %} <div class="clearfix visible-lg-block visible-md-block visible-sm-block visible-xs-block"></div> {% endcomment %}
+		
+			<div class="clearfix visible-xs-block"></div>
+		</div>
+	</div>
+
+	<footer id="fh5co-footer">
+		<p><small>&copy; 2016. Magazine Free HTML5. All Rights Reserverd. <br> Designed by <a href="http://freehtml5.co" target="_blank">FREEHTML5.co</a>  Demo Images: <a href="http://unsplash.com/" target="_blank">Unsplash</a></small></p>
+	</footer>
+
+
+	
+	<!-- jQuery -->
+	<script src="{% static 'js/jquery.min.js' %}"></script>
+	<!-- jQuery Easing -->
+	<script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+	<!-- Bootstrap -->
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<!-- Waypoints -->
+	<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+	<!-- Main JS -->
+	<script src="{% static 'js/main.js' %}"></script>
+
+	</body>
+</html>
+

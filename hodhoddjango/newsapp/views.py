@@ -105,7 +105,7 @@ def news(request):
     
     sorted_news = regressor(suggested, username)
     jsonNews = json.dumps(suggested)
-    return render(request, "news.html", context={"suggested": sorted_news, "jsoned": jsonNews})
+    return render(request, "index.html", context={"suggested": sorted_news, "jsoned": jsonNews})
 
 def newsRating(request):
     result = dict(request.GET)

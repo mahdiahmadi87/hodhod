@@ -1,151 +1,140 @@
 {% load socialaccount %} 
 {% load static %}
-<html>
-   <head>
-      <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-      <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
-      <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
-      <link rel="stylesheet" href="{% static 'css/owl.theme.default.css' %}">
-      <link rel="stylesheet" href="{% static 'css/base.css' %}">
-      <title>{% block title %}{% endblock %}</title>
-      {% block header %}
-      {% endblock %}
-   </head>
-   <body {% block bodyAt %}{% endblock %}>
-      <!-- <div class="top-bar">
-         <div class="container-fluid">
-            <div class="col-md-6">
-               <div class="search-btn">
-                  <span><i class="fa fa-search"></i></span>
-               </div>
-            </div>
-            <div class="col-md-6">
-               <div class="top-cat-box">
-                  <div class="col-md-12">
-                     <div class="menu">
-                        <ul>
-                           <li><a href="#">تماس با ما</a></li>
-                           <li><a href="#">درباره ما</a></li>
-                           <li><a href="#">مقالات</a></li>
-                        </ul>
-                     </div>
-                  </div>
-                  <div class="col-md-3">
-                     <div class="show-cat">
-                         <span>
-                             دسته ها
-                             <i class="fa fa-bars"></i>
-                         </span>
-                     </div>
-                     </div>
-               </div>
-            </div>
-         </div>
-      </div> -->
-      <div class="main-header">
-         <div class="container-fluid">
-            <div class="col-md-10">
-               <div class="main-menu">
-                  <ul>
-                     {% if user.is_authenticated %}
-                     <li>سلام {{user.username}}!</li>
-                     {% endif %}
-                     {% if user.is_staff %}
-                     <li><a href="/admin">admin</a></li>
-                     {% endif %}
-                     <li><a href="/">صفحه اصلی</a></li>
-                     <li><a href="/news">اتاق خبر</a></li>
-                     {% if user.is_authenticated %}
-                     <li><a href="/accounts/logout/">خروج</a></li>
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>{% block header %}{% endblock%}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="هدخوان، خبرخوان سلیمان" />
+	<meta name="keywords" content="hodhod, hodkhan, mahdi ahmadi, هدخوان, هدهد, مهدی احمدی, خبرخوان سلیمان" />
+	<meta name="author" content="مهدی احمدی" />
+
+
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<link rel="shortcut icon" href="{% static 'images/icon.png' %}">
+	<!-- Google Fonts -->
+	<link href='http://fonts.googleapis.com/css?family=Playfair+Display:400,700,400italic|Roboto:400,300,700' rel='stylesheet' type='text/css'>
+	<!-- Animate -->
+	<link rel="stylesheet" href="{% static 'css/animate.css' %}">
+	<!-- Icomoon -->
+	<link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+	<!-- Modernizr JS -->
+	<script src="{% static 'js/modernizr-2.6.2.min.js' %}"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+
+	</head>
+	<body>
+	<div id="fh5co-offcanvas">
+		<a href="#" class="fh5co-close-offcanvas js-fh5co-close-offcanvas"><span><i class="icon-cross3"></i> <span>Close</span></span></a>
+		<div class="fh5co-bio">
+			<figure>
+				<img src="{% static 'images/HodHod.jpg' %}" alt="HodHod Team" class="img-responsive">
+			</figure>
+			<h3 class="heading">درباره ما</h3>
+			<h2>تیم هدخوان</h2>
+			<p>تیم هدخوان اسماً یه نفره، ولی در اصل اگه کمک خیلیا نبود، این پروژه هم اینجا نبود<br>مرسی از کمک دوستان و آشنایان مخصوصا <a href="https://github.com/hctilg">ماهی</a> عزیز</p>
+			<ul class="fh5co-social">
+				<li><a href="https://t.me/HodKhan"><i class="icon-chat"></i></a></li>
+				<li><a href="https://github.com/mahdiahmadi87/hodhod"><i class="icon-github"></i></a></li>
+			</ul>
+		</div>
+
+		<div class="fh5co-menu">
+         <div class="fh5co-box">
+            <h3 class="heading">حساب کاربری</h3>
+				   <ul>
+                  {% if user.is_authenticated %}
+                     <li>سلام {{user.username}}</li>
+                  {% endif %}
+                  {% if user.is_staff %}
+                     <li><a href="/admin/">پنل ادمین</a></li>
+                  {% endif %}
+                  {% if user.is_authenticated %}
+                     <li><a href="/accounts/logout/">خروج از حساب کاربری</a></li>
                      {% else %}
-                     <li><a href="{% provider_login_url 'google' %}">ورود</a></li>
-                     {% endif %}
-                  </ul>
-               </div>
+                     <li><a href="/accounts/google/login/">ورود</a></li>
+                     <li><a href="/accounts/google/login/">ساخت حساب</a></li>
+                  {% endif %}
+               </ul>
             </div>
-            <div class="col-md-2">
-               <div class="social-box">
-                  <ul>
-                     <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                     <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                     <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                  </ul>
-               </div>
+            <div class="fh5co-box">
+               <h3 class="heading">Categories</h3>
+               <ul>
+                  <li><a href="#">اقتصادی</a></li>
+                  <li><a href="#">سیاسی</a></li>
+                  <li><a href="#">ورزشی</a></li>
+                  <li><a href="#">اجتماعی</a></li>
+                  <li><a href="#">بین الملل</a></li>
+                  <li><a href="#">فرهنگی هنری</a></li>
+                  <li><a href="#">رسانه ها</a></li>
+                  <li><a href="#">استان ها</a></li>
+               </ul>
             </div>
-         </div>
-      </div>
+		</div>
+	</div>
+	<!-- END #fh5co-offcanvas -->
+	<header id="fh5co-header">
+		
+		<div class="container-fluid">
 
+			<div class="row">
+				<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+				<ul class="fh5co-social">
+               <li><a href="https://t.me/HodKhan"><i class="icon-chat"></i></a></li>
+               <li><a href="https://github.com/mahdiahmadi87/hodhod"><i class="icon-github"></i></a></li>
+				</ul>
+				<div class="col-lg-12 col-md-12 text-center">
+					<h1 id="fh5co-logo"><a href="/">HodKhan</a></h1>
+				</div>
+
+			</div>
+		
+		</div>
+
+	</header>
+	<!-- END #fh5co-header -->
+	<div class="container-fluid">
+		<div class="row fh5co-post-entry">
          {% block content %}
-         {% endblock %}
 
-      <div class="clear-fix"></div>
-      <div class="footer">
-         <div class="container-fluid">
-            <div class="col-md-5">
-               <div class="footer-box">
-                  <span class="title">مجله هد هد</span>
-                  <p>متن ساختگی با تولید سادگی نامفهوم تولید سادگی از صنعت متن ساختگی با تولید سادگی نامفهوم تولید
-                     سادگی از صنعت متن ساختگی با تولید سادگی نامفهوم تولید سادگی از صنعت متن ساختگی با تولید سادگی از
-                     صنعت متن ساختگی با تولید سادگی نامفهوم تولید سادگی از صنعت متن ساختگی با تولید سادگی نامفهوم
-                     تولید سادگی از صنعت متن ساختگی بام تولید سادگی از صنعت متن ساختگی با تولید سادگی نامفهوم تولید
-                     سادگی از صنعت متن ساختگی با تولید سادگی نامفهوم تولید سادگی از صنعت متن سادگی نامفهوم تولید
-                     سادگی از صنعت
-                  </p>
-               </div>
-            </div>
-            <div class="col-md-2">
-               <div class="footer-box">
-                  <span class="title">دسترسی سریع</span>
-                  <ul>
-                     <li><a href="#">موضوعی</a></li>
-                     <li><a href="#">قوانین</a></li>
-                     <li><a href="#">نشریات</a></li>
-                     <li><a href="#">موضوعی</a></li>
-                     <li><a href="#">خبرنامه</a></li>
-                  </ul>
-               </div>
-            </div>
-            <div class="col-md-2">
-               <div class="footer-box">
-                  <span class="title">موضوعی</span>
-                  <ul>
-                     <li><a href="#">موضوعی</a></li>
-                     <li><a href="#">قوانین</a></li>
-                     <li><a href="#">نشریات</a></li>
-                     <li><a href="#">موضوعی</a></li>
-                     <li><a href="#">خبرنامه</a></li>
-                  </ul>
-               </div>
-            </div>
-            <div class="col-md-3">
-               <div class="footer-box contact-box">
-                  <span class="title">تماس با ما</span>
-                  <p><i class="fa fa-phone"></i> 09394183046</p>
-                  <p><i class="fa fa-envelope-o"></i> mahdi.ahmadi.1387@gmail.com</p>
-                  <p><i class="fa fa-map-marker"></i> تهران،‌ ‍اتوبان شهید همّت، بلوار سردار جنگل، خیابان شهید مخبری، انتهای خیابان شهید افخمی، خیابان فرزانه، علامه حلی ۵ </p>
-               </div>
-            </div>
-            <div class="clear-fix"></div>
-         </div>
-      </div>
-      <div class="end-wrapper">
-         <div class="container-fluid">
-            <div class="col-md-6">
-               <div class="copy-r">
-                  <p>&copy; تمامی حقوق متعلق به مهدی احمدی می باشد</p>
-               </div>
-            </div>
-            <div class="col-md-6">
-               <div class="creator text-left">
-                  <p>طراحی سایت ، مهدی احمدی</p>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="bg"></div>
-      <script src="{% static 'js/jquery.js' %}"></script>
-      <script src="{% static 'js/bootstrap.js' %}"></script>
-      <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-      <script src="{% static 'js/index.js' %}"></script>
-   </body>
+         {% endblock %}
+			{% comment %} <div class="clearfix visible-lg-block visible-md-block visible-sm-block visible-xs-block"></div> {% endcomment %}
+		
+			<div class="clearfix visible-xs-block"></div>
+		</div>
+	</div>
+
+	<footer id="fh5co-footer">
+		<p><small>&copy; 1403. تمامی حقوق برای هدخوان محفوظ است <br> ساخته شده توسط <a href="http://mahdi-ahmadi.ir" target="_blank">مهدی احمدی</a></small></p>
+	</footer>
+
+
+	
+	<!-- jQuery -->
+	<script src="{% static 'js/jquery.min.js' %}"></script>
+	<!-- jQuery Easing -->
+	<script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+	<!-- Bootstrap -->
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<!-- Waypoints -->
+	<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+	<!-- Main JS -->
+	<script src="{% static 'js/main.js' %}"></script>
+
+	</body>
 </html>
+

@@ -23,6 +23,13 @@ def regression():
         textIds, scores = [], []
         stars = list(conn.execute(f"SELECT star from Viewed where username = '{username}'"))
         newsIds = list(conn.execute(f"SELECT newsId from Viewed where username = '{username}'"))
+        isTrained = list(conn.execute(f"SELECT isTrained from Viewed where username = '{username}'"))
+        isTrained = list(filter(lambda x: x==0, isTrained))
+        if len(isTrained) == 0:
+            print(f"{username} doesn't need to be the trained again!")
+            continue
+        else:
+            conn.execute(f"UPDATE Viewed SET isTrained WHERE id = '{username}';")
         conn.close()
         stars = list(map(lambda x: x[0], stars))
         newsIds = list(map(lambda x: x[0], newsIds))

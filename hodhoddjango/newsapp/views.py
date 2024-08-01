@@ -1,4 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from sklearn.feature_extraction.text import TfidfVectorizer
 from django.shortcuts import render, redirect
 from .models import News, Topic, NewsAgency
 from hazm import Normalizer 
@@ -156,9 +157,8 @@ def regressor(news, username):
     with open(filename, 'rb') as f:
         model = pickle.load(f)
     
-    filename = f"../pickles/{username}_vectorizer.pkl"
-    with open(filename, 'rb') as f:
-        vectorizer = pickle.load(f)
+
+    vectorizer = TfidfVectorizer()
 
     normalizer = Normalizer()
 

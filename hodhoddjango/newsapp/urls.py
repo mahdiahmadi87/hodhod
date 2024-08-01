@@ -22,6 +22,6 @@ urlpatterns = [
     path("news/", views.news, name="news"),
     path("newsRating/", views.newsRating, name='newsRating'),
     path("select/", views.select, name="select"),
-    path("", views.index, name="index"),
+    path("", views.news, name="index"),
     path("news/<slug>", views.thenews,  name="thenews"),
 ]

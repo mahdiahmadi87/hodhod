@@ -1,5 +1,4 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from sklearn.feature_extraction.text import TfidfVectorizer
 from django.shortcuts import render, redirect
 from .models import News, Topic, NewsAgency
 from hazm import Normalizer 
@@ -16,6 +15,13 @@ module_path = os.path.abspath("../newsSelection/")
 sys.path.append(module_path)
 
 from main import selection, record
+
+class SimpleModel:
+    def __init__(self):
+        pass
+
+    def predict(self, input_text):
+        return 5
 
 def index(request):
     news = []
@@ -56,6 +62,7 @@ def select(request):
 
 def thenews(request, slug):
     thenews = News.objects.get(id=slug)
+
 
     if request.user.is_authenticated:
         username = request.user.username
@@ -153,12 +160,17 @@ def predict_star(text, model, vectorizer, normalizer):
     return predicted_star[0]
 
 def regressor(news, username):
-    filename = f"../pickles/{username}_regressor.pkl"
-    with open(filename, 'rb') as f:
-        model = pickle.load(f)
-    
+    try:
+        filename = f"../pickles/{username}_regressor.pkl"
+        with open(filename, 'rb') as f:
+            model = pickle.load(f)
+            
+        filename = f"../pickles/{username}_vectorizer.pkl"
+        with open(filename, 'rb') as f:
+            vectorizer = pickle.load(f)
+    except:
+        return news
 
-    vectorizer = TfidfVectorizer()
 
     normalizer = Normalizer()
 

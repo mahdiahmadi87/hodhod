@@ -23,6 +23,7 @@ class News(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, null=True)
     link = models.CharField(max_length=1000, null=True)
     published = models.CharField(max_length=20, null=True)
+    image = models.CharField(max_length=1000, null=True)
 
 
 

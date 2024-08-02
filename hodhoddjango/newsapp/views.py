@@ -115,6 +115,7 @@ def news(request):
         n["published"] = f"{date.year}/{date.month}/{date.day}"
         topic = thenews.topic.title
         n["topic"] = topic
+        n["image"] = thenews.image
         if topic in interests:
             suggested.append(n)
     
@@ -135,10 +136,10 @@ def fromDbToDjango(newsAgency):
 
     conn = sqlite3.connect('./../news.db')
 
-    cursor = list(conn.execute(f"SELECT id, title, abstract, topic, link, published from {newsAgency.title}"))
+    cursor = list(conn.execute(f"SELECT id, title, abstract, topic, link, published, image from {newsAgency.title}"))
 
     for row in cursor:
-        news = News(id=row[0], title=row[1], abstract=row[2], link=row[4], published=row[5], newsAgency=newsAgency)
+        news = News(id=row[0], title=row[1], abstract=row[2], link=row[4], published=row[5], image=row[6], newsAgency=newsAgency)
         old = News.objects.all()
         if news in old:
             continue

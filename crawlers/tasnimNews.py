@@ -35,7 +35,9 @@ def crawler():
         topic = classifier(abstract)
         print(topic)
 
-        cursor.execute(f"INSERT INTO TasnimNews VALUES ('{id}', '{entry.title}', '{abstract}', '{topic}',  '{entry.summary_detail.base}', '{pub}')")
+        image = entry.media_thumbnail[0]["url"]
+
+        cursor.execute(f"INSERT INTO TasnimNews VALUES ('{id}', '{entry.title}', '{abstract}', '{topic}',  '{entry.summary_detail.base}', '{pub}', '{image}')")
         conn.commit() 
         print("Added")
         
@@ -55,4 +57,5 @@ title TEXT NOT NULL,
 abstract TEXT NOT NULL,
 topic TEXT NOT NULL,
 link TEXT NOT NULL,
-published TEXT NOT NULL);"""
+published TEXT NOT NULL,
+image TEXT NOT NULL);"""

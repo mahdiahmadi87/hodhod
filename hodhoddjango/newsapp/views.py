@@ -21,7 +21,14 @@ class SimpleModel:
         pass
 
     def predict(self, input_text):
-        return 5
+        return [5]
+    
+class SimpleVectorizer:
+    def __init__(self):
+        pass
+
+    def transform(self, input):
+        return input
 
 def index(request):
     news = []
@@ -169,8 +176,8 @@ def regressor(news, username):
         with open(filename, 'rb') as f:
             vectorizer = pickle.load(f)
     except:
-        return news
-
+        model = SimpleModel()
+        vectorizer = SimpleVectorizer()
 
     normalizer = Normalizer()
 

@@ -17,11 +17,14 @@ Including another URLconf
 from django.views.generic.base import RedirectView
 from django.contrib import admin
 from django.urls import path, include
+from . import views
 
 
 urlpatterns = [
     path("", include("newsapp.urls")),
     path("admin/", admin.site.urls),
     path('accounts/', include('allauth.urls')), 
+    path('accounts/privacy/', views.privacy),
+    path('accounts/terms/', views.terms)
 ]
 

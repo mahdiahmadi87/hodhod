@@ -405,9 +405,17 @@ p {
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  border-radius: 20px;
 }
 .fh5co-post-entry article a:hover img {
   opacity: .4;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  -ms-border-radius: 50px;
+  border-radius: 50px;
 }
 .fh5co-post-entry article figure {
   margin-bottom: 30px;

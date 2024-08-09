@@ -1,144 +1,34 @@
 {% load socialaccount %} 
 {% load static %}
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html lang="fa" dir="rtl">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>{% block title %}{% endblock%}</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="هدخوان، خبرخوان سلیمان" />
-	<meta name="keywords" content="hodhod, hodkhan, mahdi ahmadi, هدخوان, هدهد, مهدی احمدی, خبرخوان سلیمان" />
-	<meta name="author" content="مهدی احمدی" />
-
-
-	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-	<link rel="shortcut icon" href="{% static 'images/icon.png' %}">
-	<!-- Google Fonts -->
-	<link href='http://fonts.googleapis.com/css?family=Playfair+Display:400,700,400italic|Roboto:400,300,700' rel='stylesheet' type='text/css'>
-	<!-- Animate -->
-	<link rel="stylesheet" href="{% static 'css/animate.css' %}">
-	<!-- Icomoon -->
-	<link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
-	<!-- Bootstrap  -->
-	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="آخرین مقالات و آموزش‌های وب‌سایت شرکت آکمی در زمینه طراحی، توسعه و بهره‌وری">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	{% block header %}
+	{% endblock %}
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">شرکت آکمی</div>
+            <nav>
+                <a href="#" id="allLink">همه</a>
+                <a href="#" id="designLink">طراحی</a>
+                <a href="#" id="developmentLink">توسعه</a>
+                <a href="#" id="productivityLink">بهره‌وری</a>
+            </nav>
+        </header>
 
-
-	<!-- Modernizr JS -->
-	<script src="{% static 'js/modernizr-2.6.2.min.js' %}"></script>
-	<!-- FOR IE9 below -->
-	<!--[if lt IE 9]>
-	<script src="js/respond.min.js"></script>
-	<![endif]-->
-
-   {% block header %}
-   {% endblock %}
-
-	</head>
-	<body>
-	<div id="fh5co-offcanvas">
-		<a href="#" class="fh5co-close-offcanvas js-fh5co-close-offcanvas" style="direction: ltr;"><span><i class="icon-cross3"></i> <span>Close</span></span></a>
-		<div class="fh5co-bio">
-			<figure>
-				<img src="{% static 'images/HodHod.jpg' %}" alt="HodHod Team" class="img-responsive">
-			</figure>
-			<h3 class="heading">درباره ما</h3>
-			<h2>تیم هدخوان</h2>
-			<p>تیم هدخوان اسماً یه نفره&excl; ولی در اصل اگه کمک خیلیا نبود، این پروژه هم اینجا نبود &colon;&rpar;&rpar;&rpar;<br>مرسی از کمک دوستان و آشنایان مخصوصا <a href="https://github.com/hctilg">ماهی</a> عزیز</p>
-			<ul class="fh5co-social">
-				<li><a href="https://t.me/HodKhan"><i class="icon-chat"></i></a></li>
-				<li><a href="https://github.com/mahdiahmadi87/hodhod"><i class="icon-github"></i></a></li>
-			</ul>
-		</div>
-
-		<div class="fh5co-menu">
-         <div class="fh5co-box">
-            <h3 class="heading">حساب کاربری</h3>
-				   <ul>
-                  {% if user.is_authenticated %}
-                     <li>سلام {{user.username}}&excl;</li>
-                  {% endif %}
-                  {% if user.is_staff %}
-                     <li><a href="/admin/">پنل ادمین</a></li>
-                  {% endif %}
-                  {% if user.is_authenticated %}
-                     <li><a href="/accounts/logout/">خروج از حساب کاربری</a></li>
-                     {% else %}
-                     <li><a href="/accounts/google/login/">ورود</a></li>
-                     <li><a href="/accounts/google/login/">ساخت حساب</a></li>
-                  {% endif %}
-               </ul>
-            </div>
-            <div class="fh5co-box">
-               <h3 class="heading">دسته‌بندی ها</h3>
-               <ul>
-                  <li><a href="#">اقتصادی</a></li>
-                  <li><a href="#">سیاسی</a></li>
-                  <li><a href="#">ورزشی</a></li>
-                  <li><a href="#">اجتماعی</a></li>
-                  <li><a href="#">بین الملل</a></li>
-                  <li><a href="#">فرهنگی هنری</a></li>
-                  <li><a href="#">رسانه ها</a></li>
-                  <li><a href="#">استان ها</a></li>
-               </ul>
-            </div>
-		</div>
-	</div>
-	<!-- END #fh5co-offcanvas -->
-	<header id="fh5co-header">
-		
-		<div class="container-fluid">
-
-			<div class="row">
-				<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
-				<ul class="fh5co-social">
-               <li><a href="https://t.me/HodKhan"><i class="icon-chat"></i></a></li>
-               <li><a href="https://github.com/mahdiahmadi87/hodhod"><i class="icon-github"></i></a></li>
-				</ul>
-				<div class="col-lg-12 col-md-12 text-center">
-					<h1 id="fh5co-logo"><a href="/">هدخوان</a></h1>
-					<h5 id="fh5co-logo"><a href="/">خبرخوان سلیمان</a></h1>
-				</div>
-
-			</div>
-		
-		</div>
-
-	</header>
-	<!-- END #fh5co-header -->
-	<div class="container-fluid">
-		<div class="row fh5co-post-entry">
-         {% block content %}
-
-         {% endblock %}
-			{% comment %} <div class="clearfix visible-lg-block visible-md-block visible-sm-block visible-xs-block"></div> {% endcomment %}
-		
-			<div class="clearfix visible-xs-block"></div>
-		</div>
-	</div>
-
-	<footer id="fh5co-footer">
-		<p><small>&copy; 1403. تمامی حقوق برای هدخوان محفوظ است <br> ساخته شده توسط <a href="https://github.com/mahdiahmadi87/" target="_blank">مهدی احمدی</a></small></p>
-	</footer>
-
-
-	
-	<!-- jQuery -->
-	<script src="{% static 'js/jquery.min.js' %}"></script>
-	<!-- jQuery Easing -->
-	<script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
-	<!-- Bootstrap -->
-	<script src="{% static 'js/bootstrap.min.js' %}"></script>
-	<!-- Waypoints -->
-	<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-	<!-- Main JS -->
-	<script src="{% static 'js/main.js' %}"></script>
-
-	</body>
+        <main class="grid" id="articlesGrid">
+            <!-- Articles will be dynamically inserted here -->
+        </main>
+    </div>
+	{% block content %}
+	{% endblock %}
+</body>
 </html>
-

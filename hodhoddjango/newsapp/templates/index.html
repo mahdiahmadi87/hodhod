@@ -3,15 +3,74 @@
 
 {% block title %}هدخوان &ndash; HodKhan{% endblock %}
 
+{%block header%}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+
 {% block content %}
-	{% for thenews in suggested %}
-	<article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
-		<figure>
-			<a href="/news/{{thenews.id}}"><img src="{{thenews.image}}" alt="Image" class="img-responsive"></a>
-		</figure>
-		<span class="fh5co-meta"><a href="/news/{{thenews.id}}">{{thenews.topic}}</a></span>
-		<h2 class="fh5co-article-title"><a href="/news/{{thenews.id}}">{{thenews.title}}</a></h2>
-		<span class="fh5co-meta fh5co-date">{{thenews.published}}</span>
-	</article>
-	{% endfor %}
+	<script>
+        const articles = [
+			{% for thenews in suggested %}
+			{
+				id: "{{thenews.id}}",
+				title: "{{thenews.title}}",
+				description: "{{thenews.abstract}}",
+				image: "{{thenews.image}}",
+				category: "{{thenews.topic}}",
+				rating: {{thenews.stars}}
+			},
+			{% endfor %}
+        ];
+
+		function createArticleCard(article) {
+			const card = document.createElement('div');
+			card.className = 'card';
+			card.innerHTML = `
+				<img src="${article.image}" alt="${article.title}">
+				<div class="card-content">
+					<h2>${article.title}</h2>
+					<p>${article.description}</p>
+					<div class="con-star">
+						<a href="#">ادامه مطلب</a>
+						<div class="stars" data-article-id="${article.id}">
+							${[1,2,3,4,5].map(star => `<span class="star" data-rating="${star}">${star <= article.rating ? '★' : '☆'}</span>`).join('')}
+						</div>
+					</div>
+				</div>
+			`;
+			return card;
+		}
+
+        function renderArticles(category = 'all') {
+            const grid = document.getElementById('articlesGrid');
+            grid.innerHTML = '';
+            articles.forEach(article => {
+                if (category === 'all' || article.category === category) {
+                    grid.appendChild(createArticleCard(article));
+                }
+            });
+        }
+
+		function handleStarClick(event) {
+			if (event.target.classList.contains('star')) {
+				const articleId = event.target.closest('.stars').dataset.articleId;
+				const rating = event.target.dataset.rating;
+				console.log(`Article ID: ${articleId}, New Rating: ${rating}`);
+				
+				// Update the stars visually
+				const stars = event.target.closest('.stars').children;
+				Array.from(stars).forEach((star, index) => {
+					star.textContent = index < rating ? '★' : '☆';
+				});
+			}
+		}
+
+		document.getElementById('articlesGrid').addEventListener('click', handleStarClick);
+        document.getElementById('allLink').addEventListener('click', () => renderArticles('all'));
+        document.getElementById('designLink').addEventListener('click', () => renderArticles('سیاسی'));
+        document.getElementById('developmentLink').addEventListener('click', () => renderArticles('development'));
+        document.getElementById('productivityLink').addEventListener('click', () => renderArticles('productivity'));
+
+        renderArticles();
+    </script>
 {% endblock %}

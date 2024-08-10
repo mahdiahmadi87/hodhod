@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
 
-{% block content %}
+{% block scripts %}
 	<script>
         const articles = [
 			{% for thenews in suggested %}
@@ -66,10 +66,6 @@
 		}
 
 		document.getElementById('articlesGrid').addEventListener('click', handleStarClick);
-        document.getElementById('allLink').addEventListener('click', () => renderArticles('all'));
-        document.getElementById('designLink').addEventListener('click', () => renderArticles('سیاسی'));
-        document.getElementById('developmentLink').addEventListener('click', () => renderArticles('development'));
-        document.getElementById('productivityLink').addEventListener('click', () => renderArticles('productivity'));
 
         renderArticles();
     </script>

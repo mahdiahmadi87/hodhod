@@ -1,12 +1,13 @@
 {% load socialaccount %} 
 {% load static %}
-<!DOCTYPE html>
+<!DOCTYPE html            const grid = document.getElementById('articlesGrid');
+>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
-    <meta name="description" content="آخرین مقالات و آموزش‌های وب‌سایت شرکت آکمی در زمینه طراحی، توسعه و بهره‌وری">
+    <meta name="description" content="هدخوان، خبرخوان سلیمان. خبرهای مورد علاقه خود را با هدخوان پیدا کنید">
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 	{% block header %}
@@ -15,20 +16,30 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo">شرکت آکمی</div>
+            <div class="logo">هدخوان</div>
             <nav>
-                <a href="#" id="allLink">همه</a>
-                <a href="#" id="designLink">طراحی</a>
-                <a href="#" id="developmentLink">توسعه</a>
-                <a href="#" id="productivityLink">بهره‌وری</a>
+                {% if user.is_authenticated %}
+                    <a>سلام {{user.username}}!</a>
+                {% endif %}
+                    <a href="/">صفحه اصلی</a>
+                    <a href="/news">اتاق خبر</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}">خروج</a>
+                {% else %}
+                    <a href="{% url 'signup' %}">ساخت حساب</a>
+                    <a href="{% url 'login' %}">ورود</a>
+                {% endif %}
+
+                {% block nav %}{% endblock %}
             </nav>
         </header>
 
         <main class="grid" id="articlesGrid">
             <!-- Articles will be dynamically inserted here -->
+            {% block content %}{% endblock %}
         </main>
     </div>
-	{% block content %}
+	{% block scripts %}
 	{% endblock %}
 </body>
 </html>

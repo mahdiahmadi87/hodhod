@@ -11,3 +11,24 @@ for row in usernames:
 
 conn.commit()
 conn.close()
+
+
+import sqlite3
+
+
+tables = ["""CREATE TABLE Viewed
+(username TEXT NOT NULL,
+newsId TEXT NOT NULL);""",
+"""CREATE TABLE Interests
+(username TEXT NOT NULL,
+interest TEXT NOT NULL);"""]
+
+connection_obj = sqlite3.connect('./userNews.db')
+ 
+# cursor object
+cursor_obj = connection_obj.cursor()
+for table in tables:
+ 
+    cursor_obj.execute(table)
+     
+connection_obj.close()

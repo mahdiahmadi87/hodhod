@@ -21,7 +21,7 @@ class SimpleModel:
         pass
 
     def predict(self, input_text):
-        return [5]
+        return [0]
     
 class SimpleVectorizer:
     def __init__(self):
@@ -51,7 +51,7 @@ def select(request):
     if request.user.is_authenticated:
         username = request.user.username
     else:
-        return redirect("/accounts/google/login/")
+        return redirect("/accounts/login/")
     if request.GET:
         data = dict(request.GET)["topic"]
         l = []
@@ -74,7 +74,7 @@ def thenews(request, slug):
     if request.user.is_authenticated:
         username = request.user.username
     else:
-        return redirect("/accounts/google/login/")
+        return redirect("/accounts/login/")
 
     n = {}
     n["id"] = thenews.id
@@ -96,7 +96,7 @@ def news(request):
     if request.user.is_authenticated:
         username = request.user.username
     else:
-        return redirect("/accounts/google/login/")
+        return redirect("/accounts/login/")
 
     conn = sqlite3.connect('./../userNews.db')
     interests = list(conn.execute(f"SELECT interest from Interests where username = '{username}'"))

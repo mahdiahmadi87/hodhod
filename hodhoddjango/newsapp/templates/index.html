@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block scripts %}
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
         const articles = [
 			{% for thenews in suggested %}
@@ -33,7 +34,7 @@
 					<div class="con-star">
 						<a href="#">ادامه مطلب</a>
 						<div class="stars" data-article-id="${article.id}">
-							${[1,2,3,4,5].map(star => `<span class="star" data-rating="${star}">${star <= article.rating ? '★' : '☆'}</span>`).join('')}
+							${[1,2,3,4,5].map(star => `<span class="star" data-rating="${star}" alt="${article.rating}">${star <= article.rating ? '★' : '☆'}</span>`).join('')}
 						</div>
 					</div>
 				</div>
@@ -55,8 +56,14 @@
 			if (event.target.classList.contains('star')) {
 				const articleId = event.target.closest('.stars').dataset.articleId;
 				const rating = event.target.dataset.rating;
-				console.log(`Article ID: ${articleId}, New Rating: ${rating}`);
-				
+				$.ajax({
+					type: "GET",
+					url: '/newsRating',
+					data: {
+						"result": {"n": rating, "id": articleId},
+					},
+					dataType: "json",
+				});
 				// Update the stars visually
 				const stars = event.target.closest('.stars').children;
 				Array.from(stars).forEach((star, index) => {

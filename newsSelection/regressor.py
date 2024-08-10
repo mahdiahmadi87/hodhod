@@ -13,24 +13,24 @@ import os
 # scores = [0.5, 0.7, ...]
 
 def regression():
-    conn = sqlite3.connect('./../userNews.db')
+    conn = sqlite3.connect('./../userNews.db')  
     usernames = list(conn.execute("SELECT username from Viewed"))
     usernames = list(map(lambda x: x[0], usernames))
     usernames = list(set(usernames))
     normalizer = Normalizer()
     vectorizer = TfidfVectorizer()
     for username in usernames:
+        conn = sqlite3.connect('./../userNews.db')  
         textIds, scores = [], []
         stars = list(conn.execute(f"SELECT star from Viewed where username = '{username}'"))
         newsIds = list(conn.execute(f"SELECT newsId from Viewed where username = '{username}'"))
         isTrained = list(conn.execute(f"SELECT isTrained from Viewed where username = '{username}'"))
-        isTrained = list(filter(lambda x: x==0, isTrained))
+        isTrained = list(filter(lambda x: x[0]==0, isTrained))
         if len(isTrained) == 0:
             print(f"{username} doesn't need to be the trained again!")
             continue
         else:
-            conn.execute(f"UPDATE Viewed SET isTrained WHERE id = '{username}';")
-        conn.close()
+            conn.execute(f"UPDATE Viewed SET isTrained = 1 where username = '{username}'")
         stars = list(map(lambda x: x[0], stars))
         newsIds = list(map(lambda x: x[0], newsIds))
         for i in range(len(newsIds)):
@@ -44,6 +44,8 @@ def regression():
                 textIds.append(id)
                 scores.append(stars[i])
         texts = []
+        conn.commit()
+        conn.close()
         conn = sqlite3.connect('./../news.db')
         i = 0
         for id in textIds:
@@ -58,7 +60,6 @@ def regression():
             title = title[0][0]
             text = abstract
             texts.append(text)
-        
 
         # نرمالایز کردن متن‌ها با استفاده از hazm
         normalized_texts = [normalizer.normalize(text) for text in texts]

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}ورود{% endblock %}
+
+
+{% block content %}
+<h1>ورود</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">ورود</button>
+    <a href="{% url 'signup' %}">حساب ندارم، ساخت حساب</a>
+</form>
+{% endblock %}
+  

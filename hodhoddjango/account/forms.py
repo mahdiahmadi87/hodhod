@@ -1,9 +1,12 @@
-from django.contrib.auth import get_user_model
-from django import forms
+from django import forms 
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
-class SignupForm(forms.Form):
-    # color = forms.CharField(max_length=30, label='color')
+class SignupForm(UserCreationForm):
+    class Meta:
+        model = User 
+        fields = ['username', 'password1', 'password2']
 
-    def signup(self, request, user):
-        # user.color = self.cleaned_data['color']
-        user.save()
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)

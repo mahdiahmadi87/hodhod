@@ -23,9 +23,7 @@ from . import views
 urlpatterns = [
     path("", include("newsapp.urls")),
     path("admin/", admin.site.urls),
-    path('accounts/', include('allauth.urls')), 
-    path('accounts/privacy/', views.privacy),
-    path('accounts/terms/', views.terms),
+    path('accounts/', include('account.urls')), 
     path(
         "robots.txt",
         TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),

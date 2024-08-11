@@ -1,18 +1,96 @@
-.whatever{
-    display: inline-block;
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    background-color: var(--background);
+    color: var(--foreground);
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.container {
+    max-width: 500px;
     width: 100%;
-    height: 100px;
-    border-radius: 5px;
-    background-color: #fff;
-    padding: 10px;
-    margin: 15px 0;
-    box-shadow: 0 0 26px #e0dede;
 }
 
-#checkboxes input[type=checkbox]{
-    display: none;
+.card {
+    background-color: var(--card);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-#checkboxes input[type=checkbox]:checked + .whatever{
-    background-color: #8d8d8d;
+h1 {
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+input[type="checkbox"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 2px solid var(--border);
+    border-radius: 0.3rem;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+}
+
+input[type="checkbox"]:checked {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+input[type="checkbox"]:checked::before {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--accent-foreground);
+    font-size: 0.8rem;
+}
+
+label {
+    font-weight: bold;
+    color: var(--card-foreground);
+    cursor: pointer;
+}
+
+button {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+    border: none;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+}
+
+button:hover {
+    background-color: var(--primary);
 }

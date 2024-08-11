@@ -23,7 +23,6 @@
                     <a>سلام {{user.username}}!</a>
                 {% endif %}
                     <a href="/">صفحه اصلی</a>
-                    <a href="/news">اتاق خبر</a>
                 {% if user.is_authenticated %}
                     <a href="{% url 'logout' %}">خروج</a>
                 {% else %}

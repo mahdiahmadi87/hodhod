@@ -4,11 +4,11 @@
 {% block title %}انتخاب علایق{% endblock %}
 
 {% block header %}
-<link rel="stylesheet" href="{% static 'css/select.css' %}">
+    <link rel="stylesheet" href="{% static 'css/select.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="latest-posts" style="margin-bottom: 50px;">
+{% comment %} <div class="latest-posts" style="margin-bottom: 50px;">
     <div class="container-fluid">
         <div class="blog-title-span">
             <span class="title">اخبار و مقالات</span>
@@ -30,6 +30,22 @@
         </form>
     </div>
 </div>
-<div class="clear-fix"></div>
+<div class="clear-fix"></div> {% endcomment %}
+<div class="container">
+    <div class="card">
+        <h1>انتخاب ترجیحات</h1>
+        <form id="preferencesForm" method="GET">
+            <div class="checkbox-group">
+                {% for topic in topics %}
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="{{topic.id}}" name="topic" value="{{topic.id}}">
+                        <label for="{{topic.id}}">{{topic.title}}</label>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="submit">ثبت نام</button>
+        </form>
+    </div>
+</div>
 {% endblock %}
   

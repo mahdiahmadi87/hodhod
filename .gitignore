@@ -1,1 +1,4 @@
-.env
+pickles/
+news.db
+userNews.db
+hodhoddjango/db.sqlite3

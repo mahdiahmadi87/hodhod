@@ -3,14 +3,40 @@
 
 {% block title %}ساخت حساب{% endblock %}
 
+{% block header %}
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
+{% endblock %}
 
 {% block content %}
-<h1>ساخت حساب</h1>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">ساخت حساب</button>
-    <a href="{% url 'login' %}">از قبل حساب کاربری دارید؟</a>
-</form>
+    <div class="container">
+        <div class="card">
+            <h1>ساخت حساب</h1>
+            <form id="signupForm" method="post">
+                {% csrf_token %}
+                <div>
+                    <label for="{{ form.username.id_for_label }}">نام کاربری</label>
+                    {{ form.username }}
+                </div>
+                <div>
+                    <label for="{{ form.password1.id_for_label }}">رمز عبور</label>
+                    {{ form.password1 }}
+                </div>  
+                <div>
+                    <label for="{{ form.password2.id_for_label }}">تکرار رمز عبور</label>
+                    {{ form.password2 }}
+                </div>  
+                <div>
+                    {% if status != True %}
+                        <h2 style="color: red;" align="center">{{status}}</h2>
+                        
+                    {% endif %}
+                </div>
+                <button type="submit">ساخت حساب</button>
+            </form>
+            <div class="signup-link">
+                <p>از قبل حساب دارید؟ <a href="/accounts/signup">ورود</a></p>
+            </div>
+        </div>
+    </div>
 {% endblock %}
   

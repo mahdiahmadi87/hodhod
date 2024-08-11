@@ -3,14 +3,35 @@
 
 {% block title %}ورود{% endblock %}
 
+{% block header %}
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
+{% endblock %}
 
 {% block content %}
-<h1>ورود</h1>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">ورود</button>
-    <a href="{% url 'signup' %}">حساب ندارم، ساخت حساب</a>
-</form>
+    <div class="container">
+        <div class="card">
+            <h1>ورود</h1>
+            <form id="loginForm" method="post">
+                {% csrf_token %}
+                <div>
+                    <label for="{{ form.username.id_for_label }}">نام کاربری</label>
+                    {{ form.username }}
+                </div>
+                <div>
+                    <label for="{{ form.password.id_for_label }}">رمز عبور</label>
+                    {{ form.password }}
+                </div>  
+                <div>
+                    {% if status == False %}
+                        <h2 style="color: red;" align="center">نام کاربری یا رمز عبور اشتباه است!</h2>
+                    {% endif %}
+                </div>
+                <button type="submit">ورود</button>
+            </form>
+            <div class="signup-link">
+                <p>حساب ندارید؟ <a href="/accounts/signup">ساخت حساب</a></p>
+            </div>
+        </div>
+    </div>
 {% endblock %}
   

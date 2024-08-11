@@ -11,10 +11,33 @@ def user_signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)    
+                return redirect('/select')
+            else:
+                return redirect('login')
+        else:
+            errors = str(form.errors)
+            d = {
+                "A user with that username already exists.": "حسابی با این نام کاربری قبلا وجود دارد!",
+                "The two password fields didn’t match.": "تکرار رمز عبور، اشتباه وارد شده است!",
+                "This password is too short. It must contain at least 8 characters.": "رمز عبور کوتاه است، حداقل متشکل از ۸ حرف باید باشد!",
+                "This password is too common.": "رمز عبور خیلی رایج است!",
+                "This password is entirely numeric.": "رمز عبور کاملا از اعداد است!",
+            }
+            error = ""
+            for key in d.keys():
+                if key in errors:
+                    error = d[key]
+            if error == "":
+                error = form.errors
+            return render(request, 'signup.html', {'form': form, 'status': error})
     else:
         form = SignupForm()
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'signup.html', {'form': form, 'status': True})
 
 # login page
 def user_login(request):
@@ -26,10 +49,12 @@ def user_login(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)    
-                return redirect('/')
+                return redirect('/select')
+            else:
+                return render(request, 'login.html', {'form': form, "status": False})
     else:
         form = LoginForm()
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'login.html', {'form': form, "status" : True})
 
 # logout page
 def user_logout(request):

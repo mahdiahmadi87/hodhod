@@ -5,7 +5,7 @@ from sklearn.metrics import mean_squared_error
 from hazm import Normalizer
 import sqlite3
 import pickle
-import os
+import time
 
 
 # فرض کنید داده‌های ما به شکل زیر هستند:
@@ -102,4 +102,8 @@ def regression():
         # print(f"Predicted Score: {predicted_score[0]}")
 
 if __name__ == "__main__":
-    regression()
+    while True:
+        print(u"\033[92mRegressor Is Running!\033[0m")
+        regression()
+        print(u"\033[95mEnd Regression!\033[0m")
+        time.sleep(120)

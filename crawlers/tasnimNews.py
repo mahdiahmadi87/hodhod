@@ -48,8 +48,13 @@ def crawler():
   
     conn.close()
 
-crawler()
 
+if __name__ == "__main__":
+    while True:
+        print(u"\033[92mTasnim Crawler Is Running!\033[0m")
+        crawler()
+        print(u"\033[95mEnd Crawling!\033[0m")
+        time.sleep(1)
 
 """CREATE TABLE TasnimNews
 (id TEXT PRIMARY KEY NOT NULL,

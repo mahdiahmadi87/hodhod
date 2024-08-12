@@ -53,8 +53,6 @@ def select(request):
 
 
 def news(request):
-    # fromDbToDjango("FarsNews")
-    fromDbToDjango("TasnimNews")
     oldnews = News.objects.all()
     suggested = []
 
@@ -97,8 +95,18 @@ def newsRating(request):
     record(username, id, n)
     return JsonResponse({})
 
+def dbToDjango(requests):
+    newsAgencys = NewsAgency.objects.all()
+    for newsAgency in newsAgencys:
+        fromDbToDjango(newsAgency.title)
+    return HttpResponse("OK")
+
 def fromDbToDjango(newsAgency):
-    newsAgency = NewsAgency.objects.filter(title=newsAgency)[0]
+    try:
+        newsAgency = NewsAgency.objects.filter(title=newsAgency)[0]
+    except:
+        newsAgency = NewsAgency(title=newsAgency)
+        newsAgency.save()
 
     conn = sqlite3.connect('./../news.db')
 

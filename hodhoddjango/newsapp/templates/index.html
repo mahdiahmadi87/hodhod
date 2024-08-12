@@ -18,6 +18,7 @@
 				description: "{{thenews.abstract}}",
 				image: "{{thenews.image}}",
 				category: "{{thenews.topic}}",
+				link: "{{thenews.link}}",
 				rating: {{thenews.stars}}
 			},
 			{% endfor %}
@@ -32,7 +33,7 @@
 					<h2>${article.title}</h2>
 					<p>${article.description}</p>
 					<div class="con-star">
-						<a href="#">ادامه مطلب</a>
+						<a href="${article.link}">ادامه مطلب</a>
 						<div class="stars" data-article-id="${article.id}">
 							${[1,2,3,4,5].map(star => `<span class="star" data-rating="${star}" alt="${article.rating}">${star <= article.rating ? '★' : '☆'}</span>`).join('')}
 						</div>

@@ -30,22 +30,6 @@ class SimpleVectorizer:
     def transform(self, input):
         return input
 
-def index(request):
-    news = []
-    oldnews = News.objects.all()[:8]
-    for thenews in oldnews:
-        n = {}
-        n["id"] = thenews.id
-        n["title"] = thenews.title
-        n["abstract"] = thenews.abstract[:150] + "..."
-        date = time.localtime(int(thenews.published[:-2]))
-        date = jdatetime.date.fromgregorian(year=date.tm_year,month=date.tm_mon,day=date.tm_mday)
-        n["published"] = f"{date.year}/{date.month}/{date.day}"
-        topic = thenews.topic
-        n["topic"] = topic
-        news.append(n)
-    return render(request, "index.html", context={"news": news})
-
 def select(request):
     topics = Topic.objects.all()
     if request.user.is_authenticated:
@@ -67,25 +51,6 @@ def select(request):
 
     return render(request, "select.html", context={"topics": topics})
 
-def thenews(request, slug):
-    thenews = News.objects.get(id=slug)
-
-
-    if request.user.is_authenticated:
-        username = request.user.username
-    else:
-        return redirect("/accounts/login/")
-
-    n = {}
-    n["id"] = thenews.id
-    n["title"] = thenews.title
-    n["abstract"] = thenews.abstract
-    date = time.localtime(int(thenews.published[:-2]))
-    date = jdatetime.date.fromgregorian(year=date.tm_year,month=date.tm_mon,day=date.tm_mday)
-    n["published"] = f"{date.year}/{date.month}/{date.day}"
-    topic = thenews.topic.title
-    n["topic"] = topic 
-    return render(request, "thenews.html", context={"news": n})
 
 def news(request):
     # fromDbToDjango("FarsNews")
@@ -116,6 +81,7 @@ def news(request):
         topic = thenews.topic.title
         n["topic"] = topic
         n["image"] = thenews.image
+        n["link"] = thenews.link
         if topic in interests:
             suggested.append(n)
     

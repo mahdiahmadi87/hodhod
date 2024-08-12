@@ -15,17 +15,29 @@ def crawler():
 
     conn = sqlite3.connect('./../news.db')
 
-    cursor = list(conn.execute("SELECT id from TasnimNews"))
-    ids = list(map(lambda x: x[0], cursor))
+    siteIds = list(conn.execute("SELECT siteId from TasnimNews"))
+    siteIds = list(map(lambda x: x[0], siteIds))
+    ids = list(conn.execute("SELECT id from TasnimNews"))
+    ids = list(map(lambda x: x[0], ids))
+    ids = list(map(int, ids))
 
     cursor = conn.cursor() 
-
+    i = 1
     for entry in feed.entries:  
-        id = entry.id
-        id = id[-7:]
-        if (id in ids):
+        siteId = entry.id
+        siteId = siteId[-7:]
+        if (siteId in siteIds):
             print("Exist")
             continue
+
+        try:
+            id = max(ids) + i
+            i += 1
+        except:
+            print("ID Not found! generated to 10100001")
+            id = "10100001"
+            ids = [10100001]
+
 
         pub = entry.published_parsed
         pub = time.mktime(pub)
@@ -33,11 +45,14 @@ def crawler():
         abstract = entry.summary
         print("\n" + abstract + ":")
         topic = classifier(abstract)
+        if topic == "استان‌ها":
+            topic = "ایران"
         print(topic)
 
+        
         image = entry.media_thumbnail[0]["url"]
 
-        cursor.execute(f"INSERT INTO TasnimNews VALUES ('{id}', '{entry.title}', '{abstract}', '{topic}',  '{entry.summary_detail.base}', '{pub}', '{image}')")
+        cursor.execute(f"INSERT INTO TasnimNews VALUES ('{id}', '{siteId}', '{entry.title}', '{abstract}', '{topic}',  '{entry.link}', '{pub}', '{image}')")
         conn.commit() 
         print("Added")
         
@@ -58,6 +73,7 @@ if __name__ == "__main__":
 
 """CREATE TABLE TasnimNews
 (id TEXT PRIMARY KEY NOT NULL,
+siteId TEXT NOT NULL,
 title TEXT NOT NULL,
 abstract TEXT NOT NULL,
 topic TEXT NOT NULL,

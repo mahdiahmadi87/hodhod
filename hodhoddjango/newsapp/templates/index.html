@@ -18,6 +18,7 @@
 				description: "{{thenews.abstract}}",
 				image: "{{thenews.image}}",
 				category: "{{thenews.topic}}",
+				published: "{{thenews.published}}",
 				link: "{{thenews.link}}",
 				rating: {{thenews.stars}}
 			},
@@ -30,10 +31,14 @@
 			card.innerHTML = `
 				<img src="${article.image}" alt="${article.title}">
 				<div class="card-content">
+					<div class="info">
+						<h5 class="topic">${article.category}</h5>
+						<h5 class="pub">${article.published}</h5>
+					</div>
 					<h2>${article.title}</h2>
 					<p>${article.description}</p>
 					<div class="con-star">
-						<a href="${article.link}">ادامه مطلب</a>
+						<a href="${article.link}" target="_blank">ادامه مطلب</a>
 						<div class="stars" data-article-id="${article.id}">
 							${[1,2,3,4,5].map(star => `<span class="star" data-rating="${star}" alt="${article.rating}">${star <= article.rating ? '★' : '☆'}</span>`).join('')}
 						</div>

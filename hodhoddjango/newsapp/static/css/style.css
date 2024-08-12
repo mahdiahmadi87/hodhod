@@ -90,6 +90,29 @@ nav a:hover {
   height: calc(100% - 200px);
 }
 
+.info {
+  /* flex-grow: 0; */
+  padding: 0px 5px;
+  display: flex;
+  font-size: 1rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.topic {
+  flex-grow: 1;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.pub {
+  flex-grow: 0;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: bold;
+}
+
 .card h2 {
   flex-grow: 0;
   font-size: 1.2rem;

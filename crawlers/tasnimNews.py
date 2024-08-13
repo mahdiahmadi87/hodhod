@@ -1,4 +1,5 @@
 import feedparser
+import requests
 import sqlite3
 import time
 import sys
@@ -57,11 +58,10 @@ def crawler():
         print("Added")
         
         
-
     print("commited")
-
-  
     conn.close()
+    if i > 1:
+        print(requests.get("http://51.68.137.82:11111/dbToDjango/"))
 
 
 if __name__ == "__main__":

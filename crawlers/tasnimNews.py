@@ -12,14 +12,14 @@ from main import classifier
 
 def crawler():
     feed = feedparser.parse("https://www.tasnimnews.com/fa/rss/feed/0/8/0/%D8%A2%D8%AE%D8%B1%DB%8C%D9%86-%D8%AE%D8%A8%D8%B1%D9%87%D8%A7%DB%8C-%D8%B1%D9%88%D8%B2")
-    # feed = feedparser.parse("./rss")
 
     conn = sqlite3.connect('./../news.db')
 
-    siteIds = list(conn.execute("SELECT siteId from TasnimNews"))
+    siteIds = list(conn.execute("SELECT siteId from News"))
     siteIds = list(map(lambda x: x[0], siteIds))
-    ids = list(conn.execute("SELECT id from TasnimNews"))
+    ids = list(conn.execute("SELECT id from News"))
     ids = list(map(lambda x: x[0], ids))
+    ids = list(filter(lambda x: x[:2] == "10", ids))
     ids = list(map(int, ids))
 
     cursor = conn.cursor() 
@@ -53,15 +53,18 @@ def crawler():
         
         image = entry.media_thumbnail[0]["url"]
 
-        cursor.execute(f"INSERT INTO TasnimNews VALUES ('{id}', '{siteId}', '{entry.title}', '{abstract}', '{topic}',  '{entry.link}', '{pub}', '{image}')")
+        cursor.execute(f"INSERT INTO News VALUES ('{id}', '{siteId}', 'TasnimNews', '{entry.title}', '{abstract}', '{topic}',  '{entry.link}', '{pub}', '{image}')")
         conn.commit() 
         print("Added")
         
         
     print("commited")
     conn.close()
-    if i > 1:
-        print(requests.get("http://51.68.137.82:11111/dbToDjango/"))
+    try:
+        if i > 1:
+            print(requests.get("http://51.68.137.82:11111/dbToDjango/"))
+    except:
+        return
 
 
 if __name__ == "__main__":
@@ -71,12 +74,4 @@ if __name__ == "__main__":
         print(u"\033[95mEnd Crawling!\033[0m")
         time.sleep(1)
 
-"""CREATE TABLE TasnimNews
-(id TEXT PRIMARY KEY NOT NULL,
-siteId TEXT NOT NULL,
-title TEXT NOT NULL,
-abstract TEXT NOT NULL,
-topic TEXT NOT NULL,
-link TEXT NOT NULL,
-published TEXT NOT NULL,
-image TEXT NOT NULL);"""
+

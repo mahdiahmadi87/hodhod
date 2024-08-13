@@ -96,30 +96,30 @@ def newsRating(request):
     return JsonResponse({})
 
 def dbToDjango(requests):
-    newsAgencys = NewsAgency.objects.all()
-    for newsAgency in newsAgencys:
-        fromDbToDjango(newsAgency.title)
+    fromDbToDjango()
     return HttpResponse("OK")
 
-def fromDbToDjango(newsAgency):
-    try:
-        newsAgency = NewsAgency.objects.filter(title=newsAgency)[0]
-    except:
-        newsAgency = NewsAgency(title=newsAgency)
-        newsAgency.save()
+def fromDbToDjango():
 
     conn = sqlite3.connect('./../news.db')
 
-    cursor = list(conn.execute(f"SELECT id, title, abstract, topic, link, published, image from {newsAgency.title}"))
+    cursor = list(conn.execute(f"SELECT id, title, newsAgency, abstract, topic, link, published, image from News"))
 
     for row in cursor:
-        news = News(id=row[0], title=row[1], abstract=row[2], link=row[4], published=row[5], image=row[6], newsAgency=newsAgency)
+        try:
+            newsAgency = NewsAgency.objects.filter(title=row[2])[0]
+        except:
+            newsAgency = NewsAgency(title=row[2])
+            newsAgency.save()
+        for i in range(len(row)):
+            print(i, ":", row[i])
+        news = News(id=row[0], title=row[1], abstract=row[3], link=row[5], published=row[6], image=row[7], newsAgency=newsAgency)
         old = News.objects.all()
         if news in old:
             continue
         news.save()
 
-        topic = row[3]
+        topic = row[4]
         oldtopics = Topic.objects.all()
         newtopics = []
         exist = list(filter(lambda x: x.title == topic, oldtopics))

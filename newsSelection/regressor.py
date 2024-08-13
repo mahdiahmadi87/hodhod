@@ -50,8 +50,8 @@ def regression():
         i = 0
         for id in textIds:
             i += 1
-            title = list(conn.execute(f"SELECT title from TasnimNews where id = '{id}'"))
-            abstract = list(conn.execute(f"SELECT abstract from TasnimNews where id = '{id}'"))
+            title = list(conn.execute(f"SELECT title from News where id = '{id}'"))
+            abstract = list(conn.execute(f"SELECT abstract from News where id = '{id}'"))
             try:
                 abstract = abstract[0][0]
             except:

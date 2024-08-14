@@ -160,10 +160,10 @@ def regressor(news, username):
     # پیش‌بینی خروجی برای هر دیکشنری و ذخیره آنها در یک DataFrame
     results = pd.DataFrame(news)
     results['stars'] = results['abstract'].apply(lambda x: predict_star(x, model, vectorizer, normalizer))
-
+    results['sort'] = results['stars'].apply(lambda x: str(x)[:3]) + results["published"].apply(lambda x: x[5:])
 
     # مرتب‌سازی DataFrame بر اساس ستون score
-    sorted_results = results.sort_values(by='stars', ascending=False)
+    sorted_results = results.sort_values(by='sort', ascending=False)
 
     sorted_news = sorted_results.to_dict(orient='records')
     return sorted_news

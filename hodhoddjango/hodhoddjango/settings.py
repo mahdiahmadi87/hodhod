@@ -60,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'allauth.account.middleware.AccountMiddleware',
 ]
 
@@ -152,3 +153,7 @@ ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_EMAIL_REQUIRED = False
 
 CSRF_TRUSTED_ORIGINS = ['https://hodkhan.ir', 'https://www.hodkhan.ir']
+
+CSRF_COOKIE_SECURE = True
+
+SESSION_COOKIE_SECURE = True

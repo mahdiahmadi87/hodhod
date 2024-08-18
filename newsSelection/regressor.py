@@ -58,7 +58,7 @@ def regression():
                 scores.pop(i)
                 continue
             title = title[0][0]
-            text = abstract
+            text = title + "\n" +abstract
             texts.append(text)
 
         # نرمالایز کردن متن‌ها با استفاده از hazm

@@ -49,7 +49,7 @@ def crawler():
         abstract = entry.summary
         abstract = re.findall(r"\<p\>.*\<\/p\>", abstract)[0][3:-4]
         print("\n" + abstract + ":")
-        topic = classifier(abstract)
+        topic = classifier(str(entry.title) + "\n" + abstract)
         if topic == "استان‌ها":
             topic = "ایران"
         print(topic)

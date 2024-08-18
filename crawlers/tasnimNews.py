@@ -45,7 +45,7 @@ def crawler():
 
         abstract = entry.summary
         print("\n" + abstract + ":")
-        topic = classifier(abstract)
+        topic = classifier(str(entry.title) + "\n" + abstract)
         if topic == "استان‌ها":
             topic = "ایران"
         print(topic)

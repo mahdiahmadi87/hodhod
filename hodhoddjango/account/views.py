@@ -16,7 +16,7 @@ def user_signup(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)    
-                return redirect('/select')
+                return redirect('/')
             else:
                 return redirect('login')
         else:
@@ -49,7 +49,7 @@ def user_login(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)    
-                return redirect('/select')
+                return redirect('/')
             else:
                 return render(request, 'login.html', {'form': form, "status": False})
     else:

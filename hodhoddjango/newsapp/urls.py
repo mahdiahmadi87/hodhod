@@ -21,7 +21,6 @@ from . import views
 urlpatterns = [
     path("", views.news, name="index"),
     path("news/", views.news, name="news"),
-    path("select/", views.select, name="select"),
     path("newsRating/", views.newsRating, name='newsRating'),
     path("dbToDjango/", views.dbToDjango, name="dbToDjango"),
 ]

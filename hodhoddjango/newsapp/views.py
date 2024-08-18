@@ -4,9 +4,11 @@ from .models import News, Topic, NewsAgency
 from hazm import Normalizer 
 import pandas as pd
 import jdatetime
+import datetime
 import sqlite3
 import pickle
 import time
+import pytz
 import json
 import sys
 import os
@@ -73,9 +75,23 @@ def news(request):
         n["title"] = thenews.title
         # n["abstract"] = thenews.abstract[:150] + "..."
         n["abstract"] = thenews.abstract
-        date = time.localtime(int(thenews.published[:-2]))
-        date = jdatetime.date.fromgregorian(year=date.tm_year,month=date.tm_mon,day=date.tm_mday)
-        n["published"] = f"{date.year}/{date.month}/{date.day}"
+        # date = time.gmtime(int(thenews.published[:-2]))
+        # print(date)
+        # date =  datetime.datetime(date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour, date.tm_min, date.tm_sec, 0).astimezone(pytz.timezone("Asia/Tehran"))
+        # print(date)
+        # print("-----")
+        # # jdate = jdatetime.datetime.fromgregorian(year=date.tm_year,month=date.tm_mon,day=date.tm_mday, hour=date.tm_hour, minute=date.tm_min, second=date.tm_sec)
+        # jdate = jdatetime.datetime.fromgregorian(year=date.year,month=date.month,day=date.day, hour=date.hour, minute=date.minute, second=date.second)
+        # n["published"] = f"{jdate.year}/{jdate.month}/{jdate.day} {jdate.hour}:{jdate.minute}"
+        date = int(thenews.published[:-2])
+        date = datetime.datetime.fromtimestamp(date)
+        print(date)
+        date = pytz.timezone("GMT").localize(date)
+        print(date)
+        date = date.astimezone(pytz.timezone("Asia/Tehran"))
+        jdate = jdatetime.datetime.fromgregorian(year=date.year,month=date.month,day=date.day, hour=date.hour, minute=date.minute, second=date.second)
+        print(date)
+        n["published"] = str(jdate)
         topic = thenews.topic.title
         n["topic"] = topic
         n["image"] = thenews.image

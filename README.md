@@ -1,5 +1,6 @@
 # HodKhan، Khabar Khan Solomon(Solomon's Newsreader)
 
+* This is FastLoad version
 HodHod is a website for displaying news according to people's interests
 
 ## Installation

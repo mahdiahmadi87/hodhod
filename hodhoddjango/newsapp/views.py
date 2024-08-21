@@ -47,14 +47,16 @@ def stream_articles(request):
     suggested = []
     
     username = "mahdi"
-
+    now = time.time()
     for thenews in oldnews:
         n = {}
+        date = int(thenews.published[:-2])
+        if (now - date) > 345600:
+            continue
         n["id"] = thenews.id
         n["title"] = thenews.title
         # n["abstract"] = thenews.abstract[:150] + "..."
         n["abstract"] = thenews.abstract
-        date = int(thenews.published[:-2])
         date = datetime.datetime.fromtimestamp(date)
         date = pytz.timezone("GMT").localize(date)
         date = date.astimezone(pytz.timezone("Asia/Tehran"))

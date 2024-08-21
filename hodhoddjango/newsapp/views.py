@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, JsonResponse, StreamingHttpResponse
 from django.shortcuts import render, redirect
 from .models import News, Topic, NewsAgency
 from hazm import Normalizer 
@@ -16,7 +16,7 @@ import os
 module_path = os.path.abspath("../newsSelection/")
 sys.path.append(module_path)
 
-from main import record
+from main import record, rating
 
 class SimpleModel:
     def __init__(self):
@@ -34,14 +34,20 @@ class SimpleVectorizer:
 
 
 def news(request):
-    oldnews = News.objects.all()
-    suggested = []
 
     if request.user.is_authenticated:
         username = request.user.username
     else:
         return redirect("/accounts/signup/")
     
+    return render(request, "index.html")
+
+def stream_articles(request):
+    oldnews = News.objects.all()
+    suggested = []
+    
+    username = "mahdi"
+
     for thenews in oldnews:
         n = {}
         n["id"] = thenews.id
@@ -60,9 +66,32 @@ def news(request):
         n["link"] = thenews.link
         suggested.append(n)
     
-    sorted_news = regressor(suggested, username)
-    jsonNews = json.dumps(suggested)
-    return render(request, "index.html", context={"suggested": sorted_news, "jsoned": jsonNews})
+    def regressor(news, username):
+        try:
+            filename = f"../pickles/{username}_regressor.pkl"
+            with open(filename, 'rb') as f:
+                model = pickle.load(f)
+                
+            filename = f"../pickles/{username}_vectorizer.pkl"
+            with open(filename, 'rb') as f:
+                vectorizer = pickle.load(f)
+        except:
+            model = SimpleModel()
+            vectorizer = SimpleVectorizer()
+
+        normalizer = Normalizer()
+
+        for e in news:
+            e['stars'] = predict_star(e['title'] + "\n" + e['abstract'], model, vectorizer, normalizer)
+            if len(e['abstract']) > 150:
+                e['abstract'] = e['abstract'][:150] + '...'
+            json.dumps(e)
+            yield f"data: {json.dumps(e)}\n\n"
+        
+    response = StreamingHttpResponse(regressor(suggested, username), content_type='text/event-stream')
+    response['Cache-Control'] = 'no-cache'
+    return response
+    
 
 def newsRating(request):
     result = dict(request.GET)
@@ -115,33 +144,3 @@ def predict_star(text, model, vectorizer, normalizer):
     text_vectorized = vectorizer.transform([text_normalized])
     predicted_star = model.predict(text_vectorized)
     return predicted_star[0]
-
-def regressor(news, username):
-    try:
-        filename = f"../pickles/{username}_regressor.pkl"
-        with open(filename, 'rb') as f:
-            model = pickle.load(f)
-            
-        filename = f"../pickles/{username}_vectorizer.pkl"
-        with open(filename, 'rb') as f:
-            vectorizer = pickle.load(f)
-    except:
-        model = SimpleModel()
-        vectorizer = SimpleVectorizer()
-
-    normalizer = Normalizer()
-
-
-    # پیش‌بینی خروجی برای هر دیکشنری و ذخیره آنها در یک DataFrame
-    results = pd.DataFrame(news)
-    # results['stars'] = results['abstract'].apply(lambda x: predict_star(x, model, vectorizer, normalizer))  
-    results['trains'] = results['title'].apply(lambda x: str(x) + "\n") + results["abstract"]
-    results['stars'] = results['trains'].apply(lambda x: predict_star(x, model, vectorizer, normalizer))
-    results['sort'] = results['stars'].apply(lambda x: str(x)[:3]) + results["published"].apply(lambda x: x[5:])
-
-    # مرتب‌سازی DataFrame بر اساس ستون score
-    sorted_results = results.sort_values(by='sort', ascending=False)
-
-    sorted_news = sorted_results.to_dict(orient='records')
-    return sorted_news
-

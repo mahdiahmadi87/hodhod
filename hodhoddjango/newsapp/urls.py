@@ -23,4 +23,5 @@ urlpatterns = [
     path("news/", views.news, name="news"),
     path("newsRating/", views.newsRating, name='newsRating'),
     path("dbToDjango/", views.dbToDjango, name="dbToDjango"),
+    path('api/stream-articles/', views.stream_articles, name='stream_articles'),
 ]

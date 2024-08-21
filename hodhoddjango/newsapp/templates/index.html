@@ -10,20 +10,7 @@
 {% block scripts %}
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-        const articles = [
-			{% for thenews in suggested %}
-			{
-				id: "{{thenews.id}}",
-				title: "{{thenews.title}}",
-				description: "{{thenews.abstract}}",
-				image: "{{thenews.image}}",
-				category: "{{thenews.topic}}",
-				published: "{{thenews.published}}",
-				link: "{{thenews.link}}",
-				rating: {{thenews.stars}}
-			},
-			{% endfor %}
-        ];
+        let articles = [];
 
 		function createArticleCard(article) {
 			const card = document.createElement('div');
@@ -32,15 +19,15 @@
 				<img src="${article.image}" alt="${article.title}">
 				<div class="card-content">
 					<div class="info">
-						<h5 class="topic">${article.category}</h5>
+						<h5 class="topic">${article.topic}</h5>
 						<h5 class="pub">${article.published}</h5>
 					</div>
 					<h2>${article.title}</h2>
-					<p>${article.description}</p>
+					<p>${article.abstract}</p>
 					<div class="con-star">
 						<a href="${article.link}" target="_blank">ادامه مطلب</a>
 						<div class="stars" data-article-id="${article.id}">
-							${[1,2,3,4,5].map(star => `<span class="star" data-rating="${star}" alt="${article.rating}">${star <= article.rating ? '★' : '☆'}</span>`).join('')}
+							${[1,2,3,4,5].map(star => `<span class="star" data-rating="${star}" alt="${article.stars}">${star <= article.stars ? '★' : '☆'}</span>`).join('')}
 						</div>
 					</div>
 				</div>
@@ -49,10 +36,11 @@
 		}
 
         function renderArticles(category = 'all') {
+			articles = articles.sort((a,b) => b.stars - a.stars);
             const grid = document.getElementById('articlesGrid');
             grid.innerHTML = '';
             articles.forEach(article => {
-                if (category === 'all' || article.category === category) {
+                if (category === 'all' || article.topic === category) {
                     grid.appendChild(createArticleCard(article));
                 }
             });
@@ -80,6 +68,18 @@
 
 		document.getElementById('articlesGrid').addEventListener('click', handleStarClick);
 
-        renderArticles();
+		const eventSource = new EventSource('/api/stream-articles/');
+
+        eventSource.onmessage = function(event) {
+            const newArticle = JSON.parse(event.data);
+            articles.push(newArticle);
+            renderArticles();
+        };
+
+        eventSource.onerror = function(error) {
+            console.error("Error in EventSource:", error);
+            eventSource.close();
+        };
+		
     </script>
 {% endblock %}

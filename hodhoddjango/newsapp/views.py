@@ -1,7 +1,6 @@
 from django.http import HttpResponse, JsonResponse, StreamingHttpResponse
 from django.shortcuts import render, redirect
 from .models import News, Topic, NewsAgency
-from hazm import Normalizer 
 import pandas as pd
 import jdatetime
 import datetime
@@ -43,6 +42,9 @@ def news(request):
     return render(request, "index.html")
 
 def stream_articles(request, count = 0):
+    start = time.time()
+    print('----------started----------')
+
     username = "mahdi"
 
     try:
@@ -57,8 +59,6 @@ def stream_articles(request, count = 0):
         model = SimpleModel()
         vectorizer = SimpleVectorizer()
 
-    normalizer = Normalizer()
-
 
     oldnews = News.objects.all()
 
@@ -69,8 +69,8 @@ def stream_articles(request, count = 0):
         x = oldnews[int(c*12):]
         
 
-
-    def regressor(x, normalizer, model, vectorizer):
+    print('loading news:',time.time()-start)
+    def regressor(x, model, vectorizer):
         # now = time.time()
         for thenews in x:
             n = {}
@@ -92,16 +92,16 @@ def stream_articles(request, count = 0):
             n["image"] = thenews.image
             n["link"] = thenews.link
         
-            n['stars'] = str(predict_star(n['title'] + "\n" + n['abstract'], model, vectorizer, normalizer))
+            n['stars'] = str(predict_star(n['title'] + "\n" + n['abstract'], model, vectorizer))
             if len(n['abstract']) > 150:
                 n['abstract'] = n['abstract'][:150] + '...'
 
             yield f"data: {json.dumps(n)}\n\n"
 
-
+        print('end regressing:',time.time()-start)
 
         
-    response = StreamingHttpResponse(regressor(x, normalizer, model, vectorizer), content_type='text/event-stream')
+    response = StreamingHttpResponse(regressor(x, model, vectorizer), content_type='text/event-stream')
     response['Cache-Control'] = 'no-cache'
     return response
     
@@ -151,10 +151,9 @@ def fromDbToDjango():
 
         news.save()
 
-def predict_star(text, model, vectorizer, normalizer):
+def predict_star(text, model, vectorizer):
     text = str(text)
-    text_normalized = normalizer.normalize(text)
-    text_vectorized = vectorizer.transform([text_normalized])
+    text_vectorized = vectorizer.transform([text])
     predicted_star = model.predict(text_vectorized)
     return predicted_star[0]
 

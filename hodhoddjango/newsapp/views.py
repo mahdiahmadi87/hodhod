@@ -42,55 +42,66 @@ def news(request):
     
     return render(request, "index.html")
 
-def stream_articles(request):
-    oldnews = News.objects.all()
-    suggested = []
-    
+def stream_articles(request, count = 0):
     username = "mahdi"
-    now = time.time()
-    for thenews in oldnews:
-        n = {}
-        date = int(thenews.published[:-2])
-        if (now - date) > 345600:
-            continue
-        n["id"] = thenews.id
-        n["title"] = thenews.title
-        # n["abstract"] = thenews.abstract[:150] + "..."
-        n["abstract"] = thenews.abstract
-        date = datetime.datetime.fromtimestamp(date)
-        date = pytz.timezone("GMT").localize(date)
-        date = date.astimezone(pytz.timezone("Asia/Tehran"))
-        jdate = jdatetime.datetime.fromgregorian(year=date.year,month=date.month,day=date.day, hour=date.hour, minute=date.minute, second=date.second)
-        n["published"] = str(jdate)
-        topic = thenews.topic.title
-        n["topic"] = topic
-        n["image"] = thenews.image
-        n["link"] = thenews.link
-        suggested.append(n)
-    
-    def regressor(news, username):
-        try:
-            filename = f"../pickles/{username}_regressor.pkl"
-            with open(filename, 'rb') as f:
-                model = pickle.load(f)
-                
-            filename = f"../pickles/{username}_vectorizer.pkl"
-            with open(filename, 'rb') as f:
-                vectorizer = pickle.load(f)
-        except:
-            model = SimpleModel()
-            vectorizer = SimpleVectorizer()
 
-        normalizer = Normalizer()
+    try:
+        filename = f"../pickles/{username}_regressor.pkl"
+        with open(filename, 'rb') as f:
+            model = pickle.load(f)
+            
+        filename = f"../pickles/{username}_vectorizer.pkl"
+        with open(filename, 'rb') as f:
+            vectorizer = pickle.load(f)
+    except:
+        model = SimpleModel()
+        vectorizer = SimpleVectorizer()
 
-        for e in news:
-            e['stars'] = predict_star(e['title'] + "\n" + e['abstract'], model, vectorizer, normalizer)
-            if len(e['abstract']) > 150:
-                e['abstract'] = e['abstract'][:150] + '...'
-            json.dumps(e)
-            yield f"data: {json.dumps(e)}\n\n"
+    normalizer = Normalizer()
+
+
+    oldnews = News.objects.all()
+
+    c = int(count)
+    try:
+        x = oldnews[int(c*12):int((c+1)*12)]
+    except:
+        x = oldnews[int(c*12):]
         
-    response = StreamingHttpResponse(regressor(suggested, username), content_type='text/event-stream')
+
+
+    def regressor(x, normalizer, model, vectorizer):
+        # now = time.time()
+        for thenews in x:
+            n = {}
+            n["id"] = thenews.id
+            n["title"] = thenews.title
+            # n["abstract"] = thenews.abstract[:150] + "..."
+            n["abstract"] = thenews.abstract
+            date = int(thenews.published[:-2])
+            date = datetime.datetime.fromtimestamp(date)
+            date = pytz.timezone("GMT").localize(date)
+            date = date.astimezone(pytz.timezone("Asia/Tehran"))
+            jdate = jdatetime.datetime.fromgregorian(year=date.year,month=date.month,day=date.day, hour=date.hour, minute=date.minute, second=date.second)
+            # if (int(now) - int(thenews.published[:-2])) > 345600:
+            #     print(int(now) - int(thenews.published[:-2]), jdate)
+            #     continue
+            n["published"] = str(jdate)
+            topic = thenews.topic.title
+            n["topic"] = topic
+            n["image"] = thenews.image
+            n["link"] = thenews.link
+        
+            n['stars'] = str(predict_star(n['title'] + "\n" + n['abstract'], model, vectorizer, normalizer))
+            if len(n['abstract']) > 150:
+                n['abstract'] = n['abstract'][:150] + '...'
+
+            yield f"data: {json.dumps(n)}\n\n"
+
+
+
+        
+    response = StreamingHttpResponse(regressor(x, normalizer, model, vectorizer), content_type='text/event-stream')
     response['Cache-Control'] = 'no-cache'
     return response
     
@@ -146,3 +157,5 @@ def predict_star(text, model, vectorizer, normalizer):
     text_vectorized = vectorizer.transform([text_normalized])
     predicted_star = model.predict(text_vectorized)
     return predicted_star[0]
+
+

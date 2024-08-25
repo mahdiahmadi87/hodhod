@@ -170,3 +170,18 @@ nav a:hover {
       margin-top: 1rem;
   }
 }
+
+button {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  border: none;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--primary);
+}

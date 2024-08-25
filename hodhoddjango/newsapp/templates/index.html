@@ -3,14 +3,17 @@
 
 {% block title %}هدخوان &ndash; HodKhan{% endblock %}
 
-{%block header%}
+{% block header %}
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
 
 {% block scripts %}
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-        let articles = [];
+		let articles = [];
+		let i = 0;
+		let eventSource = null;
+		let messageCount = 0;
 
 		function createArticleCard(article) {
 			const card = document.createElement('div');
@@ -36,7 +39,7 @@
 		}
 
         function renderArticles(category = 'all') {
-			articles = articles.sort((a,b) => b.stars - a.stars);
+			// articles = articles.sort((a,b) => b.stars - a.stars);
             const grid = document.getElementById('articlesGrid');
             grid.innerHTML = '';
             articles.forEach(article => {
@@ -44,6 +47,11 @@
                     grid.appendChild(createArticleCard(article));
                 }
             });
+			const button = document.createElement("button");
+			button.innerHTML = 'ادامه اخبار...';
+			button.style = 'grid-column: 1 / -1;';
+			button.addEventListener("click", start);
+			grid.appendChild(button);
         }
 
 		function handleStarClick(event) {
@@ -68,18 +76,46 @@
 
 		document.getElementById('articlesGrid').addEventListener('click', handleStarClick);
 
-		const eventSource = new EventSource('/api/stream-articles/');
-
-        eventSource.onmessage = function(event) {
-            const newArticle = JSON.parse(event.data);
-            articles.push(newArticle);
-            renderArticles();
-        };
-
-        eventSource.onerror = function(error) {
-            console.error("Error in EventSource:", error);
-            eventSource.close();
-        };
+		function start() {
+			// بستن EventSource قبلی (اگر وجود داشته باشد)
+			if (eventSource) {
+				eventSource.close();
+			}
 		
+			// ریست کردن تعداد پیام‌ها
+			messageCount = 0;
+		
+			// ایجاد EventSource جدید
+			console.log(`/api/stream-articles/${i}`);
+			eventSource = new EventSource(`/api/stream-articles/${i}`);
+		
+			eventSource.onmessage = function(event) {
+				const newArticle = JSON.parse(event.data);
+				newArticle['stars'] = Number(newArticle['stars']);
+				articles.push(newArticle);
+				renderArticles();
+		
+				// افزایش تعداد پیام‌های دریافتی
+				messageCount += 1;
+		
+				// اگر دو پیام دریافت شد، اتصال را ببندید
+				if (messageCount >= 12) {
+					eventSource.close();
+					i += 1; // برای رفتن به مجموعه بعدی اخبار
+				}
+			};
+		
+			eventSource.onerror = function(error) {
+				console.error("EventSource failed:", error);
+				eventSource.close();
+			};
+		
+			eventSource.onopen = function() {
+				console.log("EventSource connection opened.");
+			};
+		}
+		
+		// اولین بار تابع start را فراخوانی کنید
+		start();
     </script>
 {% endblock %}

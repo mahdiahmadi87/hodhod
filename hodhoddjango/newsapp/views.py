@@ -58,7 +58,6 @@ def stream_articles(request, count = 0):
     except:
         model = SimpleModel()
         vectorizer = SimpleVectorizer()
-
     print('loading pickles:',time.time()-start)
 
     oldnews = News.objects.all()
@@ -68,7 +67,10 @@ def stream_articles(request, count = 0):
     rating = readRating(username)
     for i, e in enumerate(rating):
         ids.append(e[0])
-        news.append(list(filter(lambda x: x.id == e[0], oldnews))[0])
+        try:
+            news.append(list(filter(lambda x: x.id == e[0], oldnews))[0])
+        except:
+            continue
         if i != 0 and int(rating[i][1]) < int(rating[i-1][1]):
             gaps[int(rating[i-1][1])] = i-1
     newNews = list(filter(lambda x: not x.id in ids, oldnews))

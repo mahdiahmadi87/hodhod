@@ -257,3 +257,54 @@ button:hover {
   background-color: var(--muted-foreground);
   color: var(--muted);
 }
+
+.signup-consent {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--card);
+  color: var(--card-foreground);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  z-index: 1000;
+  display: none;
+  animation: slideIn 0.5s ease-out;
+}
+
+.signup-content h3 {
+  margin-bottom: 10px;
+  color: var(--accent);
+}
+
+.signup-content p {
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+
+.signup-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-signup {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Vazirmatn', sans-serif;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-signup {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.btn-signup:hover {
+  background-color: var(--accent-foreground);
+  color: var(--accent);
+}

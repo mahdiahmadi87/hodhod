@@ -8,6 +8,8 @@ def record(username, news_id, n):
     conn.close()
 
 def rating(username, news_id, n):
+    if username == 'sampleUser':
+        return
     conn = sqlite3.connect('./../userNews.db')
     cursor = conn.cursor() 
     cursor.execute(f"INSERT INTO Rating VALUES ('{username}', '{news_id}', {n})")
@@ -21,6 +23,8 @@ def deleteRating(username):
     conn.close()
 
 def readRating(username):
+    if username == 'sampleUser':
+        return []
     conn = sqlite3.connect('./../userNews.db')
     x = conn.execute(f"SELECT newsId, rate from Rating ORDER BY -rate")
     x = x.fetchall() 

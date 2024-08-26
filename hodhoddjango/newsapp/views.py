@@ -34,10 +34,10 @@ class SimpleVectorizer:
 
 def news(request):
 
-    if request.user.is_authenticated:
-        username = request.user.username
-    else:
-        return redirect("/accounts/signup/")
+    # if request.user.is_authenticated:
+    #     username = request.user.username
+    # else:
+    #     username = "sampleUser"
     
     return render(request, "index.html")
 
@@ -45,8 +45,12 @@ def stream_articles(request, count = 0):
     start = time.time()
     print('----------started----------')
 
-    username = "mahdi"
 
+    if request.user.is_authenticated:
+        username = request.user.username
+    else:
+        username = "sampleUser"
+    
     try:
         filename = f"../pickles/{username}_regressor.pkl"
         with open(filename, 'rb') as f:
@@ -145,7 +149,10 @@ def newsRating(request):
     result = dict(request.GET)
     n = float(result["result[n]"][0])
     id = result["result[id]"][0]
-    username = request.user.username
+    if request.user.is_authenticated:
+        username = request.user.username
+    else:
+        return JsonResponse({"404":"User Not Found"})
     record(username, id, n)
     return JsonResponse({})
 

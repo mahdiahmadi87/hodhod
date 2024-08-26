@@ -15,7 +15,7 @@ import os
 module_path = os.path.abspath("../newsSelection/")
 sys.path.append(module_path)
 
-from main import record, rating
+from main import record, rating, deleteRating, readRating
 
 class SimpleModel:
     def __init__(self):
@@ -59,19 +59,39 @@ def stream_articles(request, count = 0):
         model = SimpleModel()
         vectorizer = SimpleVectorizer()
 
+    print('loading pickles:',time.time()-start)
 
     oldnews = News.objects.all()
+    news = []
+    ids = []
+    gaps = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+    rating = readRating(username)
+    for i, e in enumerate(rating):
+        ids.append(e[0])
+        news.append(list(filter(lambda x: x.id == e[0], oldnews))[0])
+        if i != 0 and int(rating[i][1]) < int(rating[i-1][1]):
+            gaps[int(rating[i-1][1])] = i-1
+    newNews = list(filter(lambda x: not x.id in ids, oldnews))
+    for e in newNews:
+        rate = predict_star(e.title + "\n" + e.abstract, model, vectorizer)
+        try:
+            i = gaps[int(rate)+1]
+        except:
+            i = 0
+        news.insert(i, e)
+
 
     c = int(count)
     try:
-        x = oldnews[int(c*12):int((c+1)*12)]
+        x = news[int(c*12):int((c+1)*12)]
     except:
-        x = oldnews[int(c*12):]
+        x = news[int(c*12):]
         
 
     print('loading news:',time.time()-start)
-    def regressor(x, model, vectorizer):
+    def regressor(x, model, vectorizer, username, count):
         # now = time.time()
+        news = []
         for thenews in x:
             n = {}
             n["id"] = thenews.id
@@ -96,14 +116,28 @@ def stream_articles(request, count = 0):
             if len(n['abstract']) > 150:
                 n['abstract'] = n['abstract'][:150] + '...'
 
+            news.append(n)
             yield f"data: {json.dumps(n)}\n\n"
 
         print('end regressing:',time.time()-start)
+        if count == 0:
+            saveAllNewsRating(username, model, vectorizer)
+        print('end saving:',time.time()-start)
 
         
-    response = StreamingHttpResponse(regressor(x, model, vectorizer), content_type='text/event-stream')
+    response = StreamingHttpResponse(regressor(x, model, vectorizer, username, c), content_type='text/event-stream')
     response['Cache-Control'] = 'no-cache'
     return response
+    
+
+def saveAllNewsRating(username, model, vectorizer):
+    deleteRating(username)
+    news = News.objects.all()
+    for i in news:
+        star = predict_star(i.title + "\n" + i.abstract, model, vectorizer)
+        rating(username, i.id, star)
+
+
     
 
 def newsRating(request):

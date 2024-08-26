@@ -14,6 +14,19 @@ def rating(username, news_id, n):
     conn.commit()   
     conn.close()
 
+def deleteRating(username):
+    conn = sqlite3.connect('./../userNews.db')
+    conn.execute(f"DELETE from Rating where username = '{username}'")
+    conn.commit()   
+    conn.close()
+
+def readRating(username):
+    conn = sqlite3.connect('./../userNews.db')
+    x = conn.execute(f"SELECT newsId, rate from Rating ORDER BY -rate")
+    x = x.fetchall() 
+    conn.close()
+    return x
+
 def selection(username, topics):
     conn = sqlite3.connect('./../userNews.db')
     cursor = conn.cursor() 

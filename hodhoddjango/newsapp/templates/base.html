@@ -14,6 +14,7 @@
 	{% block header %}
 	{% endblock %}
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -37,9 +38,64 @@
         <main class="grid" id="articlesGrid">
             <!-- Articles will be dynamically inserted here -->
         </main>
-        {% block content %}{% endblock %}
+        {% block content %}{% endblock %}        
     </div>
 	{% block scripts %}
 	{% endblock %}
+
+    <div id="cookie-consent" class="cookie-consent">
+        <div class="cookie-content">
+            <h3>استفاده از کوکی‌ها</h3>
+            <p>ما برای بهبود تجربه شما از کوکی‌ها استفاده می‌کنیم. با ادامه استفاده از این سایت، شما با استفاده ما از کوکی‌ها موافقت می‌کنید.</p>
+            <div class="cookie-buttons">
+                <button id="accept-cookies" class="btn-accept">قبول می‌کنم</button>
+                <button id="reject-cookies" class="btn-reject">رد می‌کنم</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cookieConsent = document.getElementById('cookie-consent');
+            const acceptButton = document.getElementById('accept-cookies');
+            const rejectButton = document.getElementById('reject-cookies');
+        
+            function showCookieConsent() {
+                cookieConsent.style.display = 'block';
+            }
+        
+            function hideCookieConsent() {
+                cookieConsent.style.display = 'none';
+            }
+        
+            function setCookieConsent(value) {
+                localStorage.setItem('cookieConsent', value);
+                hideCookieConsent();
+            }
+        
+            function checkCookieConsent() {
+                const consent = localStorage.getItem('cookieConsent');
+                if (!consent) {
+                    showCookieConsent();
+                }
+            }
+        
+            acceptButton.addEventListener('click', function() {
+                setCookieConsent('accepted');
+                // اینجا می‌توانید کد اضافی برای فعال کردن کوکی‌ها اضافه کنید
+            });
+        
+            rejectButton.addEventListener('click', function() {
+                setCookieConsent('rejected');
+                // اینجا می‌توانید کد اضافی برای غیرفعال کردن کوکی‌ها اضافه کنید
+            });
+        
+            // بررسی وضعیت رضایت کوکی در هنگام بارگذاری صفحه
+            checkCookieConsent();
+        });
+        
+        // برای تست: این خط را اضافه کنید تا مطمئن شوید popup نمایش داده می‌شود
+        // localStorage.removeItem('cookieConsent');
+    </script>
 </body>
 </html>

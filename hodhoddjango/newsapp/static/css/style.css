@@ -185,3 +185,75 @@ button {
 button:hover {
   background-color: var(--primary);
 }
+
+.cookie-consent {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--card);
+  color: var(--card-foreground);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  z-index: 1000;
+  display: none;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+      transform: translateY(100%);
+      opacity: 0;
+  }
+  to {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+.cookie-content h3 {
+  margin-bottom: 10px;
+  color: var(--accent);
+}
+
+.cookie-content p {
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+
+.cookie-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-accept, .btn-reject {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Vazirmatn', sans-serif;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-accept {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.btn-accept:hover {
+  background-color: var(--accent-foreground);
+  color: var(--accent);
+}
+
+.btn-reject {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.btn-reject:hover {
+  background-color: var(--muted-foreground);
+  color: var(--muted);
+}

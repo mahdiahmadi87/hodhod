@@ -60,7 +60,7 @@ def stream_articles(request, count = 0):
         vectorizer = SimpleVectorizer()
     print('loading pickles:',time.time()-start)
 
-    oldnews = News.objects.all()
+    oldnews = News.objects.filter(published__gte=int(time.time())-432000)
     news = []
     ids = []
     gaps = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
@@ -100,13 +100,12 @@ def stream_articles(request, count = 0):
             n["title"] = thenews.title
             # n["abstract"] = thenews.abstract[:150] + "..."
             n["abstract"] = thenews.abstract
-            date = int(thenews.published[:-2])
+            date = int(thenews.published)
             date = datetime.datetime.fromtimestamp(date)
             date = pytz.timezone("GMT").localize(date)
             date = date.astimezone(pytz.timezone("Asia/Tehran"))
             jdate = jdatetime.datetime.fromgregorian(year=date.year,month=date.month,day=date.day, hour=date.hour, minute=date.minute, second=date.second)
-            # if (int(now) - int(thenews.published[:-2])) > 345600:
-            #     print(int(now) - int(thenews.published[:-2]), jdate)
+            # if (int(now) - int(thenews.published)) > 432000:
             #     continue
             n["published"] = str(jdate)
             topic = thenews.topic.title
@@ -166,7 +165,7 @@ def fromDbToDjango():
         except:
             newsAgency = NewsAgency(title=row[2])
             newsAgency.save()
-        news = News(id=row[0], title=row[1], abstract=row[3], link=row[5], published=row[6], image=row[7], newsAgency=newsAgency)
+        news = News(id=row[0], title=row[1], abstract=row[3], link=row[5], published=int(row[6]), image=row[7], newsAgency=newsAgency)
         old = News.objects.all()
         if news in old:
             continue

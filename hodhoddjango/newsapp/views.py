@@ -67,7 +67,7 @@ def stream_articles(request, count = 0):
     oldnews = News.objects.filter(published__gte=int(time.time())-432000)
     news = []
     ids = []
-    gaps = {1: 75, 2: 60, 3: 45, 4: 30, 5: 0, 6: 0}
+    # gaps = {1: 75, 2: 60, 3: 45, 4: 30, 5: 0, 6: 0}
     rating = readRating(username)
     for i, e in enumerate(rating):
         ids.append(e[0])
@@ -75,16 +75,16 @@ def stream_articles(request, count = 0):
             news.append(list(filter(lambda x: x.id == e[0], oldnews))[0])
         except:
             continue
-        if i != 0 and int(rating[i][1]) < int(rating[i-1][1]):
-            gaps[int(rating[i-1][1])] = i-1
-    newNews = list(filter(lambda x: not x.id in ids, oldnews))
-    for e in newNews:
-        rate = predict_star(e.title + "\n" + e.abstract, model, vectorizer)
-        try:
-            i = gaps[int(rate)+1]
-        except:
-            i = 0
-        news.insert(i, e)
+        # if i != 0 and int(rating[i][1]) < int(rating[i-1][1]):
+            # gaps[int(rating[i-1][1])] = i-1
+    # newNews = list(filter(lambda x: not x.id in ids, oldnews))
+    # for e in newNews:
+    #     rate = predict_star(e.title + "\n" + e.abstract, model, vectorizer)
+    #     try:
+    #         i = gaps[int(rate)+1]
+    #     except:
+    #         i = 0
+    #     news.insert(i, e)
 
 
     c = int(count)

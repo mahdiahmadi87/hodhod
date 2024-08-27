@@ -67,7 +67,7 @@ def stream_articles(request, count = 0):
     oldnews = News.objects.filter(published__gte=int(time.time())-432000)
     news = []
     ids = []
-    gaps = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+    gaps = {1: 60, 2: 45, 3: 30, 4: 15, 5: 0, 6: 0}
     rating = readRating(username)
     for i, e in enumerate(rating):
         ids.append(e[0])

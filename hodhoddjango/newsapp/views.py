@@ -172,7 +172,7 @@ def fromDbToDjango():
         except:
             newsAgency = NewsAgency(title=row[2])
             newsAgency.save()
-        news = News(id=row[0], title=row[1], abstract=row[3], link=row[5], published=int(row[6]), image=row[7], newsAgency=newsAgency)
+        news = News(id=row[0], title=row[1], abstract=row[3], link=row[5], published=int(float(row[6])), image=row[7], newsAgency=newsAgency)
         old = News.objects.all()
         if news in old:
             continue

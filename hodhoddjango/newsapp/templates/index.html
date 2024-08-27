@@ -40,6 +40,12 @@
 
         function renderArticles(category = 'all') {
 			articles = articles.sort((a,b) => b.stars - a.stars);
+			let newArticle = []
+			for(let i = 1; i<article.length; i++){
+				if (article[i].id != article[i-1].id){
+					newArticle.push(article[i])
+				}
+			}
             const grid = document.getElementById('articlesGrid');
             grid.innerHTML = '';
             articles.forEach(article => {

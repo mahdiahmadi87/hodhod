@@ -39,7 +39,7 @@
 		}
 
         function renderArticles(category = 'all') {
-			// articles = articles.sort((a,b) => b.stars - a.stars);
+			articles = articles.sort((a,b) => b.stars - a.stars);
             const grid = document.getElementById('articlesGrid');
             grid.innerHTML = '';
             articles.forEach(article => {

@@ -65,39 +65,51 @@ def stream_articles(request, count = 0):
     print('loading pickles:',time.time()-start)
 
     oldnews = News.objects.filter(published__gte=int(time.time())-432000)
-    news = []
+    print(len(oldnews))
+
+    news = {0: [],1: [],2: [],3: [],4: [],5: []}
     ids = []
-    # gaps = {1: 75, 2: 60, 3: 45, 4: 30, 5: 0, 6: 0}
     rating = readRating(username)
-    for i, e in enumerate(rating):
-        ids.append(e[0])
+    for e in rating:
         try:
-            news.append(list(filter(lambda x: x.id == e[0], oldnews))[0])
+            x = list(filter(lambda x: x.id == e[0], oldnews))[0]
         except:
             continue
-        # if i != 0 and int(rating[i][1]) < int(rating[i-1][1]):
-            # gaps[int(rating[i-1][1])] = i-1
-    # newNews = list(filter(lambda x: not x.id in ids, oldnews))
-    # for e in newNews:
-    #     rate = predict_star(e.title + "\n" + e.abstract, model, vectorizer)
-    #     try:
-    #         i = gaps[int(rate)+1]
-    #     except:
-    #         i = 0
-    #     news.insert(i, e)
+        ids.append(e[0])
 
+        i = int(e[1])
+        if (i==5):
+            print(e[1])
+        if i in [0,1,2,3,4,5]:
+            news[i].append(x)
+        elif i > 5:
+            news[5].append(x)
+        else:
+            news[0].append(x)
+    
+    newNews = list(filter(lambda x: not x.id in ids, oldnews))
+    for e in newNews:
+        i = int(predict_star(e.title + "\n" + e.abstract, model, vectorizer))
 
+        if i in [0,1,2,3,4,5]:
+            news[i].insert(0, x)
+        elif i > 5:
+            news[5].insert(0, x)
+        else:
+            news[0].insert(0, x)
+
+    lnews = news[5] + news[4] + news[3] + news[2] + news[1] + news[0]
+    x = []
     c = int(count)
     try:
-        x = news[int(c*12):int((c+1)*12)]
+        x = lnews[int(c*12):int((c+1)*12)]
     except:
-        x = news[int(c*12):]
+        x = lnews[int(c*12):]
         
-
+    print("newNews:", len(newNews))
     print('loading news:',time.time()-start)
     def regressor(x, model, vectorizer, username, count):
         # now = time.time()
-        news = []
         for thenews in x:
             n = {}
             n["id"] = thenews.id
@@ -121,16 +133,14 @@ def stream_articles(request, count = 0):
             if len(n['abstract']) > 150:
                 n['abstract'] = n['abstract'][:150] + '...'
 
-            news.append(n)
             yield f"data: {json.dumps(n)}\n\n"
 
         print('end regressing:',time.time()-start)
-        if count == 0:
+        if int(count) == 0:
             saveAllNewsRating(username, model, vectorizer)
         print('end saving:',time.time()-start)
 
-        
-    response = StreamingHttpResponse(regressor(x, model, vectorizer, username, c), content_type='text/event-stream')
+    response = StreamingHttpResponse(regressor(x, model, vectorizer, username, count), content_type='text/event-stream')
     response['Cache-Control'] = 'no-cache'
     return response
     
@@ -141,9 +151,6 @@ def saveAllNewsRating(username, model, vectorizer):
     for i in news:
         star = predict_star(i.title + "\n" + i.abstract, model, vectorizer)
         rating(username, i.id, star)
-
-
-    
 
 def newsRating(request):
     result = dict(request.GET)
@@ -172,7 +179,7 @@ def fromDbToDjango():
         except:
             newsAgency = NewsAgency(title=row[2])
             newsAgency.save()
-        news = News(id=row[0], title=row[1], abstract=row[3], link=row[5], published=int(row[6]), image=row[7], newsAgency=newsAgency)
+        news = News(id=row[0], title=row[1], abstract=row[3], link=row[5], published=int(float(row[6])), image=row[7], newsAgency=newsAgency)
         old = News.objects.all()
         if news in old:
             continue

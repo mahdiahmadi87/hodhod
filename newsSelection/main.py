@@ -26,7 +26,7 @@ def readRating(username):
     if username == 'sampleUser':
         return []
     conn = sqlite3.connect('./../userNews.db')
-    x = conn.execute(f"SELECT newsId, rate from Rating ORDER BY -rate")
+    x = conn.execute(f"SELECT newsId, rate from Rating where username = '{username}' ORDER BY -rate")
     x = x.fetchall() 
     conn.close()
     return x

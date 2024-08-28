@@ -135,7 +135,7 @@ nav a:hover {
 }
 
 .card a {
-  flex-grow: 1;
+  flex-grow: 0;
   color: var(--accent);
   text-decoration: none;
   font-weight: bold;
@@ -148,9 +148,12 @@ nav a:hover {
 }
 
 .stars {
-  flex-grow: 0;
-  gap: 0.25rem;
+  flex-grow: 1;
+  gap: 0;
+  display: flex;
+  justify-content: center;
   align-self: flex-end;
+  margin-right: max-content;
 }
 
 .star {

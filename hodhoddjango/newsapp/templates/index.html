@@ -28,10 +28,11 @@
 					<h2>${article.title}</h2>
 					<p>${article.abstract}</p>
 					<div class="con-star">
-						<a href="${article.link}" target="_blank">ادامه مطلب</a>
+						<a href="${article.link}" target="_blank">${article.newsAgency}</a>
 						<div class="stars" data-article-id="${article.id}">
 							${[1,2,3,4,5].map(star => `<span class="star" data-rating="${star}" alt="${article.stars}">${star <= article.stars ? '★' : '☆'}</span>`).join('')}
 						</div>
+						<a href="${article.link}" target="_blank">ادامه مطلب</a>
 					</div>
 				</div>
 			`;

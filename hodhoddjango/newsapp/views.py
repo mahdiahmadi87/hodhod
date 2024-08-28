@@ -113,6 +113,7 @@ def stream_articles(request, count = 0):
         for thenews in x:
             n = {}
             n["id"] = thenews.id
+            n["newsAgency"] = thenews.newsAgency.title
             n["title"] = thenews.title
             # n["abstract"] = thenews.abstract[:150] + "..."
             n["abstract"] = thenews.abstract

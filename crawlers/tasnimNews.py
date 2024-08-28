@@ -24,39 +24,41 @@ def crawler():
 
     cursor = conn.cursor() 
     i = 1
-    for entry in feed.entries:  
-        siteId = entry.id
-        siteId = siteId[-7:]
-        if (siteId in siteIds):
-            print("Exist")
-            continue
+    for entry in feed.entries: 
+        try: 
+            siteId = entry.id
+            siteId = siteId[-7:]
+            if (siteId in siteIds):
+                print("Exist")
+                continue
 
-        try:
-            id = max(ids) + i
-            i += 1
+            try:
+                id = max(ids) + i
+                i += 1
+            except:
+                print("ID Not found! generated to 10100001")
+                id = "10100001"
+                ids = [10100001]
+
+
+            pub = entry.published_parsed
+            pub = time.mktime(pub)
+
+            abstract = entry.summary
+            print("\n" + abstract + ":")
+            topic = classifier(str(entry.title) + "\n" + abstract)
+            if topic == "استان‌ها":
+                topic = "ایران"
+            print(topic)
+
+            
+            image = entry.media_thumbnail[0]["url"]
+
+            cursor.execute(f"INSERT INTO News VALUES ('{id}', '{siteId}', 'TasnimNews', '{entry.title}', '{abstract}', '{topic}',  '{entry.link}', '{pub}', '{image}')")
+            conn.commit() 
+            print("Added")
         except:
-            print("ID Not found! generated to 10100001")
-            id = "10100001"
-            ids = [10100001]
-
-
-        pub = entry.published_parsed
-        pub = time.mktime(pub)
-
-        abstract = entry.summary
-        print("\n" + abstract + ":")
-        topic = classifier(str(entry.title) + "\n" + abstract)
-        if topic == "استان‌ها":
-            topic = "ایران"
-        print(topic)
-
-        
-        image = entry.media_thumbnail[0]["url"]
-
-        cursor.execute(f"INSERT INTO News VALUES ('{id}', '{siteId}', 'TasnimNews', '{entry.title}', '{abstract}', '{topic}',  '{entry.link}', '{pub}', '{image}')")
-        conn.commit() 
-        print("Added")
-        
+            continue
         
     print("commited")
     conn.close()

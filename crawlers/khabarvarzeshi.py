@@ -26,39 +26,43 @@ def crawler():
 
     cursor = conn.cursor() 
     i = 1
-    for entry in feed.entries:          
-        siteId = entry.id
-        x = re.findall(r"\/\d{6,}", siteId)
-        siteId = x[0][1:]
-        if (siteId in siteIds):
-            print("Exist")
-            continue
+    for entry in feed.entries:    
+        try:      
+            siteId = entry.id
+            x = re.findall(r"\/\d{6,}", siteId)
+            siteId = x[0][1:]
+            if (siteId in siteIds):
+                print("Exist")
+                continue
 
-        try:
-            id = max(ids) + i
-            i += 1
+            try:
+                id = max(ids) + i
+                i += 1
+            except:
+                print("ID Not found! generated to 20100001")
+                id = "20100001"
+                ids = [20100001]
+
+
+            pub = entry.published_parsed
+            pub = time.mktime(pub)
+
+            abstract = entry.summary
+            print("\n" + abstract + ":")
+            topic = classifier(str(entry.title) + "\n" + abstract)
+            if topic == "استان‌ها":
+                topic = "ایران"
+            print(topic)
+
+            
+            image = entry.links[1].href
+
+            cursor.execute(f"INSERT INTO News VALUES ('{id}', '{siteId}', 'KhabarVarzeshi', '{entry.title}', '{abstract}', '{topic}',  '{entry.link}', '{pub}', '{image}')")
+            conn.commit() 
+            print("Added")
         except:
-            print("ID Not found! generated to 20100001")
-            id = "20100001"
-            ids = [20100001]
-
-
-        pub = entry.published_parsed
-        pub = time.mktime(pub)
-
-        abstract = entry.summary
-        print("\n" + abstract + ":")
-        topic = classifier(str(entry.title) + "\n" + abstract)
-        if topic == "استان‌ها":
-            topic = "ایران"
-        print(topic)
-
-        
-        image = entry.links[1].href
-
-        cursor.execute(f"INSERT INTO News VALUES ('{id}', '{siteId}', 'KhabarVarzeshi', '{entry.title}', '{abstract}', '{topic}',  '{entry.link}', '{pub}', '{image}')")
-        conn.commit() 
-        print("Added")
+            continue
+            
 
     
     print("commited")

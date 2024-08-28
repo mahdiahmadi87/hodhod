@@ -26,41 +26,44 @@ def crawler():
 
     cursor = conn.cursor() 
     i = 1
-    for entry in feed.entries:          
-        siteId = entry.id
-        x = re.findall(r"\/\d{6,}", siteId)
-        siteId = x[0][1:]
-        if (siteId in siteIds):
-            print("Exist")
-            continue
+    for entry in feed.entries:  
+        try:        
+            siteId = entry.id
+            x = re.findall(r"\/\d{6,}", siteId)
+            siteId = x[0][1:]
+            if (siteId in siteIds):
+                print("Exist")
+                continue
 
-        try:
-            id = max(ids) + i
-            i += 1
+            try:
+                id = max(ids) + i
+                i += 1
+            except:
+                print("ID Not found! generated to 15100001")
+                id = "15100001"
+                ids = [15100001]
+
+
+            pub = entry.published_parsed
+            pub = time.mktime(pub)
+
+            abstract = entry.summary
+            abstract = re.findall(r"\<p\>.*\<\/p\>", abstract)[0][3:-4]
+            print("\n" + abstract + ":")
+            topic = classifier(str(entry.title) + "\n" + abstract)
+            if topic == "استان‌ها":
+                topic = "ایران"
+            print(topic)
+
+            
+            image = entry.summary
+            image = re.findall(r'src="https://.*q=\d+"', image)[0][5:-1]
+
+            cursor.execute(f"INSERT INTO News VALUES ('{id}', '{siteId}', 'Zommit', '{entry.title}', '{abstract}', '{topic}',  '{entry.link}', '{pub}', '{image}')")
+            conn.commit() 
+            print("Added")
         except:
-            print("ID Not found! generated to 15100001")
-            id = "15100001"
-            ids = [15100001]
-
-
-        pub = entry.published_parsed
-        pub = time.mktime(pub)
-
-        abstract = entry.summary
-        abstract = re.findall(r"\<p\>.*\<\/p\>", abstract)[0][3:-4]
-        print("\n" + abstract + ":")
-        topic = classifier(str(entry.title) + "\n" + abstract)
-        if topic == "استان‌ها":
-            topic = "ایران"
-        print(topic)
-
-        
-        image = entry.summary
-        image = re.findall(r'src="https://.*q=\d+"', image)[0][5:-1]
-
-        cursor.execute(f"INSERT INTO News VALUES ('{id}', '{siteId}', 'Zommit', '{entry.title}', '{abstract}', '{topic}',  '{entry.link}', '{pub}', '{image}')")
-        conn.commit() 
-        print("Added")
+            continue
 
     
     print("commited")

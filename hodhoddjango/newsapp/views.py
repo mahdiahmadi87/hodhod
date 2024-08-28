@@ -99,6 +99,12 @@ def stream_articles(request, count = 0):
             news[0].insert(0, e)
 
     lnews = news[5] + news[4] + news[3] + news[2] + news[1] + news[0]
+    print(news[5])
+    print(news[4])
+    print(news[3])
+    print(news[2])
+    print(news[1])
+    print(news[0])
     x = []
     c = int(count)
     try:
@@ -125,6 +131,7 @@ def stream_articles(request, count = 0):
             # if (int(now) - int(thenews.published)) > 432000:
             #     continue
             n["published"] = str(jdate)
+            n["published"] = "".join(list(map(lambda x: x in "1234567890" and "۰۱۲۳۴۵۶۷۸۹"[int(x)] or x, n["published"])))
             topic = thenews.topic.title
             n["topic"] = topic
             n["image"] = thenews.image

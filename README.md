@@ -17,7 +17,11 @@ git clone https://github.com/mahdiahmadi87/hodhod.git
 cd hodhoddjango
 python3 manage.py runserver
 ```
+## Download for Android
 
+you can download from this link:
+
+[Download](https://duckduckgo.com](https://github.com/mahdiahmadi87/hodhod/blob/fastLoad/hodhoddjango/newsapp/static/files/base.apk "github path")
 
 ## License
 

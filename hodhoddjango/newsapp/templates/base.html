@@ -24,9 +24,7 @@
                     <a>سلام {{user.username}}!</a>
                 {% endif %}
                 <a href="/">صفحه اصلی</a>
-                {% if request.user_agent.is_mobile %}
-                    <a href="{% static 'files/base.apk' %}">دانلود برنامه</a>
-                {% endif %}
+                <a href="{% static 'files/base.apk' %}">دانلود برنامه</a>
                 {% if user.is_authenticated %}
                     <a href="{% url 'logout' %}">خروج</a>
                 {% else %}

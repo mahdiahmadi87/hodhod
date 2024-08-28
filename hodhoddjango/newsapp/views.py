@@ -65,7 +65,6 @@ def stream_articles(request, count = 0):
     print('loading pickles:',time.time()-start)
 
     oldnews = News.objects.filter(published__gte=int(time.time())-432000)
-    print(len(oldnews))
 
     news = {0: [],1: [],2: [],3: [],4: [],5: []}
     ids = []
@@ -78,8 +77,6 @@ def stream_articles(request, count = 0):
         ids.append(e[0])
 
         i = int(e[1])
-        if (i==5):
-            print(e[1])
         if i in [0,1,2,3,4,5]:
             news[i].append(x)
         elif i > 5:
@@ -99,12 +96,7 @@ def stream_articles(request, count = 0):
             news[0].insert(0, e)
 
     lnews = news[5] + news[4] + news[3] + news[2] + news[1] + news[0]
-    print(news[5])
-    print(news[4])
-    print(news[3])
-    print(news[2])
-    print(news[1])
-    print(news[0])
+    lnews = list(dict.fromkeys(lnews))
     x = []
     c = int(count)
     try:

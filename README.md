@@ -21,7 +21,7 @@ python3 manage.py runserver
 
 you can download from this link:
 
-[Download](https://duckduckgo.com](https://github.com/mahdiahmadi87/hodhod/blob/fastLoad/hodhoddjango/newsapp/static/files/base.apk "github path")
+[Download](https://github.com/mahdiahmadi87/hodhod/blob/fastLoad/hodhoddjango/newsapp/static/files/base.apk "github path")
 
 ## License
 

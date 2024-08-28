@@ -117,4 +117,36 @@
 		// اولین بار تابع start را فراخوانی کنید
 		start();
     </script>
+
+	<div id="signup-consent" class="signup-consent">
+        <div class="signup-content"> 
+            <h3>ساخت حساب کاربری</h3>
+            <p>با ساخت حساب کاربری در سایت، اخبار مربوط به علاقه خود را ببینید!</p>
+            <div class="signup-buttons">
+                <a href="/accounts/signup"><button id="accept-signup" class="btn-signup">ساخت حساب</button></a>
+            </div>
+        </div>
+    </div>
+	
+	<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const signupConsent = document.getElementById('signup-consent');
+
+
+            function showSignupConsent() {
+                
+                signupConsent.style.display = 'block';
+            }
+    
+        
+            function checkSignupConsent() {
+                const consent = "{{user.is_authenticated}}"
+                if (consent == "False") {
+                    showSignupConsent();
+                }
+            }
+
+            checkSignupConsent();
+        });
+    </script>
 {% endblock %}

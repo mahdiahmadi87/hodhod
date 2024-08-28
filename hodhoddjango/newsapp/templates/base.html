@@ -44,16 +44,6 @@
 	{% endblock %}
 
     
-    <div id="signup-consent" class="signup-consent">
-        <div class="signup-content"> 
-            <h3>ساخت حساب کاربری</h3>
-            <p>با ساخت حساب کاربری در سایت، اخبار مربوط به علاقه خود را ببینید!</p>
-            <div class="signup-buttons">
-                <a href="/accounts/signup"><button id="accept-signup" class="btn-signup">ساخت حساب</button></a>
-            </div>
-        </div>
-    </div>
-    
     <div id="cookie-consent" class="cookie-consent">
         <div class="cookie-content">
             <h3>استفاده از کوکی‌ها</h3>
@@ -108,28 +98,5 @@
         // برای تست: این خط را اضافه کنید تا مطمئن شوید popup نمایش داده می‌شود
         // localStorage.removeItem('cookieConsent');
     </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const signupConsent = document.getElementById('signup-consent');
-
-
-            function showSignupConsent() {
-                
-                signupConsent.style.display = 'block';
-            }
-    
-        
-            function checkSignupConsent() {
-                const consent = "{{user.is_authenticated}}"
-                if (consent == "False") {
-                    showSignupConsent();
-                }
-            }
-
-            checkSignupConsent();
-        });
-    </script>
-
 </body>
 </html>

@@ -59,10 +59,13 @@ def user_login(request):
 # logout page
 def user_logout(request):
     logout(request)
-    return redirect('login')
+    return redirect('/')
 
 def privacy(requests):
     return render(requests, "privacy.html")
 
 def terms(requests):
     return render(requests, "terms.html")
+
+def csrf_failure(requests):
+    return redirect('/')

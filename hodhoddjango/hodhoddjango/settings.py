@@ -158,3 +158,5 @@ CSRF_TRUSTED_ORIGINS = ['https://hodkhan.ir', 'https://www.hodkhan.ir']
 CSRF_COOKIE_SECURE = True
 
 SESSION_COOKIE_SECURE = True
+
+CSRF_FAILURE_VIEW = 'account.views.csrf_failure'

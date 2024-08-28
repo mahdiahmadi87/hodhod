@@ -67,5 +67,5 @@ def privacy(requests):
 def terms(requests):
     return render(requests, "terms.html")
 
-def csrf_failure(requests):
+def csrf_failure(requests, reason=""):
     return redirect('/')

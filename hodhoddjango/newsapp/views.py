@@ -92,11 +92,11 @@ def stream_articles(request, count = 0):
         i = int(predict_star(e.title + "\n" + e.abstract, model, vectorizer))
 
         if i in [0,1,2,3,4,5]:
-            news[i].insert(0, x)
+            news[i].insert(0, e)
         elif i > 5:
-            news[5].insert(0, x)
+            news[5].insert(0, e)
         else:
-            news[0].insert(0, x)
+            news[0].insert(0, e)
 
     lnews = news[5] + news[4] + news[3] + news[2] + news[1] + news[0]
     x = []

@@ -18,20 +18,6 @@ sys.path.append(module_path)
 
 from main import record, rating, deleteRating, readRating
 
-class SimpleModel:
-    def __init__(self):
-        pass
-
-    def predict(self, input_text):
-        return [0]
-    
-class SimpleVectorizer:
-    def __init__(self):
-        pass
-
-    def transform(self, input):
-        return input
-
 
 def news(request):
 
@@ -52,26 +38,24 @@ def stream_articles(request, count = 0):
     else:
         username = "sampleUser"
     
-    # try:
-    with open(f'../pickles/{username}_MLP.pkl', 'rb') as f:
-        mlp = pickle.load(f)
-    with open(f'../pickles/{username}_tfidfTitle.pkl', 'rb') as f:
-        tfidf_title = pickle.load(f)
-    with open(f'../pickles/{username}_tfidfAbs.pkl', 'rb') as f:
-        tfidf_abstract = pickle.load(f)
-    with open(f'../pickles/{username}_agency.pkl', 'rb') as f:
-        trained_news_agency_columns = pickle.load(f)
-    # except:
-    #     mlp = SimpleModel()
-    #     tfidf_title = SimpleVectorizer()
-    #     tfidf_abstract = SimpleVectorizer()
-    #     with open(f'../pickles/mahdi2_agency.pkl', 'rb') as f:
-    #         trained_news_agency_columns = pickle.load(f)
+    try:
+        with open(f'../pickles/{username}_MLP.pkl', 'rb') as f:
+            mlp = pickle.load(f)
+        with open(f'../pickles/{username}_tfidfTitle.pkl', 'rb') as f:
+            tfidf_title = pickle.load(f)
+        with open(f'../pickles/{username}_tfidfAbs.pkl', 'rb') as f:
+            tfidf_abstract = pickle.load(f)
+        with open(f'../pickles/{username}_agency.pkl', 'rb') as f:
+            trained_news_agency_columns = pickle.load(f)
+        flag = False
+    except:
+        flag = True
+        mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns = 0, 0, 0, 0
             
     print('loading pickles:',time.time()-start)
 
-    # oldnews = News.objects.filter(published__gte=int(time.time())-432000)
-    oldnews = News.objects.all()
+    oldnews = News.objects.filter(published__gte=int(time.time())-432000)
+    # oldnews = News.objects.all()
 
     news = {0: [],1: [],2: [],3: [],4: [],5: []}
     ids = []
@@ -93,8 +77,11 @@ def stream_articles(request, count = 0):
     
     newNews = list(filter(lambda x: not x.id in ids, oldnews))
     for e in newNews:
-        new_data = {"title": e.title, "abstract": e.abstract, "newsAgency": e.newsAgency.title}
-        i = int(predict_star(new_data, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns))
+        if flag:
+            i = 0
+        else:        
+            new_data = {"title": e.title, "abstract": e.abstract, "newsAgency": e.newsAgency.title}
+            i = int(predict_star(new_data, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns))
 
         if i in [0,1,2,3,4,5]:
             news[i].insert(0, e)
@@ -116,7 +103,6 @@ def stream_articles(request, count = 0):
     print("newNews:", len(newNews))
     print('loading news:',time.time()-start)
     def regressor(x, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns, username, count):
-        print("mooooooooooz", x)
         # now = time.time()
         for thenews in x:
             n = {}
@@ -138,17 +124,19 @@ def stream_articles(request, count = 0):
             n["topic"] = topic
             n["image"] = thenews.image
             n["link"] = thenews.link
-            
-            new_data = {"title": n["title"], "abstract": n["abstract"], "newsAgency": n["newsAgency"]}
-            n['stars'] = str(predict_star(new_data, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns))
+            if flag:
+                n['stars'] = 0
+            else:
+                new_data = {"title": n["title"], "abstract": n["abstract"], "newsAgency": n["newsAgency"]}
+                n['stars'] = str(predict_star(new_data, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns))
             if len(n['abstract']) > 150:
                 n['abstract'] = n['abstract'][:150] + '...'
 
             yield f"data: {json.dumps(n)}\n\n"
 
         print('end regressing:',time.time()-start)
-        # if int(count) == 0:
-        #     saveAllNewsRating(username, model, vectorizer)
+        if int(count) == 0 and flag == False:
+            saveAllNewsRating(username, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns)
         print('end saving:',time.time()-start)
 
     response = StreamingHttpResponse(regressor(x, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns, username, count), content_type='text/event-stream')
@@ -156,11 +144,12 @@ def stream_articles(request, count = 0):
     return response
     
 
-def saveAllNewsRating(username, model, vectorizer):
+def saveAllNewsRating(username, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns):
     deleteRating(username)
     news = News.objects.all()
     for i in news:
-        star = predict_star(i.title + "\n" + i.abstract, model, vectorizer)
+        new_data = {"title": i.title, "abstract": i.abstract, "newsAgency": i.newsAgency.title}
+        star = int(predict_star(new_data, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns))
         rating(username, i.id, star)
 
 def newsRating(request):
@@ -212,11 +201,6 @@ def fromDbToDjango():
         news.save()
 
 def predict_star(new_data, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns):
-    # new_data = {
-    #     'title': "پیکسل بادز پرو ۲ معرفی شد؛ ایربادهای بی‌سیم و هوشمند گوگل با طراحی متفاوت",
-    #     'abstract': "گوگل به‌طور رسمی از هندزفری‌ بی‌سیم پیکسل بادز پرو ۲ با فناوری حذف‌نویز پیشرفته و تراشه‌ی اختصاصی تنسور A1 رونمایی کرد.",
-    #     'newsAgency': "Zommit" 
-    # }
     X_title_new = tfidf_title.transform([new_data['title']])
     X_abstract_new = tfidf_abstract.transform([new_data['abstract']])
     news_agency_dummies_new = pd.get_dummies(new_data['newsAgency'])

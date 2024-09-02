@@ -37,8 +37,8 @@ def regression():
 
         merged_df = pd.merge(user_news_df, filtered_news_df, left_on='newsId', right_on='id')
 
-        tfidf_title = TfidfVectorizer()
-        tfidf_abstract = TfidfVectorizer()
+        tfidf_title = TfidfVectorizer(stop_words=None, min_df=1)
+        tfidf_abstract = TfidfVectorizer(stop_words=None, min_df=1)
 
         X_title = tfidf_title.fit_transform(merged_df['title'])
         X_abstract = tfidf_abstract.fit_transform(merged_df['abstract'])

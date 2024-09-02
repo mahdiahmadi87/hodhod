@@ -1,105 +1,77 @@
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.model_selection import train_test_split
-from sklearn.neural_network import MLPRegressor
-from sklearn.metrics import mean_squared_error
-from hazm import Normalizer
+# Step 1: Import Necessary Libraries
 import sqlite3
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.neural_network import MLPRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+import numpy as np
 import pickle
 import time
 
-
-# فرض کنید داده‌های ما به شکل زیر هستند:
-# texts = ["متن اول", "متن دوم", ...]
-# scores = [0.5, 0.7, ...]
-
 def regression():
-    conn = sqlite3.connect('./../userNews.db')  
-    usernames = list(conn.execute("SELECT username from Viewed"))
+    user_news_conn = sqlite3.connect('./../userNews.db')
+    usernames = list(user_news_conn.execute("SELECT username from Viewed"))
     usernames = list(map(lambda x: x[0], usernames))
     usernames = list(set(usernames))
-    normalizer = Normalizer()
-    vectorizer = TfidfVectorizer()
+    user_news_df = pd.read_sql_query("SELECT * FROM Viewed", user_news_conn)
+    news_conn = sqlite3.connect('./../news.db')
+    news_df = pd.read_sql_query("SELECT * FROM News", news_conn)
+
     for username in usernames:
-        conn = sqlite3.connect('./../userNews.db')  
-        textIds, scores = [], []
-        stars = list(conn.execute(f"SELECT star from Viewed where username = '{username}'"))
-        newsIds = list(conn.execute(f"SELECT newsId from Viewed where username = '{username}'"))
-        isTrained = list(conn.execute(f"SELECT isTrained from Viewed where username = '{username}'"))
-        isTrained = list(filter(lambda x: x[0]==0, isTrained))
-        if len(isTrained) == 0:
-            print(f"{username} doesn't need to be the trained again!")
+        user_entries = user_news_df[user_news_df['username'] == username]
+        if user_entries['isTrained'].all() == 1:
+        # if False:
+            print(f"\033[34mAll entries for {username} are already trained. continuing...\033[0m")
             continue
         else:
-            conn.execute(f"UPDATE Viewed SET isTrained = 1 where username = '{username}'")
-        stars = list(map(lambda x: x[0], stars))
-        newsIds = list(map(lambda x: x[0], newsIds))
-        for i in range(len(newsIds)):
-            f = True
-            id = newsIds[i]
-            for j in range(i+1, len(newsIds)):
-                if id == newsIds[j]:
-                    f = False
-                    break
-            if f:
-                textIds.append(id)
-                scores.append(stars[i])
-        texts = []
-        conn.commit()
-        conn.close()
-        conn = sqlite3.connect('./../news.db')
-        i = 0
-        for id in textIds:
-            i += 1
-            title = list(conn.execute(f"SELECT title from News where id = '{id}'"))
-            abstract = list(conn.execute(f"SELECT abstract from News where id = '{id}'"))
-            try:
-                abstract = abstract[0][0]
-            except:
-                scores.pop(i)
-                continue
-            title = title[0][0]
-            text = title + "\n" +abstract
-            texts.append(text)
+            user_news_df.loc[user_news_df['username'] == username, 'isTrained'] = 0
+            news_ids_to_train = user_entries['newsId'].unique()
 
-        # نرمالایز کردن متن‌ها با استفاده از hazm
-        normalized_texts = [normalizer.normalize(text) for text in texts]
+        valid_news_ids = news_df['id'].unique()
+        user_news_df = user_news_df[user_news_df['newsId'].isin(valid_news_ids)]
 
-        # تبدیل متن‌ها به ویژگی‌های عددی با استفاده از TF-IDF
-        X = vectorizer.fit_transform(normalized_texts)
+        user_news_df = user_news_df.sort_values(by='star').drop_duplicates(subset=['username', 'newsId'], keep='last')
 
-        # تقسیم داده‌ها به دو بخش آموزش و تست
-        X_train, X_test, y_train, y_test = train_test_split(X, scores, test_size=0.2, random_state=42)
+        filtered_news_df = news_df[news_df['id'].isin(news_ids_to_train)]
 
-        # ساخت مدل MLPRegressor
-        model = MLPRegressor(hidden_layer_sizes=(100,), max_iter=500, random_state=42)
-        model.fit(X_train, y_train)
+        merged_df = pd.merge(user_news_df, filtered_news_df, left_on='newsId', right_on='id')
 
-        # پیش‌بینی روی داده‌های تست
-        y_pred = model.predict(X_test)
+        tfidf_title = TfidfVectorizer()
+        tfidf_abstract = TfidfVectorizer()
 
-        # ارزیابی مدل
+        X_title = tfidf_title.fit_transform(merged_df['title'])
+        X_abstract = tfidf_abstract.fit_transform(merged_df['abstract'])
+
+        news_agency_dummies = pd.get_dummies(merged_df['newsAgency'])
+
+        X = np.hstack((X_title.toarray(), X_abstract.toarray(), news_agency_dummies.values))
+        y = merged_df['star'].values
+
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+        mlp = MLPRegressor(random_state=42, max_iter=500)
+        mlp.fit(X_train, y_train)
+
+        y_pred = mlp.predict(X_test)
+
         mse = mean_squared_error(y_test, y_pred)
-        print(f"{username} Mean Squared Error: {mse}")
+        print(f"\033[32m{username} Mean Squared Error: {mse}\033[0m")
 
-        filename = f"../pickles/{username}_regressor.pkl"
+        user_news_df.loc[user_news_df['username'] == username, 'isTrained'] = 1
+        user_news_df.to_sql('Viewed', user_news_conn, if_exists='replace', index=False)
 
-        with open(filename, 'wb') as f:
-            pickle.dump(model, f)
+        news_agency_dummies_columns = news_agency_dummies.columns
 
-        filename = f"../pickles/{username}_vectorizer.pkl"
+        with open(f'../pickles/{username}_MLP.pkl', 'wb') as f:
+            pickle.dump(mlp, f)
+        with open(f'../pickles/{username}_tfidfTitle.pkl', 'wb') as f:
+            pickle.dump(tfidf_title, f)
+        with open(f'../pickles/{username}_tfidfAbs.pkl', 'wb') as f:
+            pickle.dump(tfidf_abstract, f)
+        with open(f'../pickles/{username}_agency.pkl', 'wb') as f:
+            pickle.dump(news_agency_dummies_columns, f)
 
-        with open(filename, 'wb') as f:
-            pickle.dump(vectorizer, f)
-
-
-        # with open(filename, 'rb') as f:
-        #     model = pickle.load(f)
-        
-        # new_text = "این یک متن جدید است"
-        # new_text_normalized = normalizer.normalize(new_text)
-        # new_text_vectorized = vectorizer.transform([new_text_normalized])
-        # predicted_score = model.predict(new_text_vectorized)
-        # print(f"Predicted Score: {predicted_score[0]}")
 
 if __name__ == "__main__":
     while True:

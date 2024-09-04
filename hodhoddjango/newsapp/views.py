@@ -146,7 +146,7 @@ def stream_articles(request, count = 0):
 
 def saveAllNewsRating(username, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns):
     deleteRating(username)
-    news = News.objects.all()
+    news = News.objects.filter(published__gte=int(time.time())-432000)
     for i in news:
         new_data = {"title": i.title, "abstract": i.abstract, "newsAgency": i.newsAgency.title}
         star = int(predict_star(new_data, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns))

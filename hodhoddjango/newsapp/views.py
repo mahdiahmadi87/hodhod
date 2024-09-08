@@ -1,6 +1,7 @@
 from django.http import HttpResponse, JsonResponse, StreamingHttpResponse
 from django.shortcuts import render, redirect
 from .models import News, Topic, NewsAgency
+from cryptography.fernet import Fernet
 import pandas as pd
 import numpy as np
 import jdatetime
@@ -21,22 +22,31 @@ from main import record, rating, deleteRating, readRating
 
 def news(request):
 
-    # if request.user.is_authenticated:
-    #     username = request.user.username
-    # else:
-    #     username = "sampleUser"
-    
-    return render(request, "index.html")
-
-def stream_articles(request, count = 0):
-    start = time.time()
-    print('----------started----------')
-
-
     if request.user.is_authenticated:
         username = request.user.username
     else:
         username = "sampleUser"
+    
+    return render(request, "index.html", context={"username": username})
+
+
+def iframe(request, token):
+    "gAAAAABm3be1eyCE1uUXI299crKNk4sjTWp-MX0nW46zbvGRuPNffSv9sVF6v_liQlV3mRyOWn2hdiEC4pTmEEVWYYyLi-XAOg=="
+
+    key = b'OtZTvYF2Bhb6u41srDCGO8tbi63366YNTMkn2thZRO0='
+    fernet = Fernet(key)
+
+    # encMessage = fernet.encrypt(message.encode())
+
+    username = fernet.decrypt(token.encode()).decode()
+    print("USERNAME:", username)
+    return render(request, "iframe.html", context={"username": username})
+
+
+def stream_articles(request, username, count = 0):
+    start = time.time()
+    print('----------started----------')
+
     
     try:
         with open(f'../pickles/{username}_MLP.pkl', 'rb') as f:

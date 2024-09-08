@@ -21,7 +21,8 @@ from . import views
 urlpatterns = [
     path("", views.news, name="index"),
     path("news/", views.news, name="news"),
+    path("iframe/<token>", views.iframe, name="news"),
     path("newsRating/", views.newsRating, name='newsRating'),
     path("dbToDjango/", views.dbToDjango, name="dbToDjango"),
-    path('api/stream-articles/<count>', views.stream_articles, name='stream_articles'),
+    path('api/stream-articles/<username>/<count>', views.stream_articles, name='stream_articles'),
 ]

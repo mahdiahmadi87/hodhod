@@ -1,13 +1,27 @@
-{% extends "base.html" %}
+{% load socialaccount %} 
 {% load static %}
+<!DOCTYPE html            const grid = document.getElementById('articlesGrid');
+>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HodKhan</title>
+    <meta name="description" content="هدخوان، خبرخوان سلیمان. خبرهای مورد علاقه خود را با هدخوان پیدا کنید">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/icon.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 
-{% block title %}هدخوان &ndash; HodKhan{% endblock %}
+<body>
+    <div class="container">
 
-{% block header %}
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-{% endblock %}
-
-{% block scripts %}
+        <main class="grid" id="articlesGrid">
+            <!-- Articles will be dynamically inserted here -->
+        </main>
+        {% block content %}{% endblock %}        
+    </div>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		let articles = [];
@@ -86,7 +100,7 @@
 			messageCount = 0;
 		
 			// ایجاد EventSource جدید
-			console.log(`/api/stream-articles/${i}`);
+			console.log(`/api/stream-articles/{{username}}/${i}`);
 			eventSource = new EventSource(`/api/stream-articles/{{username}}/${i}`);
 		
 			eventSource.onmessage = function(event) {
@@ -119,35 +133,5 @@
 		start();
     </script>
 
-	<div id="signup-consent" class="signup-consent">
-        <div class="signup-content"> 
-            <h3>ساخت حساب کاربری</h3>
-            <p>با ساخت حساب کاربری در سایت، اخبار مربوط به علاقه خود را ببینید!</p>
-            <div class="signup-buttons">
-                <a href="/accounts/signup"><button id="accept-signup" class="btn-signup">ساخت حساب</button></a>
-            </div>
-        </div>
-    </div>
-	
-	<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const signupConsent = document.getElementById('signup-consent');
-
-
-            function showSignupConsent() {
-                
-                signupConsent.style.display = 'block';
-            }
-    
-        
-            function checkSignupConsent() {
-                const consent = "{{user.is_authenticated}}"
-                if (consent == "False") {
-                    showSignupConsent();
-                }
-            }
-
-            checkSignupConsent();
-        });
-    </script>
-{% endblock %}
+</body>
+</html>

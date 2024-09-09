@@ -175,7 +175,10 @@ def fromDbToDjango():
 
     conn = sqlite3.connect('./../news.db')
 
-    cursor = list(conn.execute(f"SELECT id, title, newsAgency, abstract, topic, link, published, image from News"))
+    x = list(News.objects.all().values("id"))
+    ids = list(map(lambda x: x['id'], x))
+
+    cursor = list(conn.execute(f"SELECT id, title, newsAgency, abstract, topic, link, published, image from News where id not in ({', '.join(ids)})"))
 
     for row in cursor:
         try:
@@ -184,10 +187,6 @@ def fromDbToDjango():
             newsAgency = NewsAgency(title=row[2])
             newsAgency.save()
         news = News(id=row[0], title=row[1], abstract=row[3], link=row[5], published=int(float(row[6])), image=row[7], newsAgency=newsAgency)
-        old = News.objects.all()
-        if news in old:
-            continue
-        news.save()
 
         topic = row[4]
         oldtopics = Topic.objects.all()

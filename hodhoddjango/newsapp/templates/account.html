@@ -7,9 +7,14 @@
     <link rel="stylesheet" href="{% static 'css/account.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        .grid {
+        .grid2 {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+        }
+        .grid2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
         .card iframe {
@@ -27,11 +32,31 @@
 {% endblock %}
 
 {% block body %}
+    <h1>سلام {{user.username}}!</h1>
+    <main class="grid2" id="articlesGrid">
+        <div class="card">
+            <div class="card-content">
+                <h1>تعداد کل اخبار</h1>
+                <h2 style="text-align: center;">{{news}} خبر</h2>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <h1>تعداد خبرگذاری‌ها</h1>
+                <h2 style="text-align: center;">{{newsAgency}} خبرگذاری</h2>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <h1>اخبار امتیاز داده‌شده</h1>
+                <h2 style="text-align: center;">{{viewed}} خبر</h2>
+            </div>
+        </div>
+    </main>
+    <br>
     {% if len == 0 %}
-        <h1>سلام {{user.username}}!</h1>
         <h2>شما هیچ آی‌فریمی ندارید!</h2>
     {% else %}
-        <h1>سلام {{user.username}}!</h1>
         <h2>آی‌فریم های شما:</h2>
     {% endif %}
 {% endblock %}

@@ -1,14 +1,12 @@
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib.auth.decorators import login_required
+from newsapp.models import IFrame, News, NewsAgency
 from django.shortcuts import render, redirect
 from .forms import SignupForm, LoginForm
-from newsapp.models import IFrame
+import sqlite3
 
 
 
-# Create your views here.
-
-# signup page
 def user_signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
@@ -42,7 +40,6 @@ def user_signup(request):
         form = SignupForm()
     return render(request, 'signup.html', {'form': form, 'status': True})
 
-# login page
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -59,7 +56,6 @@ def user_login(request):
         form = LoginForm()
     return render(request, 'login.html', {'form': form, "status" : True})
 
-# logout page
 def user_logout(request):
     logout(request)
     return redirect('/')
@@ -76,4 +72,9 @@ def csrf_failure(requests, reason=""):
 @login_required(login_url='/accounts/login')
 def account(requests):
     iframes = IFrame.objects.filter(user=requests.user)
-    return render(requests, "account.html", context={"iframes": iframes, "len": len(iframes)})
+    news = len(News.objects.all())
+    newsAgency = len(NewsAgency.objects.all())
+    conn = sqlite3.connect('./../userNews.db')
+    viewed = conn.execute(f'SELECT newsId from Viewed where username = "{requests.user.username}"')
+    viewed = len(viewed.fetchall())
+    return render(requests, "account.html", context={"iframes": iframes, "len": len(iframes), "news": news, "newsAgency": newsAgency, "viewed": viewed})

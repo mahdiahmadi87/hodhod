@@ -28,6 +28,52 @@
             flex-direction: column;
             height: calc(100% - 400px);
         }
+        #popupContainer {
+            position: relative;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        #popupDialog {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            width: auto;
+            margin: auto;   
+        }
+
+        button:hover {
+            background-color: var(--accent-foreground);
+        }
+        .NA{
+            background-color: red;
+        }
     </style>
 {% endblock %}
 
@@ -50,7 +96,10 @@
             <div class="card-content">
                 <h1>اخبار امتیاز داده‌شده</h1>
                 <h2 style="text-align: center;">{{viewed}} خبر</h2>
-            </div>
+                <br>
+                <button onclick="openFn()">
+                    پاک کردن اخبار دیده شده
+                </button>
         </div>
     </main>
     <br>
@@ -73,4 +122,50 @@
             </div>
         {% endfor %}
     {% endif %}
+
+    <div id="overlay" class="hidden"></div>
+    <div id="popupDialog" class="hidden">
+        <p>
+            آیا مطمئنید میخواهید اطلاعات مربوط به اخبار دیده شده را پاک کنید؟
+        </p>
+        <button onclick="deleteFeed('yes')">
+            بله
+        </button>
+        <button onclick="deleteFeed('no')">
+            خیر
+        </button>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function openFn() {
+            const over =
+                document.getElementById(
+                    "overlay"
+                );
+            const popDialog =
+                document.getElementById(
+                    "popupDialog"
+                );
+            over.classList.toggle("hidden");
+            popDialog.classList.toggle(
+                "hidden"
+            );
+            popDialog.style.opacity =
+                popDialog.style.opacity ===
+                    "1"
+                    ? "0"
+                    : "1";
+
+        }
+
+        function deleteFeed(stat) {
+            openFn()
+            if (stat == "yes"){
+                document.location.href='/accounts/deleteFeed';
+            }
+        }
+    </script>
 {% endblock %}

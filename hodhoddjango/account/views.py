@@ -4,6 +4,7 @@ from newsapp.models import IFrame, News, NewsAgency
 from django.shortcuts import render, redirect
 from .forms import SignupForm, LoginForm
 import sqlite3
+import os
 
 
 
@@ -56,6 +57,7 @@ def user_login(request):
         form = LoginForm()
     return render(request, 'login.html', {'form': form, "status" : True})
 
+@login_required(login_url='/accounts/login')
 def user_logout(request):
     logout(request)
     return redirect('/')
@@ -78,3 +80,18 @@ def account(requests):
     viewed = conn.execute(f'SELECT newsId from Viewed where username = "{requests.user.username}"')
     viewed = len(viewed.fetchall())
     return render(requests, "account.html", context={"iframes": iframes, "len": len(iframes), "news": news, "newsAgency": newsAgency, "viewed": viewed})
+
+@login_required(login_url='/accounts/login')
+def deleteFeed(requests):
+    username = requests.user.username
+    conn = sqlite3.connect('./../userNews.db')
+    conn.execute(f'DELETE from Viewed where username = "{username}"')
+    conn.execute(f'DELETE from Rating where username = "{username}"')
+    conn.commit()
+    conn.close()
+    if os.path.exists(f"./../pickles/{username}_MLP.pkl"):
+        os.remove(f"./../pickles/{username}_agency.pkl")
+        os.remove(f"./../pickles/{username}_MLP.pkl")
+        os.remove(f"./../pickles/{username}_tfidfAbs.pkl")
+        os.remove(f"./../pickles/{username}_tfidfTitle.pkl")
+    return redirect('/accounts/')

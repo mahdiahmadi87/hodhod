@@ -21,7 +21,10 @@
             <div class="logo">هُدخوان</div>
             <nav>
                 {% if user.is_authenticated %}
-                    <a>سلام {{user.username}}!</a>
+                    <a href="{% url 'account' %}">حساب کاربری</a>
+                {% endif %}
+                {% if user.is_staff %}
+                <a href="/admin">ادمین</a>
                 {% endif %}
                 <a href="/">صفحه اصلی</a>
                 <a href="{% static 'files/base.apk' %}">دانلود برنامه</a>
@@ -35,8 +38,10 @@
             </nav>
         </header>
 
+        {% block body %}{% endblock %}        
         <main class="grid" id="articlesGrid">
             <!-- Articles will be dynamically inserted here -->
+            {% block main %}{% endblock %}        
         </main>
         {% block content %}{% endblock %}        
     </div>

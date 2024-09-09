@@ -1,4 +1,4 @@
-from .models import News, Topic, NewsAgency
+from .models import News, Topic, NewsAgency, IFrame
 from django.contrib import admin
 
 # Register your models here.
@@ -6,3 +6,4 @@ from django.contrib import admin
 admin.site.register(NewsAgency)
 admin.site.register(Topic)
 admin.site.register(News)
+admin.site.register(IFrame)

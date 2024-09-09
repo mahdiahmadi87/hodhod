@@ -1,6 +1,9 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from .forms import SignupForm, LoginForm
+from newsapp.models import IFrame
+
 
 
 # Create your views here.
@@ -69,3 +72,8 @@ def terms(requests):
 
 def csrf_failure(requests, reason=""):
     return redirect('/')
+
+@login_required(login_url='/accounts/login')
+def account(requests):
+    iframes = IFrame.objects.filter(user=requests.user)
+    return render(requests, "account.html", context={"iframes": iframes, "len": len(iframes)})

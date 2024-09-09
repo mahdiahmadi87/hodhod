@@ -1,7 +1,6 @@
 from django.http import HttpResponse, JsonResponse, StreamingHttpResponse
 from django.shortcuts import render, redirect
-from .models import News, Topic, NewsAgency
-from cryptography.fernet import Fernet
+from .models import News, Topic, NewsAgency, IFrame
 import pandas as pd
 import numpy as np
 import jdatetime
@@ -29,19 +28,14 @@ def news(request):
     
     return render(request, "index.html", context={"username": username})
 
-
 def iframe(request, token):
-    "gAAAAABm3be1eyCE1uUXI299crKNk4sjTWp-MX0nW46zbvGRuPNffSv9sVF6v_liQlV3mRyOWn2hdiEC4pTmEEVWYYyLi-XAOg=="
+    iframe = IFrame.objects.filter(token=token)
+    if len(iframe) == 0:
+        return JsonResponse({"404": "IFrame not found!"})
+    iframe = iframe[0]
 
-    key = b'OtZTvYF2Bhb6u41srDCGO8tbi63366YNTMkn2thZRO0='
-    fernet = Fernet(key)
-
-    # encMessage = fernet.encrypt(message.encode())
-
-    username = fernet.decrypt(token.encode()).decode()
-    print("USERNAME:", username)
+    username = iframe.user.username
     return render(request, "iframe.html", context={"username": username})
-
 
 def stream_articles(request, username, count = 0):
     start = time.time()
@@ -111,6 +105,7 @@ def stream_articles(request, username, count = 0):
         
 
     print("newNews:", len(newNews))
+    print("newsLen:", len(lnews))
     print('loading news:',time.time()-start)
     def regressor(x, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns, username, count):
         # now = time.time()
@@ -152,7 +147,6 @@ def stream_articles(request, username, count = 0):
     response = StreamingHttpResponse(regressor(x, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns, username, count), content_type='text/event-stream')
     response['Cache-Control'] = 'no-cache'
     return response
-    
 
 def saveAllNewsRating(username, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns):
     deleteRating(username)

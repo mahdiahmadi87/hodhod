@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}حساب کاربری{% endblock %}
+
+{% block header %}
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% if len == 0 %}
+        <h1>سلام {{user.username}}!</h1>
+        <h2>شما هیچ آی‌فریمی ندارید!</h2>
+    {% else %}
+        <h1>سلام {{user.username}}!</h1>
+        <h2>آی‌فریم های شما:</h2>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    {% if len != 0 %}
+        {% for iframe in iframes %}
+            <div class="card">
+                <iframe src="/iframe/{{iframe.token}}"></iframe>
+                <div class="card-content">
+                    <h2>{{iframe.title}}</h2>
+                    <p>{{iframe.token}}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 # Create your models here.
@@ -25,8 +26,15 @@ class News(models.Model):
     published = models.IntegerField(null=True)
     image = models.CharField(max_length=1000, null=True)
 
+    def __str__(self):
+        return self.title
+    
+class IFrame(models.Model):
+    title = models.CharField(max_length=500)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    token = models.CharField(max_length=1000, null=True)
 
 
     def __str__(self):
-        return self.title
+        return self.user.username + ": " + self.title + ", " + self.token
     

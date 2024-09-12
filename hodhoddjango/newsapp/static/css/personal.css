@@ -1,0 +1,86 @@
+.grid2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 2rem;
+}
+.grid2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+.card iframe {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+.card-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 400px);
+}
+#popupContainer {
+    position: relative;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+#popupDialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+button {
+    padding: 10px 20px;
+    background-color: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    width: auto;
+    margin: auto;   
+}
+
+button:hover {
+    background-color: var(--accent-foreground);
+}
+.NA{
+    background-color: red;
+}
+
+.iframeBox{
+    display: flex; 
+    gap: 5rem;
+}
+
+.codebox {
+    flex-grow: 1;
+    direction: ltr;
+    border: 1px solid black;
+    border-radius: 1rem;
+    background-color: var(--background);
+    width: fit-content;
+    float: left;    
+    padding: 10px;
+}
+.codebox code {
+    font-size:0.9em;
+}

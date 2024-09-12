@@ -1,6 +1,7 @@
 import feedparser
 import requests
 import sqlite3
+import signal
 import time
 import sys
 import os
@@ -9,6 +10,13 @@ module_path = os.path.abspath("../classification/")
 sys.path.append(module_path)
 
 from main import classifier
+
+class TimeoutException(Exception):
+    pass
+
+def timeout_handler(signum, frame):
+    raise TimeoutException()
+
 
 def crawler():
     feed = feedparser.parse("https://www.tasnimnews.com/fa/rss/feed/0/8/0/%D8%A2%D8%AE%D8%B1%DB%8C%D9%86-%D8%AE%D8%A8%D8%B1%D9%87%D8%A7%DB%8C-%D8%B1%D9%88%D8%B2")
@@ -71,9 +79,21 @@ def crawler():
 
 if __name__ == "__main__":
     while True:
-        print(u"\033[92mTasnim Crawler Is Running!\033[0m")
-        crawler()
-        print(u"\033[95mEnd Crawling!\033[0m")
+        print(u"\033[34mTasnim Crawler Is Running!\033[0m")
+        try:
+            signal.signal(signal.SIGALRM, timeout_handler)
+            signal.alarm(30)
+            
+            crawler()
+            
+            signal.alarm(0)
+
+        except TimeoutException:
+            print("\033[31mExecution time took too long!\033[0m")
+            continue
+
+        except Exception as e:
+            print(f"\033[31mAn error occurred!\033[0m")
+            continue
+        print(u"\033[35mEnd Crawling!\033[0m")
         time.sleep(1)
-
-

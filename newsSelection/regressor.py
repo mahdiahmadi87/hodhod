@@ -1,13 +1,20 @@
-# Step 1: Import Necessary Libraries
-import sqlite3
-import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
+import pandas as pd
 import numpy as np
+import sqlite3
+import signal
 import pickle
 import time
+
+class TimeoutException(Exception):
+    pass
+
+def timeout_handler(signum, frame):
+    raise TimeoutException()
+
 
 def regression():
     user_news_conn = sqlite3.connect('./../userNews.db')
@@ -75,7 +82,21 @@ def regression():
 
 if __name__ == "__main__":
     while True:
-        print(u"\033[92mRegressor Is Running!\033[0m")
-        regression()
-        print(u"\033[95mEnd Regression!\033[0m")
-        time.sleep(120)
+        print(u"\033[34mRegressor Is Running!\033[0m")
+        try:
+            signal.signal(signal.SIGALRM, timeout_handler)
+            signal.alarm(60)
+            
+            regression()
+
+            signal.alarm(0)
+
+        except TimeoutException:
+            print("\033[31mExecution time took too long!\033[0m")
+            continue
+
+        except Exception as e:
+            print(f"\033[31mAn error occurred!\033[0m")
+            continue
+        print(u"\033[35mEnd Regression!\033[0m")
+        time.sleep(60)

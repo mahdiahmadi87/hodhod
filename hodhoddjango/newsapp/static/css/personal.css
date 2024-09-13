@@ -68,7 +68,7 @@ button:hover {
 
 .iframeBox{
     display: flex; 
-    gap: 5rem;
+    gap: 1rem;
 }
 
 .codebox {
@@ -80,6 +80,7 @@ button:hover {
     width: fit-content;
     float: left;    
     padding: 10px;
+    overflow-x: auto;
 }
 .codebox code {
     font-size:0.9em;

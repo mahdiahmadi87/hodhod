@@ -69,6 +69,7 @@ def crawler():
             conn.commit() 
             print("Added")
         except:
+            i -= 1
             continue
             
 

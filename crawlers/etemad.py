@@ -71,6 +71,7 @@ def crawler():
             conn.commit() 
             print("Added")
         except:
+            i -= 1
             continue
 
     
@@ -78,6 +79,7 @@ def crawler():
     conn.close()
     try:
         if i > 1:
+            print(i)
             print(requests.get("http://51.68.137.82:11111/dbToDjango/"))
     except:
         return

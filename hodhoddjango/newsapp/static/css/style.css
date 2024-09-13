@@ -292,7 +292,7 @@ button:hover {
   gap: 10px;
 }
 
-.btn-signup {
+.btn-signup, .btn-login {
   padding: 8px 15px;
   border: none;
   border-radius: 5px;
@@ -310,4 +310,14 @@ button:hover {
 .btn-signup:hover {
   background-color: var(--accent-foreground);
   color: var(--accent);
+}
+
+.btn-login {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.btn-login:hover {
+  background-color: var(--muted-foreground);
+  color: var(--muted);
 }

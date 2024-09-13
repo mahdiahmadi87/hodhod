@@ -7,7 +7,20 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
 
+
+
 {% block scripts %}
+	<div id="signup-consent" class="signup-consent">
+        <div class="signup-content"> 
+            <h3>ساخت حساب کاربری</h3>
+            <p>با ساخت حساب کاربری در سایت، اخبار مربوط به علاقه خود را ببینید!</p>
+            <div class="signup-buttons">
+				<a href="/accounts/login"><button id="reject-login" class="btn-login">ورود</button></a>
+                <a href="/accounts/signup"><button id="accept-signup" class="btn-signup">ساخت حساب</button></a>
+            </div>
+        </div>
+    </div>
+
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		let articles = [];
@@ -118,16 +131,6 @@
 		// اولین بار تابع start را فراخوانی کنید
 		start();
     </script>
-
-	<div id="signup-consent" class="signup-consent">
-        <div class="signup-content"> 
-            <h3>ساخت حساب کاربری</h3>
-            <p>با ساخت حساب کاربری در سایت، اخبار مربوط به علاقه خود را ببینید!</p>
-            <div class="signup-buttons">
-                <a href="/accounts/signup"><button id="accept-signup" class="btn-signup">ساخت حساب</button></a>
-            </div>
-        </div>
-    </div>
 	
 	<script>
         document.addEventListener('DOMContentLoaded', function() {

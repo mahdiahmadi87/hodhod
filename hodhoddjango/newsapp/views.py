@@ -80,6 +80,9 @@ def stream_articles(request, username, count = 0):
             news[0].append(x)
     
     newNews = list(filter(lambda x: not x.id in ids, oldnews))
+    print("all new news:",len(newNews))
+    newNews = list(filter(lambda x: int(time.time()) - int(x.published) < 432000, oldnews))
+    print("filtered new news:",len(newNews))
     for e in newNews:
         if flag:
             i = 0
@@ -104,7 +107,6 @@ def stream_articles(request, username, count = 0):
         x = lnews[int(c*12):]
         
 
-    print("newNews:", len(newNews))
     print("newsLen:", len(lnews))
     print('loading news:',time.time()-start)
     def regressor(x, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns, username, count):

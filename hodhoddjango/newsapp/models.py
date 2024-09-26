@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from uuid import uuid4
 
 # Create your models here.
 
@@ -32,9 +33,18 @@ class News(models.Model):
 class IFrame(models.Model):
     title = models.CharField(max_length=500)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    token = models.CharField(max_length=1000, null=True)
+    token = models.UUIDField(unique=True, default=uuid4)
 
 
     def __str__(self):
-        return self.user.username + ": " + self.title + ", " + self.token
+        return self.user.username + ": " + self.title + ", " + self.token.hex
+    
+
+class API(models.Model):
+    title = models.CharField(max_length=500)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    token = models.UUIDField(unique=True, default=uuid4)
+
+    def __str__(self):
+        return self.user.username + ": " + self.title + ", " + self.token.hex
     

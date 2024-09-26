@@ -321,3 +321,38 @@ button:hover {
   background-color: var(--muted-foreground);
   color: var(--muted);
 }
+
+.loading{
+  margin: auto;
+  margin-top: 5rem;
+  display: inline-grid;
+}
+.loader {
+  margin: auto;
+  display: inline-grid;
+  width: 80px;
+  aspect-ratio: 1;
+}
+.loader:before,
+.loader:after {
+  content:"";
+  grid-area: 1/1;
+  border-radius: 50%;
+  animation: l3-0 2s alternate infinite ease-in-out;
+}
+.loader:before {
+  margin: 25%;
+  background: repeating-conic-gradient(#C02942 0 60deg,#0B486B 0 120deg);
+  translate: 0 50%;
+  rotate: -150deg;
+}
+.loader:after {
+  padding: 10%;
+  margin: -10%;
+  background: repeating-conic-gradient(#0B486B 0 30deg,#C02942 0 60deg);
+  mask:linear-gradient(#0000 50%,#000 0) content-box exclude,linear-gradient(#0000 50%,#000 0);
+  rotate: -75deg;
+  animation-name: l3-1;
+}
+@keyframes l3-0 {to{rotate: 150deg}}
+@keyframes l3-1 {to{rotate:  75deg}}

@@ -58,7 +58,7 @@ def stream_articles(request, username, count = 0):
             
     print('loading pickles:',time.time()-start)
 
-    oldnews = News.objects.filter(published__gte=int(time.time())-432000)
+    oldnews = News.objects.filter(published__gte=int(time.time())-345600)
     # oldnews = News.objects.all()
 
     news = {0: [],1: [],2: [],3: [],4: [],5: []}
@@ -120,7 +120,7 @@ def stream_articles(request, username, count = 0):
             date = pytz.timezone("GMT").localize(date)
             date = date.astimezone(pytz.timezone("Asia/Tehran"))
             jdate = jdatetime.datetime.fromgregorian(year=date.year,month=date.month,day=date.day, hour=date.hour, minute=date.minute, second=date.second)
-            # if (int(now) - int(thenews.published)) > 432000:
+            # if (int(now) - int(thenews.published)) > 345600:
             #     continue
             n["published"] = str(jdate)
             n["published"] = "".join(list(map(lambda x: x in "1234567890" and "۰۱۲۳۴۵۶۷۸۹"[int(x)] or x, n["published"])))
@@ -149,7 +149,7 @@ def stream_articles(request, username, count = 0):
 
 def saveAllNewsRating(username, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns):
     deleteRating(username)
-    news = News.objects.filter(published__gte=int(time.time())-432000)
+    news = News.objects.filter(published__gte=int(time.time())-345600)
     for i in news:
         new_data = {"title": i.title, "abstract": i.abstract, "newsAgency": i.newsAgency.title}
         star = int(predict_star(new_data, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns))

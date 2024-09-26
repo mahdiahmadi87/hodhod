@@ -81,7 +81,7 @@ def stream_articles(request, username, count = 0):
     
     newNews = list(filter(lambda x: not x.id in ids, oldnews))
     print("all new news:",len(newNews))
-    newNews = list(filter(lambda x: int(time.time()) - int(x.published) < 432000, oldnews))
+    newNews = list(filter(lambda x: int(time.time()) - int(x.published) < 432000, newNews))
     print("filtered new news:",len(newNews))
     for e in newNews:
         if flag:

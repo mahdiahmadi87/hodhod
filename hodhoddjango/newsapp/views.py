@@ -108,6 +108,7 @@ def stream_articles(request, username, count = 0):
     print('loading news:',time.time()-start)
     def regressor(x, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns, username, count):
         # now = time.time()
+        allNews = []
         for thenews in x:
             n = {}
             n["id"] = thenews.id
@@ -135,17 +136,20 @@ def stream_articles(request, username, count = 0):
                 n['stars'] = str(predict_star(new_data, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns))
             if len(n['abstract']) > 150:
                 n['abstract'] = n['abstract'][:150] + '...'
-
-            yield f"data: {json.dumps(n)}\n\n"
-
+            
+            # n = json.dumps(allNews)
+            allNews.append(n)
+        
+        # allNews = json.dumps(allNews)
         print('end regressing:',time.time()-start)
-        if int(count) == 0 and flag == False:
-            saveAllNewsRating(username, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns)
+        # if int(count) == 0 and flag == False:
+        #     saveAllNewsRating(username, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns)
         print('end saving:',time.time()-start)
+        return allNews
 
-    response = StreamingHttpResponse(regressor(x, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns, username, count), content_type='text/event-stream')
-    response['Cache-Control'] = 'no-cache'
-    return response
+    response = regressor(x, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns, username, count)
+    return JsonResponse({'result': response})
+    # return HttpResponse([response], content_type="application/json")
 
 def saveAllNewsRating(username, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns):
     deleteRating(username)
@@ -222,5 +226,7 @@ def api(requests, token):
         return JsonResponse({"404": "API not found!"})
     
     username = api.user.username
-    print(stream_articles(requests, username, 0))
-    return JsonResponse({"status":"OK"})
+    jsonNews = stream_articles(requests, username, 0)
+    return HttpResponse(jsonNews.content , content_type="application/json")
+
+

@@ -1,6 +1,6 @@
 from django.http import HttpResponse, JsonResponse, StreamingHttpResponse
 from django.shortcuts import render, redirect
-from .models import News, Topic, NewsAgency, IFrame
+from .models import News, Topic, NewsAgency, IFrame, API
 import pandas as pd
 import numpy as np
 import jdatetime
@@ -29,10 +29,10 @@ def news(request):
     return render(request, "index.html", context={"username": username})
 
 def iframe(request, token):
-    iframe = IFrame.objects.filter(token=token)
-    if len(iframe) == 0:
+    try:
+        iframe = IFrame.objects.filter(token=token)[0]
+    except:
         return JsonResponse({"404": "IFrame not found!"})
-    iframe = iframe[0]
 
     username = iframe.user.username
     return render(request, "iframe.html", context={"username": username})
@@ -215,4 +215,12 @@ def predict_star(new_data, mlp, tfidf_title, tfidf_abstract, trained_news_agency
 
     return predicted_ratings[0]
 
-
+def api(requests, token):
+    try:
+        api = API.objects.filter(token=token)[0]
+    except:
+        return JsonResponse({"404": "API not found!"})
+    
+    username = api.user.username
+    print(stream_articles(requests, username, 0))
+    return JsonResponse({"status":"OK"})

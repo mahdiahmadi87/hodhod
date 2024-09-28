@@ -147,8 +147,12 @@ nav a:hover {
   color: var(--accent-foreground);
 }
 
-.stars {
+.empty{
   flex-grow: 1;
+}
+
+.stars {
+  flex-grow: 0;
   gap: 0;
   display: flex;
   justify-content: center;

@@ -102,26 +102,10 @@
 				console.log(data.result)
 				articles = data.result
 				renderArticles();
-				//				document.getElementById('result').innerText = data.result;
+				i ++
 			});
-			/* eventSource.onmessage = function(event) {
-				const newArticle = JSON.parse(event.data);
-				newArticle['stars'] = Number(newArticle['stars']);
-				articles.push(newArticle);
-				renderArticles();
-		
-				// افزایش تعداد پیام‌های دریافتی
-				messageCount += 1;
-		
-				// اگر دو پیام دریافت شد، اتصال را ببندید
-				if (messageCount >= 12) {
-					eventSource.close();
-					i += 1; // برای رفتن به مجموعه بعدی اخبار
-				}
-			}; */
 		}
 		
-		// اولین بار تابع start را فراخوانی کنید
 		start();
     </script>
 	

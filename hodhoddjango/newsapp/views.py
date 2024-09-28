@@ -99,9 +99,9 @@ def stream_articles(request, username, count = 0):
     x = []
     c = int(count)
     try:
-        x = lnews[int(c*12):int((c+1)*12)]
+        x = lnews[:int((c+1)*12)]
     except:
-        x = lnews[int(c*12):]
+        x = lnews[:]
         
     print("newNews:", len(newNews))
     print("newsLen:", len(lnews))

@@ -21,6 +21,7 @@ from . import views
 urlpatterns = [
     path("", views.news, name="index"),
     path("news/", views.news, name="news"),
+    path("news/<id>", views.single, name="sinle"),
     path("iframe/<token>", views.iframe, name="news"),
     path("newsRating/", views.newsRating, name='newsRating'),
     path("dbToDjango/", views.dbToDjango, name="dbToDjango"),

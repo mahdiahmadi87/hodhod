@@ -20,7 +20,6 @@ from main import record, rating, deleteRating, readRating
 
 
 def news(request):
-
     if request.user.is_authenticated:
         username = request.user.username
     else:
@@ -28,14 +27,19 @@ def news(request):
     
     return render(request, "index.html", context={"username": username})
 
-def iframe(request, token):
+def single(requests, id):
+    news = News.objects.filter(id=id)[0]
+    return render(requests, "single.html", context={"news": news})
+
+
+def iframe(requests, token):
     try:
         iframe = IFrame.objects.filter(token=token)[0]
     except:
         return JsonResponse({"404": "IFrame not found!"})
 
     username = iframe.user.username
-    return render(request, "iframe.html", context={"username": username})
+    return render(requests, "iframe.html", context={"username": username})
 
 def stream_articles(request, username, count = 0):
     start = time.time()

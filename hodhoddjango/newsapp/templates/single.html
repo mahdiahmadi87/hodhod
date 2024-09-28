@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{news.title}}{% endblock %}
+
+{% block header %}
+    <link rel="stylesheet" href="{% static 'css/single.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <div class="single">
+                <img src="{{news.image}}" alt="{{news.title}}" class="image" style="height: 400px; width: 600px">
+                <div class="info">
+                    <h2>{{news.title}}</h2>
+                    <p>{{news.abstract}}</p>
+                </div>
+            </div>
+            <div class="single">
+                <h5 class="topic">{{news.topic}}</h5>
+                <h5 class="pub">{{news.published}}</h5>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+  

@@ -54,12 +54,15 @@ def regression():
 
         X = np.hstack((X_title.toarray(), X_abstract.toarray(), news_agency_dummies.values))
         y = merged_df['star'].values
+        try:
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-        mlp = MLPRegressor(random_state=42, max_iter=500)
-        mlp.fit(X_train, y_train)
-
+            mlp = MLPRegressor(random_state=42, max_iter=500)
+            mlp.fit(X_train, y_train)
+        except Exception as e:
+            print(f"\033[31mData not trained for {username}!\033[0m")
+            continue
+        
         y_pred = mlp.predict(X_test)
 
         mse = mean_squared_error(y_test, y_pred)

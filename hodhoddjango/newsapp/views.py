@@ -28,8 +28,33 @@ def news(request):
     return render(request, "index.html", context={"username": username})
 
 def single(requests, id):
-    news = News.objects.filter(id=id)[0]
-    return render(requests, "single.html", context={"news": news})
+    news = News.objects.filter(id=id)
+    if len(news) == 0:
+        print("NotFound!")
+    news = news[0]
+    n = {}
+    n["id"] = news.id
+    n["newsAgency"] = news.newsAgency.title
+    n["title"] = news.title
+    # n["abstract"] = thenews.abstract[:150] + "..."
+    n["abstract"] = news.abstract
+    date = int(news.published)
+    date = datetime.datetime.fromtimestamp(date)
+    date = pytz.timezone("GMT").localize(date)
+    date = date.astimezone(pytz.timezone("Asia/Tehran"))
+    jdate = jdatetime.datetime.fromgregorian(year=date.year,month=date.month,day=date.day, hour=date.hour, minute=date.minute, second=date.second)
+    # if (int(now) - int(thenews.published)) > 345600:
+    #     continue
+    n["published"] = str(jdate)
+    n["published"] = "".join(list(map(lambda x: x in "1234567890" and "۰۱۲۳۴۵۶۷۸۹"[int(x)] or x, n["published"])))
+    topic = news.topic.title
+    n["topic"] = topic
+    n["image"] = news.image
+    n["link"] = news.link
+    new_data = {"title": n["title"], "abstract": n["abstract"], "newsAgency": n["newsAgency"]}
+    # n['stars'] = str(predict_star(new_data, mlp, tfidf_title, tfidf_abstract, trained_news_agency_columns))
+
+    return render(requests, "single.html", context={"news": n})
 
 
 def iframe(requests, token):
